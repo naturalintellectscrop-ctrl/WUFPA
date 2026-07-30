@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+
+/**
+ * 404 — copy verbatim from docs/04 § 1.5.
+ *
+ * WHY THIS IS AN SEO PAGE
+ *
+ * Many visitors arrive on a deep URL from a WhatsApp forward or a link inside
+ * a printed grant application (goal W4), and some of those URLs will be stale.
+ * A 404 that only says "not found" ends the visit; one that offers real routes
+ * recovers it.
+ *
+ * `noindex` is deliberate and is the one case where it is correct: the page
+ * must be reachable and useful, but a search engine indexing "This page isn't
+ * here" under WUFPA's brand would be actively harmful. The static host returns
+ * a real HTTP 404 for this file — a soft 404 (200 with error copy) is what
+ * gets error pages indexed.
+ *
+ * The search route is deliberately absent from the recovery list: docs/04 § 1.5
+ * lists it, but /search/ is WUFPA-053 and does not exist yet. Offering a link
+ * to a 404 from a 404 is worse than offering three working routes.
+ */
+---
+
+<BaseLayout
+  title="Page not found — WUFPA"
+  description="The page you were looking for has moved or never existed. Find your sub-region, become a member, or return to the WUFPA homepage."
+  noindex={true}
+>
+  <Section container="narrow">
+    <h1>This page isn't here</h1>
+
+    <p class="standfirst">
+      The page you were looking for has moved or never existed. It may help to start again.
+    </p>
+
+    {/* A list, not a paragraph of links: this is a set of choices, and a
+        screen reader announcing "list, 3 items" conveys that. */}
+    <nav aria-label="Suggested pages">
+      <ul role="list" class="recovery">
+        <li><a href="/">Go to the WUFPA homepage</a></li>
+        <li><a href="/regions/">Find your sub-region</a></li>
+        <li><a href="/membership/">Become a member</a></li>
+      </ul>
+    </nav>
+  </Section>
+</BaseLayout>
+
+<style>
+  .recovery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-block-start: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .recovery a {
+    /* 44×44 minimum target (docs/16 § 9), reached by padding rather than a
+       fixed height so it grows with the text at 200% zoom. */
+    display: inline-block;
+    padding-block: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+  }
+</style>

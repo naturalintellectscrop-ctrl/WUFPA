@@ -1,0 +1,65 @@
+---
+/**
+ * Sidebar — a fixed-ish rail beside a fluid main column, collapsing on a
+ * CONTENT-DRIVEN threshold rather than a viewport breakpoint.
+ *
+ * The collapse happens when the main column would drop below
+ * --sidebar-content-min of the shared row — i.e. when the CONTENT stops
+ * fitting, not when the screen crosses an arbitrary number. That is the
+ * distinction WUFPA-015's acceptance criteria call out, and it is what lets the
+ * same component sit inside a prose container and a full-width band without
+ * either being special-cased.
+ *
+ * This is the primitive docs/21 section 12 leans on hardest. The /about/ page's
+ * recomposition at 1280 — KeyFacts moving from interrupting the narrative to
+ * accompanying it in a persistent rail — is a Sidebar, and nothing about it is
+ * a media query.
+ *
+ * DOM ORDER IS READING ORDER. The rail is whichever slot is written first, so a
+ * screen reader and a keyboard user meet the content in the order the author
+ * wrote it. `side="end"` moves the rail visually without reordering the source,
+ * because visual alternation must never require reordering the DOM.
+ *
+ * CSS contract lives in global.css @layer layout
+ * (.sidebar, --sidebar-width, --sidebar-content-min).
+ *
+ * Source: docs/07 section 5.3 - WUFPA-015
+ */
+import type { SpaceToken } from '../../lib/types';
+
+interface Props {
+  /** Rail's preferred width. It may still grow if the row has room. */
+  width?: string;
+  /**
+   * Minimum share of the row the MAIN column must keep before the pair
+   * collapses to one column. This is the content-driven threshold.
+   */
+  contentMin?: string;
+  /** Which visual side the rail sits on. Does not change DOM order. */
+  side?: 'start' | 'end';
+  gap?: SpaceToken;
+  class?: string;
+}
+
+const {
+  width,
+  contentMin,
+  side = 'start',
+  gap,
+  class: className,
+} = Astro.props;
+
+const styles = [
+  width ? `--sidebar-width: ${width}` : null,
+  contentMin ? `--sidebar-content-min: ${contentMin}` : null,
+  gap !== undefined ? `gap: var(--space-${gap})` : null,
+  side === 'end' ? 'flex-direction: row-reverse' : null,
+]
+  .filter(Boolean)
+  .join('; ');
+---
+
+<div class:list={['sidebar', className]} style={styles || undefined}>
+  <slot name="rail" />
+  <slot />
+</div>

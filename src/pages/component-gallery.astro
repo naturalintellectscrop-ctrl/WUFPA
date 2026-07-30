@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Button from '../components/primitives/Button.astro';
+import Tag from '../components/primitives/Tag.astro';
+import Icon from '../components/primitives/Icon.astro';
+import StatBlock from '../components/content/StatBlock.astro';
+import EntityCard from '../components/content/EntityCard.astro';
+import Disclosure from '../components/content/Disclosure.astro';
+import KeyFacts from '../components/content/KeyFacts.astro';
+import RosterTable from '../components/content/RosterTable.astro';
+import PersonCard from '../components/content/PersonCard.astro';
+import Timeline from '../components/content/Timeline.astro';
+import Field from '../components/forms/Field.astro';
+import Form from '../components/forms/Form.astro';
+
+/**
+ * COMPONENT GALLERY — internal, noindex, prefixed with `_` so the sitemap
+ * integration excludes it.
+ *
+ * Exercises every component so the build proves they compile and render. All
+ * data below is either sourced from docs/02 or is obviously synthetic
+ * scaffolding labelled as such — no unsourced claim about WUFPA appears here,
+ * and nothing on this page is published copy.
+ */
+
+// Sourced [P1] [P7]. Same four figures specified for the homepage proof band.
+const stats = [
+  { figure: '300+', label: 'film production houses', source: '[P1]' },
+  { figure: '6', label: 'sub-regions of Western Uganda', source: '[P1]' },
+  { figure: '10', label: 'film guilds, from directors to gaffers', source: '[P7]' },
+  { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
+];
+
+// Sourced [P1] [P4]. Registration number is Q21 — deliberately pending.
+const legalFacts = [
+  { label: 'Registered name', value: 'Western Uganda Film Producers Association Limited' },
+  { label: 'Legal form', value: 'Company limited by guarantee' },
+  { label: 'Status', value: 'Not-for-profit' },
+  { label: 'Registrar', value: 'Uganda Registration Services Bureau (URSB)' },
+  { label: 'Date of registration', value: '4 September 2017' },
+  { label: 'Registration number', pending: 'Not recorded' },
+];
+
+// Sourced [P8] [P14] [P16] [P23].
+const timeline = [
+  { date: '2017-09-04', dateLabel: '4 September 2017', title: 'WUFPA registered with URSB', description: 'Fourteen production companies and groups from Ankole and Kigezi register the association as a company limited by guarantee.' },
+  { date: '2022', dateLabel: '2022', title: 'Memorandum of understanding with Sky TV, Mbarara City' },
+  { date: '2023-11-28', dateLabel: '28–30 November 2023', title: 'Delegation to the Kigali International Content Market' },
+  { date: '2025-10-24', dateLabel: '24 October 2025', title: 'Members receive the WUFM SACCO certificate', description: 'Presented with the Mbarara City Commercial Officer.' },
+  { title: 'Together Against Piracy campaign, Mbarara', description: 'Joint action with UCC, URSB, the Uganda Film Council, UFMI and the Media Council of Uganda.' },
+];
+
+// Demonstrates the privacy and consent gates. Every row is withheld because
+// name confirmation (Q1) and consent (Q4) are outstanding — which is the
+// correct current state, and the component proves it.
+const roster = [
+  { name: 'Withheld pending Q1', role: 'President', district: 'Mbarara', nameConfirmed: false, consent: 'pending' as const },
+  { name: 'Withheld pending Q1', role: 'Vice President', district: 'Kasese', nameConfirmed: false, consent: 'pending' as const },
+];
+
+const errors = [
+  { fieldId: 'demo-email', message: 'Email address must be a valid email address' },
+];
+---
+
+<BaseLayout
+  title="Component gallery"
+  description="Internal component gallery for the WUFPA website. Not published content."
+  noindex={true}
+>
+  <PageHeader
+    eyebrow="Internal · not for publication"
+    title="Component gallery"
+    standfirst="Every component in the library, rendered. Data is either sourced from the association profile or is labelled scaffolding. Nothing here is published copy."
+    crumbs={[{ label: 'Component gallery' }]}
+  />
+
+  <Section labelledBy="h-buttons" spacing="compact">
+    <h2 id="h-buttons">Buttons</h2>
+    <div class="cluster" style="margin-block:var(--space-5);">
+      <Button variant="primary">Become a member</Button>
+      <Button variant="secondary">See what we do</Button>
+      <Button variant="tertiary">Read the full story</Button>
+      <Button variant="primary" size="sm">Small</Button>
+      <Button variant="primary" size="lg" icon="arrow-right">Large with icon</Button>
+      <Button variant="primary" href="#h-buttons">Renders as a link</Button>
+    </div>
+    <div class="cluster">
+      <Tag>Ankole</Tag>
+      <Tag variant="accent">Training</Tag>
+      <Tag variant="sacco">WUFM SACCO</Tag>
+      <Tag variant="outline">2023</Tag>
+      <Tag href="#h-buttons" label="Filter by Kigezi">Kigezi</Tag>
+    </div>
+    <p style="margin-block-start:var(--space-5);">
+      Icons: <Icon name="search" /> <Icon name="menu" /> <Icon name="check" /> <Icon name="alert" />
+      <Icon name="external" label="Opens in a new tab" />
+    </p>
+  </Section>
+
+  <Section labelledBy="h-stats" variant="subtle" spacing="compact">
+    <h2 id="h-stats">StatBlock</h2>
+    <p>Figure and label are programmatically associated, and the band carries its as-of date.</p>
+    <div style="margin-block-start:var(--space-5);">
+      <StatBlock
+        stats={stats}
+        note="Membership figures as recorded in the WUFPA association profile, 2025."
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="h-cards" spacing="compact">
+    <h2 id="h-cards">EntityCard</h2>
+    <p>One component, six variants. The whole card is one link; there are no nested controls.</p>
+    <div class="grid" style="--grid-min:17rem; margin-block-start:var(--space-5);">
+      <EntityCard
+        variant="programme"
+        eyebrow="Programme"
+        title="Training and master classes"
+        description="Screenwriting, directing, cinematography, editing and production, taught in the sub-regions."
+        href="#h-cards"
+      />
+      <EntityCard
+        variant="region"
+        eyebrow="Sub-region"
+        title="Kigezi"
+        description="One of the two sub-regions that founded WUFPA in 2017."
+        meta={[{ label: 'Districts', value: '6' }]}
+        href="#h-cards"
+      />
+      <EntityCard
+        variant="guild"
+        eyebrow="Guild"
+        title="Cinematography Guild"
+        description="Camera operators and directors of photography."
+        tags={['Craft', 'Ten guilds']}
+        href="#h-cards"
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="h-people" variant="subtle" spacing="compact">
+    <h2 id="h-people">PersonCard and RosterTable</h2>
+    <p>
+      Both gate on name confirmation (Q1) and consent (Q4). Because neither has been received,
+      the roster below correctly publishes nothing — and the component says so rather than
+      failing silently.
+    </p>
+    <div style="margin-block-start:var(--space-5);">
+      <RosterTable caption="Executive Committee 2025–2030" rows={roster} />
+    </div>
+    <div class="grid" style="--grid-min:14rem; margin-block-start:var(--space-6);">
+      <PersonCard
+        name="Scaffolding Example"
+        roles={[{ title: 'Demonstrates the initials fallback', termStart: 2025, termEnd: 2030 }]}
+        district="No portrait supplied"
+        nameConfirmed={true}
+        consent="granted"
+      />
+    </div>
+    <p style="margin-block-start:var(--space-4); font-size:var(--text-sm); color:var(--text-muted);">
+      The card above shows the typographic initials fallback. There is no code path that renders
+      a photograph of a different person.
+    </p>
+  </Section>
+
+  <Section labelledBy="h-facts" spacing="compact">
+    <h2 id="h-facts">KeyFacts and Disclosure</h2>
+    <div style="margin-block-start:var(--space-5);">
+      <KeyFacts facts={legalFacts} />
+    </div>
+    <div style="margin-block-start:var(--space-6);">
+      <Disclosure summary="Why a pending value still renders a row">
+        <Prose>
+          <p>
+            The registration number is question Q21. The row renders with "Not recorded" rather
+            than being dropped, because the absence is itself informative — silently omitting it
+            would hide that we asked.
+          </p>
+        </Prose>
+      </Disclosure>
+      <Disclosure summary="Multiple disclosures may be open at once">
+        <Prose>
+          <p>
+            Force-closing siblings loses the user's place and is rarely what they want. Built on
+            native details/summary, so keyboard support and screen-reader semantics come for
+            free and it works with JavaScript disabled.
+          </p>
+        </Prose>
+      </Disclosure>
+    </div>
+  </Section>
+
+  <Section labelledBy="h-timeline" variant="subtle" spacing="compact">
+    <h2 id="h-timeline">Timeline</h2>
+    <p>Undated entries are grouped and labelled, never placed at a guessed position.</p>
+    <div style="margin-block-start:var(--space-5);">
+      <Timeline entries={timeline} />
+    </div>
+  </Section>
+
+  <Section labelledBy="h-forms" spacing="compact" container="narrow">
+    <h2 id="h-forms">Forms</h2>
+    <p>
+      Native form with a real action, so it submits without JavaScript. Labels are persistent and
+      visible; "Required" is a word, not a red asterisk.
+    </p>
+    <div style="margin-block-start:var(--space-5);">
+      <Form action="#h-forms" name="demo" submitLabel="Send my application" errors={errors}>
+        <Field name="demo-name" label="Your name" required autocomplete="name" />
+        <Field
+          name="demo-phone"
+          label="Phone number (WhatsApp preferred)"
+          type="tel"
+          required
+          inputmode="tel"
+          autocomplete="tel"
+          hint="This is how a coordinator in your sub-region will reach you."
+        />
+        <Field
+          name="demo-email"
+          label="Email address"
+          type="email"
+          autocomplete="email"
+          hint="Optional — many members do not use email."
+          error="Email address must be a valid email address"
+        />
+        <Field
+          name="demo-region"
+          label="Sub-region"
+          type="select"
+          required
+          options={[
+            { value: 'ankole', label: 'Ankole (Rwizi)' },
+            { value: 'kigezi', label: 'Kigezi' },
+            { value: 'rwenzori', label: 'Rwenzori' },
+            { value: 'tooro', label: 'Tooro' },
+            { value: 'bunyoro', label: 'Bunyoro' },
+            { value: 'greater-bushenyi', label: 'Greater Bushenyi' },
+          ]}
+        />
+        <Field name="demo-work" label="Tell us about your work" type="textarea" />
+      </Form>
+    </div>
+  </Section>
+
+  <Section labelledBy="h-inverse" variant="inverse" spacing="compact">
+    <h2 id="h-inverse">Inverse surface</h2>
+    <p>
+      Red on this ground is 3.71:1, so accents here use the lighter ramp step.
+      <a href="#h-inverse">This link</a> proves the focus ring switches to white.
+    </p>
+    <div class="cluster" style="margin-block-start:var(--space-5);">
+      <Button variant="inverse">Inverse button</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  import '../scripts/reveal';
+  import '../scripts/forms';
+</script>

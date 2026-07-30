@@ -1,0 +1,33 @@
+{
+  "name": "wufpa-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Official website of the Western Uganda Film Producers Association (WUFPA)",
+  "type": "module",
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync": "astro sync",
+    "check": "astro check",
+    "typecheck": "astro sync && tsc --noEmit",
+    "guard": "node scripts/check-no-personal-data.mjs && node scripts/check-no-upscale.mjs && node scripts/check-consent.mjs && node scripts/check-budgets.mjs && node scripts/check-seo.mjs",
+    "seo": "node scripts/check-seo.mjs",
+    "verify": "npm run typecheck && npm run check && npm run build && npm run guard",
+    "media:extract": "python scripts/extract-media.py",
+    "media:process": "python scripts/process-media.py",
+    "media:redact": "python scripts/redact-profile-pdf.py"
+  },
+  "dependencies": {
+    "astro": "^5.14.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.6.0",
+    "sharp": "^0.34.4",
+    "typescript": "^5.9.3"
+  }
+}

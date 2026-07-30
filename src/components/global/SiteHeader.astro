@@ -1,0 +1,128 @@
+---
+import Button from '../primitives/Button.astro';
+import PrimaryNav from './PrimaryNav.astro';
+import MobileNav from './MobileNav.astro';
+import { becomeAMember } from '../../lib/nav-config';
+import { site } from '../../lib/site-config';
+
+/**
+ * SiteHeader — persistent identity and navigation. Carries the primary CTA.
+ *
+ * SOLID BACKGROUND AT ALL SCROLL POSITIONS, ALWAYS. The prototype's
+ * transparent dark-gradient header sat over bright photography and left nav
+ * text unreadable (X17 in a different form) — docs/08 section 2 is explicit
+ * that this must never happen again.
+ *
+ * `position: sticky`, not `fixed` with a manually-sized spacer — sticky
+ * inherently reserves its own height in document flow, which is what avoids
+ * the reflow bug a fixed-position header needs a second element to prevent.
+ * The compact-on-scroll transition (72px → 60px, logo scales down) is a
+ * smooth CSS transition on a sticky element already pinned to the viewport
+ * top by the time it fires, so it never displaces content the reader is
+ * looking at.
+ *
+ * Mobile navigation is its own component (WUFPA-019, docs/08 section 4) —
+ * MobileNav renders both its trigger and its full-screen dialog panel;
+ * SiteHeader just places it in the actions area.
+ *
+ * No SearchField trigger yet — /search/ is WUFPA-073 and does not exist.
+ * Docs/08 section 2 lists it in the header's anatomy, but a search icon that
+ * goes nowhere is exactly the kind of dead control this rebuild exists to
+ * remove. Add it back when WUFPA-073 lands.
+ *
+ * Source: docs/08 sections 1–3 · docs/05 section 3.1 · WUFPA-018, WUFPA-019
+ */
+---
+
+<div id="scroll-sentinel" aria-hidden="true"></div>
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__bar">
+    <a class="site-header__logo" href="/" aria-label={`${site.shortName} — home`}>
+      <img
+        src="/wufpa_oficial_logo.jpeg"
+        alt=""
+        width="120"
+        height="115"
+        class="site-header__logo-img"
+      />
+    </a>
+
+    <PrimaryNav />
+
+    <div class="site-header__actions">
+      <Button href={becomeAMember.href} size="sm" class="site-header__cta">
+        {becomeAMember.label}
+      </Button>
+
+      <MobileNav />
+    </div>
+  </div>
+</header>
+
+<script>
+  import '../../scripts/nav';
+</script>
+
+<style>
+  #scroll-sentinel {
+    position: absolute;
+    inset-block-start: 0;
+    block-size: 1px;
+    inline-size: 1px;
+  }
+
+  .site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-sticky);
+    block-size: 72px;
+    background-color: var(--surface-page);
+    border-block-end: 1px solid var(--line-subtle);
+    transition: block-size var(--duration-base) var(--ease-out);
+  }
+
+  .site-header.is-compact {
+    block-size: 60px;
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    block-size: 100%;
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+  }
+
+  .site-header__logo-img {
+    block-size: 48px;
+    inline-size: auto;
+    transition: block-size var(--duration-base) var(--ease-out);
+  }
+
+  .is-compact .site-header__logo-img {
+    block-size: 38px;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .site-header__cta {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .site-header__cta {
+      display: inline-flex;
+    }
+  }
+</style>

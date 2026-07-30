@@ -1,0 +1,60 @@
+---
+import Breadcrumb from './Breadcrumb.astro';
+import type { Crumb } from '../../lib/types';
+
+/**
+ * PageHeader — the standard opening of every page except Home.
+ *
+ * Carries the page's single <h1>. The standfirst is a <p>, never a heading —
+ * a subtitle marked up as <h2> corrupts the document outline that screen-reader
+ * users navigate by.
+ */
+interface Props {
+  title: string;
+  standfirst?: string;
+  eyebrow?: string;
+  crumbs?: Crumb[];
+  variant?: 'default' | 'compact';
+}
+
+const { title, standfirst, eyebrow, crumbs, variant = 'default' } = Astro.props;
+---
+
+<header class:list={['page-header', `page-header--${variant}`]}>
+  <div class="container">
+    {crumbs && crumbs.length > 0 && <Breadcrumb crumbs={crumbs} />}
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {standfirst && <p class="standfirst">{standfirst}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .page-header {
+    padding-block: var(--space-7) var(--space-6);
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  .page-header--compact {
+    padding-block: var(--space-6) var(--space-5);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-2);
+  }
+
+  h1 {
+    margin-block-end: var(--space-4);
+  }
+
+  .standfirst {
+    margin-block-start: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .page-header {
+      padding-block: var(--space-8) var(--space-7);
+    }
+  }
+</style>

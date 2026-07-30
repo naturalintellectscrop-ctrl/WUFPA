@@ -1,0 +1,46 @@
+---
+/**
+ * Section — the horizontal band every page is composed from.
+ *
+ * Handles background, vertical rhythm and container width in one place, so a
+ * page never sets its own padding. The prototype used a flat 120px at every
+ * viewport, which consumes roughly a third of a 360px screen per section.
+ *
+ * Renders <section aria-labelledby> only when it has a heading. A <section>
+ * without an accessible name is noise in the landmark list, so unnamed bands
+ * render as a plain <div>.
+ */
+interface Props {
+  variant?: 'default' | 'subtle' | 'muted' | 'inverse' | 'accent' | 'bleed';
+  container?: 'prose' | 'narrow' | 'default' | 'wide' | 'full';
+  spacing?: 'compact' | 'default' | 'loose';
+  /** id of the heading that names this section. Omit for unnamed bands. */
+  labelledBy?: string;
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  container = 'default',
+  spacing = 'default',
+  labelledBy,
+  class: className,
+} = Astro.props;
+
+const Wrapper = labelledBy ? 'section' : 'div';
+---
+
+<Wrapper
+  class:list={[
+    'section',
+    variant === 'inverse' && 'surface-inverse',
+    className,
+  ]}
+  data-variant={variant === 'default' ? undefined : variant}
+  data-spacing={spacing === 'default' ? undefined : spacing}
+  aria-labelledby={labelledBy}
+>
+  <div class="container" data-width={container === 'default' ? undefined : container}>
+    <slot />
+  </div>
+</Wrapper>

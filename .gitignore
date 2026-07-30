@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+
+# Client-supplied originals — never published, never committed. See
+# docs/14_TECHNICAL_ARCHITECTURE.md's warning: an earlier revision of this
+# project committed the unredacted profile PDF (~60 personal mobile numbers)
+# here before this rule existed. That commit has since been purged from
+# history; this line is what stops it recurring.
+client-archive

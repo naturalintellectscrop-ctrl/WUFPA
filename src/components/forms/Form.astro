@@ -1,0 +1,179 @@
+---
+/**
+ * Form — submission, validation orchestration and status messaging.
+ *
+ * Native <form> with a real action, so it WORKS WITHOUT JAVASCRIPT. Enhanced
+ * submission is progressive. For an audience on metered 3G where scripts
+ * frequently fail to load, this is not a nicety.
+ *
+ * On failed submit, focus moves to an error summary at the top which lists each
+ * error as a link to its field — the pattern that works best for screen-reader
+ * and cognitive-accessibility users.
+ *
+ * NO CAPTCHA (docs/13 FR-58): an accessibility barrier and a conversion tax at
+ * WUFPA's volume. A honeypot plus platform-level filtering is sufficient. The
+ * honeypot is visually hidden and aria-hidden with tabindex="-1" — never
+ * display:none on a real input, which some password managers will still fill.
+ */
+import type { FormError } from '../../lib/types';
+
+interface Props {
+  action: string;
+  method?: 'post' | 'get';
+  name: string;
+  submitLabel: string;
+  errors?: FormError[];
+  /** Rendered instead of the form once submitted successfully. */
+  success?: string;
+  class?: string;
+}
+
+const {
+  action,
+  method = 'post',
+  name,
+  submitLabel,
+  errors = [],
+  success,
+  class: className,
+} = Astro.props;
+
+const summaryId = `${name}-error-summary`;
+---
+
+{
+  success ? (
+    <div class="form__success" role="status" tabindex="-1">
+      <svg width="1.25em" height="1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+      <p>{success}</p>
+    </div>
+  ) : (
+    <form
+      class:list={['form', className]}
+      action={action}
+      method={method}
+      name={name}
+      novalidate
+      data-form
+    >
+      {errors.length > 0 && (
+        <div class="form__errors" role="alert" id={summaryId} tabindex="-1">
+          <h2>There {errors.length === 1 ? 'is 1 problem' : `are ${errors.length} problems`} with this form</h2>
+          <ul>
+            {errors.map((e) => (
+              <li>
+                <a href={`#field-${e.fieldId}`}>{e.message}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="form__fields">
+        <slot />
+      </div>
+
+      {/* Honeypot. Visually hidden, removed from the a11y tree and tab order. */}
+      <div class="form__honeypot" aria-hidden="true">
+        <label for={`${name}-website`}>Leave this field empty</label>
+        <input id={`${name}-website`} name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="form__actions">
+        <button type="submit" class="form__submit">{submitLabel}</button>
+      </div>
+
+      {/* Announced politely for enhanced submissions. */}
+      <p class="form__status u-visually-hidden" role="status" aria-live="polite" data-form-status />
+    </form>
+  )
+}
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-inline-size: var(--container-prose);
+  }
+
+  .form__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .form__errors {
+    padding: var(--space-5);
+    background-color: var(--feedback-error-bg);
+    border: 2px solid var(--feedback-error);
+    border-radius: var(--radius-card);
+  }
+
+  .form__errors h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-lg);
+    color: var(--feedback-error);
+  }
+
+  .form__errors ul {
+    margin: 0;
+    padding-inline-start: var(--space-5);
+  }
+
+  .form__errors a {
+    color: var(--feedback-error);
+    font-weight: var(--weight-medium);
+  }
+
+  .form__honeypot {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Full width on small screens — this is the page's primary action. */
+  .form__submit {
+    inline-size: 100%;
+    min-block-size: var(--control-height-lg);
+    padding-inline: var(--space-6);
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--action-primary-text);
+    background-color: var(--action-primary-bg);
+    border-radius: var(--radius-control);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .form__submit:hover {
+    background-color: var(--action-primary-bg-hover);
+  }
+
+  .form__success {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background-color: var(--feedback-success-bg);
+    border: 2px solid var(--feedback-success);
+    border-radius: var(--radius-card);
+    color: var(--feedback-success);
+  }
+
+  .form__success p {
+    margin: 0;
+    font-weight: var(--weight-medium);
+  }
+
+  @media (min-width: 30rem) {
+    .form__submit {
+      inline-size: auto;
+    }
+  }
+</style>

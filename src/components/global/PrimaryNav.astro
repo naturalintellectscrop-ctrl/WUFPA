@@ -1,0 +1,193 @@
+---
+import Icon from '../primitives/Icon.astro';
+import { primaryNav } from '../../lib/nav-config';
+
+/**
+ * PrimaryNav — top-level navigation: About · Programmes · Regions ·
+ * Membership · News.
+ *
+ * Real <ul>/<li>/<a>. Panel triggers are <button aria-expanded aria-controls>
+ * — the open/close mechanics themselves live in src/scripts/nav.ts because a
+ * mega-panel needs to open on click/Enter/Space AND on hover (hover must
+ * never be the ONLY route — docs/08 section 3, the X28 class of failure),
+ * close on Escape with focus returned to the trigger, and close when focus
+ * moves outside it. Native <details> (used by Disclosure, docs/08 section
+ * 21) doesn't give hover-open, so this needs real script.
+ *
+ * Hidden below --bp-lg (1024px) — MobileNav (WUFPA-019) takes over there.
+ *
+ * Source: docs/08 section 3 · docs/05 section 3.1
+ */
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(href);
+}
+---
+
+<nav class="primary-nav" aria-label="Primary">
+  <ul role="list" class="primary-nav__list">
+    {
+      primaryNav.map((item, index) => {
+        const active = isActive(item.href);
+
+        if (!item.children) {
+          return (
+            <li>
+              <a
+                class="primary-nav__link"
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        }
+
+        const panelId = `nav-panel-${index}`;
+
+        return (
+          <li class="primary-nav__item--panel">
+            <button
+              type="button"
+              class="primary-nav__link primary-nav__trigger"
+              aria-expanded="false"
+              aria-controls={panelId}
+              aria-current={active ? 'page' : undefined}
+              data-nav-trigger
+            >
+              {item.label}
+              <Icon name="chevron-down" class="primary-nav__chevron" />
+            </button>
+
+            <div id={panelId} class="primary-nav__panel" data-nav-panel hidden>
+              <ul role="list" class="primary-nav__panel-list">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      class="primary-nav__panel-link"
+                      href={child.href}
+                      aria-current={currentPath === child.href ? 'page' : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .primary-nav {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .primary-nav {
+      display: block;
+    }
+  }
+
+  .primary-nav__list {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .primary-nav__item--panel {
+    position: relative;
+  }
+
+  .primary-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    block-size: 100%;
+    padding-inline: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-body);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* The current-page cue is a border, never colour alone (1.4.1). */
+    border-block-end: 2px solid transparent;
+  }
+
+  .primary-nav__link:hover {
+    color: var(--text-accent);
+  }
+
+  .primary-nav__link[aria-current='page'] {
+    color: var(--text-accent);
+    border-block-end-color: var(--line-accent);
+  }
+
+  .primary-nav__chevron {
+    transition: rotate var(--duration-fast) var(--ease-out);
+  }
+
+  .primary-nav__trigger[aria-expanded='true'] .primary-nav__chevron {
+    rotate: 180deg;
+  }
+
+  .primary-nav__panel {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    z-index: var(--z-dropdown);
+    min-inline-size: 16rem;
+    margin-block-start: var(--space-2);
+    padding: var(--space-4);
+    background-color: var(--surface-page);
+    border: 1px solid var(--line-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .primary-nav__panel[hidden] {
+    display: none;
+  }
+
+  .primary-nav__panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .primary-nav__panel-link {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-body);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .primary-nav__panel-link:hover {
+    background-color: var(--surface-muted);
+    color: var(--text-accent);
+  }
+
+  .primary-nav__panel-link[aria-current='page'] {
+    color: var(--text-accent);
+    font-weight: var(--weight-semibold);
+  }
+</style>

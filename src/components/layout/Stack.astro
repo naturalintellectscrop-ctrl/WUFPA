@@ -1,0 +1,33 @@
+---
+/**
+ * Stack — vertical rhythm. One axis, one gap, no exceptions.
+ *
+ * The single most-used layout on the site: anything reading top to bottom with
+ * consistent spacing between children. Replaces the `> * + * { margin-block-start }`
+ * pattern, which breaks the moment a child is conditionally rendered — a real
+ * risk here, where most content is client-gated and half the entities are
+ * absent until Q1-Q8 are answered.
+ *
+ * CSS contract lives in global.css @layer layout (.stack, --stack-gap).
+ *
+ * Source: docs/07 section 5.3 - WUFPA-015
+ */
+import type { SpaceToken } from '../../lib/types';
+
+interface Props {
+  /** Space token for the gap. Defaults to the semantic --stack-gap. */
+  gap?: SpaceToken;
+  /** Render as something other than a div — use for <ul>, <ol>, <nav>. */
+  as?: 'div' | 'ul' | 'ol' | 'nav' | 'section' | 'article' | 'aside' | 'form';
+  class?: string;
+}
+
+const { gap, as: Tag = 'div', class: className }: Props = Astro.props;
+---
+
+<Tag
+  class:list={['stack', className]}
+  style={gap ? `--stack-gap: var(--space-${gap})` : undefined}
+>
+  <slot />
+</Tag>

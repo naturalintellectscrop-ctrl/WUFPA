@@ -1,0 +1,2540 @@
+{
+  "generatedBy": "scripts/extract-media.py (WUFPA-055)",
+  "source": "public/originals/WUFPA PROFILE 2026.pdf",
+  "note": "alt, caption, date and consent are REQUIRED before any asset renders. See WUFPA-057 (alt text) and WUFPA-059 (consent register).",
+  "assetCount": 72,
+  "assets": [
+    {
+      "file": "leadership/cyril-baryabawe-portrait.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p4, xref 19",
+      "sourcePage": 4,
+      "xref": 19,
+      "intrinsic": {
+        "w": 793,
+        "h": 871
+      },
+      "maxDisplayWidth": 793,
+      "bytes": 167661,
+      "category": "photo",
+      "suggestedDestination": "leadership",
+      "alt": "Cyril Baryabawe, wearing a blue suit with a yellow diamond-patterned tie and glasses, photographed in a head-and-shoulders portrait against a plain white background.",
+      "caption": "Cyril Baryabawe, WUFPA founder.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 177.3,
+        "channelMeans": [
+          173.2,
+          174.5,
+          217.4
+        ],
+        "colourCast": 0.154,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "leadership/mushana-amos-portrait.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p4, xref 21",
+      "sourcePage": 4,
+      "xref": 21,
+      "intrinsic": {
+        "w": 316,
+        "h": 409
+      },
+      "maxDisplayWidth": 316,
+      "bytes": 39326,
+      "category": "photo",
+      "suggestedDestination": "leadership",
+      "alt": "Mushana Amos, wearing a maroon collared shirt, photographed in a formal head-and-shoulders portrait against a plain light background.",
+      "caption": "Mushana Amos, WUFPA founder.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 121.1,
+        "channelMeans": [
+          131.7,
+          117.2,
+          128.3
+        ],
+        "colourCast": 0.068,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "leadership/rev-mwesigwa-portrait.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p4, xref 23",
+      "sourcePage": 4,
+      "xref": 23,
+      "intrinsic": {
+        "w": 370,
+        "h": 434
+      },
+      "maxDisplayWidth": 370,
+      "bytes": 41691,
+      "category": "photo",
+      "suggestedDestination": "leadership",
+      "alt": "Rev. Mwesigwa, wearing a clerical collar beneath a grey suit, photographed in a head-and-shoulders portrait against a plain background.",
+      "caption": "Rev. Mwesigwa, WUFPA founder.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 149.9,
+        "channelMeans": [
+          149.8,
+          147.3,
+          175.4
+        ],
+        "colourCast": 0.114,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "history/certificates-of-merit-presentation.jpeg",
+      "source": "client-archive/originals/IMG-20210304-WA0096.jpg.jpeg [PH-1] — standalone original, replaces the severely wide-cropped PDF embed",
+      "sourcePage": null,
+      "xref": null,
+      "intrinsic": {
+        "w": 1080,
+        "h": 810
+      },
+      "maxDisplayWidth": 1080,
+      "bytes": 117658,
+      "category": "photo",
+      "suggestedDestination": "history",
+      "alt": "Four men stand in a row outdoors on grass, each holding an open WUFPA Certificate of Merit toward the camera; two wear face masks, with a marquee tent and iron gate behind them.",
+      "caption": "WUFPA members receive Certificates of Merit. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 150.9,
+        "channelMeans": [
+          154.4,
+          150.6,
+          143.5
+        ],
+        "colourCast": 0.04,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "leadership/katabazi-george-portrait.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p5, xref 38",
+      "sourcePage": 5,
+      "xref": 38,
+      "intrinsic": {
+        "w": 932,
+        "h": 1122
+      },
+      "maxDisplayWidth": 932,
+      "bytes": 262641,
+      "category": "photo",
+      "suggestedDestination": "leadership",
+      "alt": "Katabazi George, wearing a white Ankole City Filmz polo shirt, photographed indoors with arms folded.",
+      "caption": "Katabazi George, President of WUFPA.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 162.5,
+        "channelMeans": [
+          166,
+          160,
+          177.6
+        ],
+        "colourCast": 0.058,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "history/wufpa-pioneers-2017.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p7, xref 405",
+      "sourcePage": 7,
+      "xref": 405,
+      "intrinsic": {
+        "w": 1986,
+        "h": 1200
+      },
+      "maxDisplayWidth": 1986,
+      "bytes": 564928,
+      "category": "photo",
+      "suggestedDestination": "history",
+      "alt": "About sixteen people stand in a row on grass in front of a marquee, most holding up WUFPA certificates, with a few phones raised to photograph the moment.",
+      "caption": "WUFPA pioneers, 2017.",
+      "date": "2017",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 123.6,
+        "channelMeans": [
+          127.2,
+          124.7,
+          102.5
+        ],
+        "colourCast": 0.132,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/greater-bushenyi/sensitisation-meeting-greater-bushenyi-2022.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p8, xref 100",
+      "sourcePage": 8,
+      "xref": 100,
+      "intrinsic": {
+        "w": 3000,
+        "h": 1713
+      },
+      "maxDisplayWidth": 3000,
+      "bytes": 1123976,
+      "category": "photo",
+      "suggestedDestination": "regions/greater-bushenyi",
+      "alt": "A WUFPA representative in a branded shirt stands and addresses a small seated group of film producers and actors on a covered veranda.",
+      "caption": "Sensitisation meeting with film producers and actors, Greater Bushenyi, 2022.",
+      "date": "2022",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 166.4,
+        "channelMeans": [
+          148.3,
+          171.1,
+          173
+        ],
+        "colourCast": 0.097,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/distribution/sky-tv-mbarara-mou-2022-group.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p8, xref 102",
+      "sourcePage": 8,
+      "xref": 102,
+      "intrinsic": {
+        "w": 989,
+        "h": 1024
+      },
+      "maxDisplayWidth": 989,
+      "bytes": 252058,
+      "category": "photo",
+      "suggestedDestination": "programmes/distribution",
+      "alt": "A man and a woman shake hands and hold a signed memorandum of understanding between them in front of a Sky Television banner.",
+      "caption": "WUFPA and Sky TV Mbarara mark their memorandum of understanding, 2022.",
+      "date": "2022",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 120.5,
+        "channelMeans": [
+          133.4,
+          119.2,
+          95.8
+        ],
+        "colourCast": 0.175,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p8, xref 104",
+      "sourcePage": 8,
+      "xref": 104,
+      "intrinsic": {
+        "w": 1188,
+        "h": 1024
+      },
+      "maxDisplayWidth": 1188,
+      "bytes": 285960,
+      "category": "photo",
+      "suggestedDestination": "programmes/distribution",
+      "alt": "Three people stand together in front of a Sky Television banner, one holding the signed memorandum of understanding.",
+      "caption": "Signing of the Sky TV Mbarara memorandum of understanding, 2022.",
+      "date": "2022",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 135.3,
+        "channelMeans": [
+          154.6,
+          133.4,
+          98.2
+        ],
+        "colourCast": 0.237,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/bunyoro/sensitisation-workshop-bunyoro-2022-banner.jpeg",
+      "source": "client-archive/originals/IMG-20230711-WA0206.jpg.jpeg [PH-2] — standalone original",
+      "sourcePage": null,
+      "xref": null,
+      "intrinsic": {
+        "w": 1080,
+        "h": 810
+      },
+      "maxDisplayWidth": 1080,
+      "bytes": 100587,
+      "category": "photo",
+      "suggestedDestination": "regions/bunyoro",
+      "alt": "About forty WUFPA members stand and sit outdoors in front of brick, grass-thatched-roof buildings around a printed sign reading \"Western Uganda Film Producers Association (WUFPA) Bunyoro Region\" with partner logos beneath.",
+      "caption": "WUFPA Bunyoro Region members at a sensitisation workshop, 2022.",
+      "date": "2022",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 145.1,
+        "channelMeans": [
+          146,
+          146.1,
+          132.9
+        ],
+        "colourCast": 0.062,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/bunyoro/sensitisation-film-workshop-bunyoro-2022.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p9, xref 126",
+      "sourcePage": 9,
+      "xref": 126,
+      "intrinsic": {
+        "w": 2185,
+        "h": 960
+      },
+      "maxDisplayWidth": 2185,
+      "bytes": 920037,
+      "category": "photo",
+      "suggestedDestination": "regions/bunyoro",
+      "alt": "About thirty WUFPA members, several seated on green plastic chairs, gather outdoors on grass before a wooden building for a sensitisation film workshop in the Bunyoro region.",
+      "caption": "Sensitisation film workshop, Bunyoro region, 2022.",
+      "date": "2022",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 132.8,
+        "channelMeans": [
+          138,
+          133,
+          115.1
+        ],
+        "colourCast": 0.106,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/ursb-regional-offices-meeting-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p9, xref 128",
+      "sourcePage": 9,
+      "xref": 128,
+      "intrinsic": {
+        "w": 1298,
+        "h": 776
+      },
+      "maxDisplayWidth": 1298,
+      "bytes": 236125,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "Four WUFPA representatives stand together on a veranda outside the Uganda Registration Services Bureau regional office.",
+      "caption": "Meeting with URSB regional offices, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 143.2,
+        "channelMeans": [
+          165.6,
+          137.9,
+          130.1
+        ],
+        "colourCast": 0.146,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg",
+      "source": "client-archive/originals/IMG_9788.JPG.jpeg [PH-3] — standalone original, highest resolution supplied",
+      "sourcePage": null,
+      "xref": null,
+      "intrinsic": {
+        "w": 2400,
+        "h": 1600
+      },
+      "maxDisplayWidth": 2400,
+      "bytes": 3684971,
+      "category": "photo",
+      "suggestedDestination": "regions/tooro",
+      "alt": "About twenty WUFPA members and partners stand and sit together outdoors in front of a wall painted 'Obukama' beside a lion emblem.",
+      "caption": "Sensitisation film workshop in the Tooro sub-region, hosted at Obukama bwa Tooro. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 177.5,
+        "channelMeans": [
+          183.3,
+          177.3,
+          162.7
+        ],
+        "colourCast": 0.067,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/tooro/sensitisation-tooro-participants-outdoor.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p10, xref 143",
+      "sourcePage": 10,
+      "xref": 143,
+      "intrinsic": {
+        "w": 989,
+        "h": 1544
+      },
+      "maxDisplayWidth": 989,
+      "bytes": 533181,
+      "category": "photo",
+      "suggestedDestination": "regions/tooro",
+      "alt": "Three men sit on tree stumps outdoors, two shaking hands, during a break in a sensitisation workshop session in Tooro.",
+      "caption": "Sensitisation workshop, Tooro sub-region. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 171.8,
+        "channelMeans": [
+          180.6,
+          171.7,
+          147.1
+        ],
+        "colourCast": 0.116,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/tooro/sensitisation-workshop-tooro-craft-display.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p10, xref 145",
+      "sourcePage": 10,
+      "xref": 145,
+      "intrinsic": {
+        "w": 1171,
+        "h": 751
+      },
+      "maxDisplayWidth": 1171,
+      "bytes": 372609,
+      "category": "photo",
+      "suggestedDestination": "regions/tooro",
+      "alt": "About ten participants stand on a covered wooden veranda beside handwoven chairs, listening to a session during a sensitisation workshop in Tooro.",
+      "caption": "Sensitisation workshop, Tooro sub-region. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 161,
+        "channelMeans": [
+          184.4,
+          157.3,
+          129.4
+        ],
+        "colourCast": 0.176,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/tooro/sensitisation-workshop-tooro-session.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p10, xref 147",
+      "sourcePage": 10,
+      "xref": 147,
+      "intrinsic": {
+        "w": 1171,
+        "h": 781
+      },
+      "maxDisplayWidth": 1171,
+      "bytes": 332175,
+      "category": "photo",
+      "suggestedDestination": "regions/tooro",
+      "alt": "Five people stand in a row on a covered wooden veranda, one with a hand raised to the chest, during a sensitisation workshop session in Tooro.",
+      "caption": "Sensitisation workshop, Tooro sub-region. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 179.2,
+        "channelMeans": [
+          194.9,
+          177.4,
+          150.7
+        ],
+        "colourCast": 0.136,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/ankole/sensitisation-ibanda-kazo-kiruhura-kamwengye-kitagwenda.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p11, xref 159",
+      "sourcePage": 11,
+      "xref": 159,
+      "intrinsic": {
+        "w": 1800,
+        "h": 1131
+      },
+      "maxDisplayWidth": 1800,
+      "bytes": 929769,
+      "category": "photo",
+      "suggestedDestination": "regions/ankole",
+      "alt": "A long line of participants stand outdoors with linked arms during a sensitisation session for the Ibanda, Kazo, Kiruhura, Kamwengye and Kitagwenda districts.",
+      "caption": "Sensitisation session covering Ibanda, Kazo, Kiruhura, Kamwengye and Kitagwenda districts. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 125.9,
+        "channelMeans": [
+          114.8,
+          132,
+          98
+        ],
+        "colourCast": 0.149,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/ankole/sensitisation-ankole-districts-discussion.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p11, xref 161",
+      "sourcePage": 11,
+      "xref": 161,
+      "intrinsic": {
+        "w": 1091,
+        "h": 679
+      },
+      "maxDisplayWidth": 1091,
+      "bytes": 311402,
+      "category": "photo",
+      "suggestedDestination": "regions/ankole",
+      "alt": "Participants sit in rows of white plastic chairs against an orange wall, listening during a sensitisation session for the Ankole districts.",
+      "caption": "Sensitisation discussion, Ankole districts. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 144.7,
+        "channelMeans": [
+          183.9,
+          137.4,
+          102.3
+        ],
+        "colourCast": 0.302,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/ankole/sensitisation-ankole-districts-facilitator.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p11, xref 163",
+      "sourcePage": 11,
+      "xref": 163,
+      "intrinsic": {
+        "w": 1091,
+        "h": 679
+      },
+      "maxDisplayWidth": 1091,
+      "bytes": 231797,
+      "category": "photo",
+      "suggestedDestination": "regions/ankole",
+      "alt": "A facilitator wearing a Uganda Film Festival polo shirt stands and gestures while speaking to two seated men at a table set with drinks.",
+      "caption": "Sensitisation session led by a facilitator, Ankole districts. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 168.1,
+        "channelMeans": [
+          218.4,
+          160.8,
+          91.8
+        ],
+        "colourCast": 0.416,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/ucc-awareness-workshop-content-development.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p11, xref 165",
+      "sourcePage": 11,
+      "xref": 165,
+      "intrinsic": {
+        "w": 2185,
+        "h": 1245
+      },
+      "maxDisplayWidth": 2185,
+      "bytes": 1384648,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "About one hundred people gather on a lawn for a group photograph, with UCC and Uganda Film Festival banners at each end, beneath text reading 'Western Uganda Film Makers'.",
+      "caption": "UCC 'Western Uganda Film Makers' awareness workshop on the Content Development Support Programme and Uganda Film Festival.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 119.4,
+        "channelMeans": [
+          117.7,
+          121.9,
+          100.2
+        ],
+        "colourCast": 0.116,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/parliamentary-forum-creative-industries-podium.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p12, xref 175",
+      "sourcePage": 12,
+      "xref": 175,
+      "intrinsic": {
+        "w": 2592,
+        "h": 1458
+      },
+      "maxDisplayWidth": 2592,
+      "bytes": 840172,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A woman speaks from a wooden podium while a seated panel of four listens beside her, at the Uganda Parliamentary Forum for Creative Industries.",
+      "caption": "Speaker at the Uganda Parliamentary Forum for Creative Industries. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 120.8,
+        "channelMeans": [
+          134.9,
+          120.3,
+          83.6
+        ],
+        "colourCast": 0.26,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/parliamentary-forum-wufpa-representatives.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p12, xref 177",
+      "sourcePage": 12,
+      "xref": 177,
+      "intrinsic": {
+        "w": 2181,
+        "h": 762
+      },
+      "maxDisplayWidth": 2181,
+      "bytes": 293592,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "WUFPA delegates are seated at tables facing the stage, viewed from behind, during the Uganda Parliamentary Forum for Creative Industries.",
+      "caption": "WUFPA representatives at the Uganda Parliamentary Forum for Creative Industries. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 74.5,
+        "channelMeans": [
+          89.4,
+          70,
+          75.6
+        ],
+        "colourCast": 0.141,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/parliamentary-forum-creative-industries-hall.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p12, xref 178",
+      "sourcePage": 12,
+      "xref": 178,
+      "intrinsic": {
+        "w": 680,
+        "h": 378
+      },
+      "maxDisplayWidth": 680,
+      "bytes": 73957,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "Delegates in seated rows including a man in traditional dress and headwear look toward the stage at the Uganda Parliamentary Forum for Creative Industries.",
+      "caption": "Delegates at the Uganda Parliamentary Forum for Creative Industries. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 144.6,
+        "channelMeans": [
+          148.8,
+          142.2,
+          155.8
+        ],
+        "colourCast": 0.046,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/parliamentary-forum-speaker-podium-1.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p12, xref 180",
+      "sourcePage": 12,
+      "xref": 180,
+      "intrinsic": {
+        "w": 742,
+        "h": 772
+      },
+      "maxDisplayWidth": 742,
+      "bytes": 103200,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A man wearing sunglasses and a flat cap speaks into a podium microphone at the Uganda Parliamentary Forum for Creative Industries.",
+      "caption": "Podium address, Uganda Parliamentary Forum for Creative Industries. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 155.1,
+        "channelMeans": [
+          178.2,
+          147.3,
+          164.2
+        ],
+        "colourCast": 0.098,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/parliamentary-forum-speaker-podium-2.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p12, xref 182",
+      "sourcePage": 12,
+      "xref": 182,
+      "intrinsic": {
+        "w": 533,
+        "h": 657
+      },
+      "maxDisplayWidth": 533,
+      "bytes": 76528,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A man in glasses and a light blazer gestures while speaking into a podium microphone, a laptop open before him.",
+      "caption": "Podium address, Uganda Parliamentary Forum for Creative Industries. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 167.5,
+        "channelMeans": [
+          182.1,
+          160.2,
+          197.5
+        ],
+        "colourCast": 0.11,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/together-against-piracy-ankole-city-actors-banner.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p13, xref 192",
+      "sourcePage": 13,
+      "xref": 192,
+      "intrinsic": {
+        "w": 792,
+        "h": 935
+      },
+      "maxDisplayWidth": 792,
+      "bytes": 295725,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A man in traditional dress stands before an Ankole City Actors banner reading 'Together Against Piracy', with marchers carrying placards behind him on the street.",
+      "caption": "Together Against Piracy march, Mbarara. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 131.9,
+        "channelMeans": [
+          135.5,
+          130.7,
+          133.4
+        ],
+        "colourCast": 0.019,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/together-against-piracy-march-street.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p13, xref 194",
+      "sourcePage": 13,
+      "xref": 194,
+      "intrinsic": {
+        "w": 1558,
+        "h": 988
+      },
+      "maxDisplayWidth": 1558,
+      "bytes": 506114,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A uniformed military brass band leads the march, playing trumpets and a tuba, ahead of marchers carrying a 'Together Against Piracy' banner along a Mbarara street.",
+      "caption": "Together Against Piracy march, Mbarara. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 116.9,
+        "channelMeans": [
+          126.3,
+          115.8,
+          99.3
+        ],
+        "colourCast": 0.127,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/together-against-piracy-march-mbarara-street.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p13, xref 196",
+      "sourcePage": 13,
+      "xref": 196,
+      "intrinsic": {
+        "w": 1246,
+        "h": 788
+      },
+      "maxDisplayWidth": 1246,
+      "bytes": 367065,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "Marchers carry banners reading 'Together Against Piracy' and 'Ankole City Actors Presents' along a Mbarara street lined with buildings and parked cars.",
+      "caption": "Together Against Piracy march along a Mbarara street. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 125.6,
+        "channelMeans": [
+          138.8,
+          123.5,
+          107.9
+        ],
+        "colourCast": 0.126,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/together-against-piracy-banner-mbarara.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p13, xref 198",
+      "sourcePage": 13,
+      "xref": 198,
+      "intrinsic": {
+        "w": 2181,
+        "h": 1392
+      },
+      "maxDisplayWidth": 2181,
+      "bytes": 850963,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "Members carry a wide banner reading 'Together Against Piracy — Infringement on one's Copyright is A Crime' along a street, with a second banner behind.",
+      "caption": "The Together Against Piracy campaign, Mbarara. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 137.9,
+        "channelMeans": [
+          134.9,
+          139,
+          135.7
+        ],
+        "colourCast": 0.018,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/together-against-piracy-brass-band-placards.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p13, xref 200",
+      "sourcePage": 13,
+      "xref": 200,
+      "intrinsic": {
+        "w": 988,
+        "h": 993
+      },
+      "maxDisplayWidth": 988,
+      "bytes": 262945,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "Marchers hold hand-lettered placards reading 'Pirating Is Bad' and 'United to Fight Piracy' during the Together Against Piracy march.",
+      "caption": "Placards at the Together Against Piracy march, Mbarara. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 110.8,
+        "channelMeans": [
+          125.8,
+          108.4,
+          91
+        ],
+        "colourCast": 0.161,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "governance/wufpa-agm-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 209",
+      "sourcePage": 14,
+      "xref": 209,
+      "intrinsic": {
+        "w": 1600,
+        "h": 885
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 624234,
+      "category": "photo",
+      "suggestedDestination": "governance",
+      "alt": "About one hundred WUFPA members are assembled on and around the steps of a building for the Annual General Meeting.",
+      "caption": "WUFPA 2023 Annual General Meeting.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 153,
+        "channelMeans": [
+          159.9,
+          151.7,
+          146.3
+        ],
+        "colourCast": 0.048,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/international/kigali-content-market-2023-panel.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 210",
+      "sourcePage": 14,
+      "xref": 210,
+      "intrinsic": {
+        "w": 864,
+        "h": 548
+      },
+      "maxDisplayWidth": 864,
+      "bytes": 144478,
+      "category": "photo",
+      "suggestedDestination": "programmes/international",
+      "alt": "Four panellists sit on stage beneath a 'Kigali International Content Market — MashaRket' backdrop, viewed from the audience.",
+      "caption": "Panel session, Kigali International Content Market, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 161.9,
+        "channelMeans": [
+          166.8,
+          160.9,
+          157
+        ],
+        "colourCast": 0.032,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/international/mashariki-mashaRket-banner-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 211",
+      "sourcePage": 14,
+      "xref": 211,
+      "intrinsic": {
+        "w": 1040,
+        "h": 513
+      },
+      "maxDisplayWidth": 1040,
+      "bytes": 168133,
+      "category": "photo",
+      "suggestedDestination": "programmes/international",
+      "alt": "The MashaRket panel stage, seen from further back in the audience, beneath the backdrop reading '28-30 November 2023, Kigali, Rwanda'.",
+      "caption": "MashaRket panel stage, Kigali International Content Market, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 80.2,
+        "channelMeans": [
+          79.6,
+          80.8,
+          76
+        ],
+        "colourCast": 0.035,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/international/mashariki-film-festival-banner-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 212",
+      "sourcePage": 14,
+      "xref": 212,
+      "intrinsic": {
+        "w": 587,
+        "h": 585
+      },
+      "maxDisplayWidth": 587,
+      "bytes": 131108,
+      "category": "photo",
+      "suggestedDestination": "programmes/international",
+      "alt": "A printed banner reads 'Mashariki African Film Festival — Kigali International Content Market, Nov 25th–Dec 1st', with a MashaRket logo and a carved mask motif.",
+      "caption": "Mashariki African Film Festival banner, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 161.9,
+        "channelMeans": [
+          166.1,
+          160.9,
+          158.9
+        ],
+        "colourCast": 0.026,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/international/kigali-delegate-card-kamugisha-william.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 214",
+      "sourcePage": 14,
+      "xref": 214,
+      "intrinsic": {
+        "w": 426,
+        "h": 532
+      },
+      "maxDisplayWidth": 426,
+      "bytes": 86298,
+      "category": "photo",
+      "suggestedDestination": "programmes/international",
+      "alt": "An accreditation card for the Kigali International Content Market, printed with the name Kamugisha William and the title Film Producer/Actor.",
+      "caption": "Kigali International Content Market delegate accreditation, Kamugisha William, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 80.5,
+        "channelMeans": [
+          78.2,
+          81.5,
+          77.9
+        ],
+        "colourCast": 0.029,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/international/kigali-delegate-card-katabazi-george.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p14, xref 216",
+      "sourcePage": 14,
+      "xref": 216,
+      "intrinsic": {
+        "w": 426,
+        "h": 532
+      },
+      "maxDisplayWidth": 426,
+      "bytes": 79233,
+      "category": "photo",
+      "suggestedDestination": "programmes/international",
+      "alt": "An accreditation card for the Kigali International Content Market, printed with the name Katabazi George.",
+      "caption": "Kigali International Content Market delegate accreditation, Katabazi George, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 81.1,
+        "channelMeans": [
+          75.8,
+          81.8,
+          89.6
+        ],
+        "colourCast": 0.087,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/mtn-yotv-workshop-2023-session.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p15, xref 225",
+      "sourcePage": 15,
+      "xref": 225,
+      "intrinsic": {
+        "w": 1600,
+        "h": 827
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 427282,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "A facilitator stands and addresses a seated group gathered around tables under a marquee, with a portrait banner visible behind them.",
+      "caption": "MTN YoTV sensitisation workshop session, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 197.2,
+        "channelMeans": [
+          204.3,
+          195.7,
+          191
+        ],
+        "colourCast": 0.037,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/mtn-yotv-monetisation-workshop-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p15, xref 226",
+      "sourcePage": 15,
+      "xref": 226,
+      "intrinsic": {
+        "w": 1600,
+        "h": 879
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 507275,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "About thirty participants gather under a marquee beneath a 'Western Uganda Film Producers Association (WUFPA)' banner flanked by MTN and YoTV branding.",
+      "caption": "Sensitisation workshop with MTN YoTV on monetising film content, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 169,
+        "channelMeans": [
+          175.9,
+          167.5,
+          163.1
+        ],
+        "colourCast": 0.042,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/mtn-yotv-workshop-2023-group-backdrop.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p15, xref 227",
+      "sourcePage": 15,
+      "xref": 227,
+      "intrinsic": {
+        "w": 1024,
+        "h": 598
+      },
+      "maxDisplayWidth": 1024,
+      "bytes": 159812,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "Eight men stand together indoors, smiling, in front of a large purple and yellow YoTV logo painted on the wall.",
+      "caption": "MTN YoTV workshop, group photograph indoors, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 143.9,
+        "channelMeans": [
+          154.1,
+          142.4,
+          129.8
+        ],
+        "colourCast": 0.086,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/joshua-stoone-visit-2023-outdoor-circle.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p15, xref 229",
+      "sourcePage": 15,
+      "xref": 229,
+      "intrinsic": {
+        "w": 567,
+        "h": 359
+      },
+      "maxDisplayWidth": 567,
+      "bytes": 134339,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "A group of WUFPA members sits in a circle outdoors on plastic chairs during a discussion session with visiting film expert Joshua Stoone.",
+      "caption": "Outdoor circle session during Joshua Stoone's visit, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 147.8,
+        "channelMeans": [
+          160.1,
+          148.5,
+          104.2
+        ],
+        "colourCast": 0.243,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/joshua-stoone-us-film-expert-2023.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p15, xref 231",
+      "sourcePage": 15,
+      "xref": 231,
+      "intrinsic": {
+        "w": 226,
+        "h": 299
+      },
+      "maxDisplayWidth": 226,
+      "bytes": 39621,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "Joshua Stoone, a bald man wearing glasses and a light striped shirt, sits outdoors in a green plastic chair mid-conversation.",
+      "caption": "Joshua Stoone, US film expert, visiting WUFPA, 2023.",
+      "date": "2023",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 165.9,
+        "channelMeans": [
+          187.1,
+          164.2,
+          120.9
+        ],
+        "colourCast": 0.232,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/matatu-film-lab-cohort-2024.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p16, xref 247",
+      "sourcePage": 16,
+      "xref": 247,
+      "intrinsic": {
+        "w": 2181,
+        "h": 1208
+      },
+      "maxDisplayWidth": 2181,
+      "bytes": 612650,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "About twenty participants in teal Matatu Film Lab shirts sit in rows in a mural-painted room, facing two facilitators beside a projector screen.",
+      "caption": "Indoor training session, Matatu Film Lab, 2024.",
+      "date": "2024",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 146.9,
+        "channelMeans": [
+          148.4,
+          144.3,
+          167
+        ],
+        "colourCast": 0.09,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/matatu-film-lab-2024-outdoor-session.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p16, xref 249",
+      "sourcePage": 16,
+      "xref": 249,
+      "intrinsic": {
+        "w": 1324,
+        "h": 998
+      },
+      "maxDisplayWidth": 1324,
+      "bytes": 641334,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "Matatu Film Lab participants walk outdoors past palm trees, one operating a camera on a tripod, with a cultural leader in traditional dress among them.",
+      "caption": "Matatu Film Lab practical session outdoors, 2024.",
+      "date": "2024",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 129.5,
+        "channelMeans": [
+          134,
+          129.4,
+          116.7
+        ],
+        "colourCast": 0.079,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/matatu-film-lab-certificate-film-possible.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p16, xref 251",
+      "sourcePage": 16,
+      "xref": 251,
+      "intrinsic": {
+        "w": 1100,
+        "h": 998
+      },
+      "maxDisplayWidth": 1100,
+      "bytes": 310773,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "Two men shake hands while holding a Matatu Film Lab certificate of completion between them, before a Film Possible and US Mission Uganda backdrop.",
+      "caption": "Certificate presentation, Matatu Film Lab with Film Possible, 2024.",
+      "date": "2024",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 113.7,
+        "channelMeans": [
+          141.9,
+          104.4,
+          123.1
+        ],
+        "colourCast": 0.152,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/matatu-film-lab-training-room-2024.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p16, xref 432",
+      "sourcePage": 16,
+      "xref": 432,
+      "intrinsic": {
+        "w": 2185,
+        "h": 1017
+      },
+      "maxDisplayWidth": 2185,
+      "bytes": 1068156,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "More than thirty participants in Matatu Film Lab shirts pose on grass around a cultural leader in white robes, flanked by US Mission Uganda banners.",
+      "caption": "The Matatu Film Lab cohort, delivered with Film Possible and US Mission Uganda, 2024.",
+      "date": "2024",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 148.6,
+        "channelMeans": [
+          151,
+          149.8,
+          129.5
+        ],
+        "colourCast": 0.097,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/ufmi-uganda-film-association-visit.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p17, xref 273",
+      "sourcePage": 17,
+      "xref": 273,
+      "intrinsic": {
+        "w": 599,
+        "h": 300
+      },
+      "maxDisplayWidth": 599,
+      "bytes": 108302,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "About a dozen people pose together outdoors beside a Film Impact Movement pull-up banner listing the organisation's goal, mission and core values.",
+      "caption": "WUFPA receives visitors from UFMI and the Uganda Film Association. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 162.4,
+        "channelMeans": [
+          157.6,
+          164.7,
+          153.8
+        ],
+        "colourCast": 0.038,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/distribution/ufmi-ceo-arthur-mpeirwe-film-distributors.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p17, xref 275",
+      "sourcePage": 17,
+      "xref": 275,
+      "intrinsic": {
+        "w": 709,
+        "h": 319
+      },
+      "maxDisplayWidth": 709,
+      "bytes": 120667,
+      "category": "photo",
+      "suggestedDestination": "programmes/distribution",
+      "alt": "About thirty people, some seated and some standing, pose outdoors for a group photograph beside a Uganda Film Association banner.",
+      "caption": "Meeting with UFMI CEO Arthur Mpeirwe and C/M Film Distributors. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 90.2,
+        "channelMeans": [
+          95,
+          89,
+          87.7
+        ],
+        "colourCast": 0.049,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/film-impact-movement-usa-workshop.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p17, xref 435",
+      "sourcePage": 17,
+      "xref": 435,
+      "intrinsic": {
+        "w": 1462,
+        "h": 898
+      },
+      "maxDisplayWidth": 1462,
+      "bytes": 351626,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "A group of WUFPA members and partners stands together indoors before a banner reading 'Film Impact Movement'.",
+      "caption": "Workshop with the Film Impact Movement. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 140.9,
+        "channelMeans": [
+          141.3,
+          140.9,
+          139.3
+        ],
+        "colourCast": 0.008,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "regions/kigezi/sensitisation-ntungamo-rukungiri-film-publishers.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p18, xref 287",
+      "sourcePage": 18,
+      "xref": 287,
+      "intrinsic": {
+        "w": 2183,
+        "h": 1137
+      },
+      "maxDisplayWidth": 2183,
+      "bytes": 947909,
+      "category": "photo",
+      "suggestedDestination": "regions/kigezi",
+      "alt": "About fifteen people, including a man in a colourful robe and cap, gather outdoors beside a brick building for a sensitisation session.",
+      "caption": "Sensitisation in Ntungamo and Rukungiri with the Uganda Film Publishers Association. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 143.9,
+        "channelMeans": [
+          147.8,
+          143,
+          140.7
+        ],
+        "colourCast": 0.027,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/certificate-of-achievement-presentation-1.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p18, xref 289",
+      "sourcePage": 18,
+      "xref": 289,
+      "intrinsic": {
+        "w": 464,
+        "h": 359
+      },
+      "maxDisplayWidth": 464,
+      "bytes": 83739,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A woman hands a Certificate of Achievement in Filmmaking and Content Creation Training to a young man in a checkered shirt on a covered veranda.",
+      "caption": "Certificate of achievement presentation, first frame. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 162.5,
+        "channelMeans": [
+          167.6,
+          161.3,
+          158.9
+        ],
+        "colourCast": 0.031,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/certificate-of-achievement-presentation-2.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p18, xref 291",
+      "sourcePage": 18,
+      "xref": 291,
+      "intrinsic": {
+        "w": 434,
+        "h": 359
+      },
+      "maxDisplayWidth": 434,
+      "bytes": 86038,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A second frame of the same certificate presentation, the young man now holding the certificate as both look toward the camera.",
+      "caption": "Certificate of achievement presentation, second frame. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 151.5,
+        "channelMeans": [
+          154.9,
+          150.9,
+          147.9
+        ],
+        "colourCast": 0.024,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/healing-together-uganda-workshop-circle.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p18, xref 293",
+      "sourcePage": 18,
+      "xref": 293,
+      "intrinsic": {
+        "w": 638,
+        "h": 332
+      },
+      "maxDisplayWidth": 638,
+      "bytes": 130590,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "About a dozen participants stand in a circle outdoors beneath trees, arms raised and hands joined together, during a Healing Together Uganda workshop.",
+      "caption": "Healing Together Uganda workshop circle. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 118.5,
+        "channelMeans": [
+          141.3,
+          114.7,
+          89.6
+        ],
+        "colourCast": 0.227,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/healing-together-uganda-group.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p18, xref 295",
+      "sourcePage": 18,
+      "xref": 295,
+      "intrinsic": {
+        "w": 630,
+        "h": 385
+      },
+      "maxDisplayWidth": 630,
+      "bytes": 163333,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "About fifteen participants of mixed ages stand and kneel together outdoors on bare ground for a Healing Together Uganda group photograph.",
+      "caption": "Healing Together Uganda group. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 103.2,
+        "channelMeans": [
+          128.3,
+          98.1,
+          79.6
+        ],
+        "colourCast": 0.258,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/ucc-master-class-kampala-film-school-session.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p19, xref 307",
+      "sourcePage": 19,
+      "xref": 307,
+      "intrinsic": {
+        "w": 1600,
+        "h": 781
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 374266,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "About twenty-five participants sit at tables in a hall, facing forward, beside a UCC 25 Regional Film Competitions banner, during a master class.",
+      "caption": "UCC master class in session, delivered with Kampala Film School. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 158.8,
+        "channelMeans": [
+          177.5,
+          153.5,
+          156.3
+        ],
+        "colourCast": 0.093,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/ucc-master-class-kampala-film-school-banner.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p19, xref 309",
+      "sourcePage": 19,
+      "xref": 309,
+      "intrinsic": {
+        "w": 1600,
+        "h": 803
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 331916,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "A facilitator writes on a flip chart while a woman speaks to seated participants, beside a Kampala Film School banner and a UCC 25 Regional Film Competitions banner.",
+      "caption": "UCC master class, delivered with Kampala Film School. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 145.7,
+        "channelMeans": [
+          158.1,
+          140,
+          165.9
+        ],
+        "colourCast": 0.095,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/ucc-master-class-participants.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p19, xref 311",
+      "sourcePage": 19,
+      "xref": 311,
+      "intrinsic": {
+        "w": 1600,
+        "h": 878
+      },
+      "maxDisplayWidth": 1600,
+      "bytes": 280174,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "A facilitator in a white t-shirt gestures while speaking beside a UCC Regional Film Competitions banner, with participants seated at tables around him.",
+      "caption": "Facilitator addressing participants, UCC master class. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 136.3,
+        "channelMeans": [
+          153.1,
+          131.1,
+          138.4
+        ],
+        "colourCast": 0.087,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-competition-ceremony-stage.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 321",
+      "sourcePage": 20,
+      "xref": 321,
+      "intrinsic": {
+        "w": 1051,
+        "h": 720
+      },
+      "maxDisplayWidth": 1051,
+      "bytes": 279924,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "About twenty winners stand on stage holding certificates raised overhead, beside a police officer and a cultural leader, before a UCC 25 backdrop.",
+      "caption": "Award ceremony on stage, UCC Regional Film Competition. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 149.5,
+        "channelMeans": [
+          153.5,
+          147.4,
+          159.1
+        ],
+        "colourCast": 0.039,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 322",
+      "sourcePage": 20,
+      "xref": 322,
+      "intrinsic": {
+        "w": 2176,
+        "h": 1920
+      },
+      "maxDisplayWidth": 2176,
+      "bytes": 884812,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "A cultural leader in striped dress stands beside a young man holding a trophy and framed certificate, before a purple 'Regional Film Competitions' backdrop.",
+      "caption": "UCC Regional Film Competition award presentation. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 104,
+        "channelMeans": [
+          109.2,
+          102.3,
+          105.9
+        ],
+        "colourCast": 0.033,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/uganda-film-festival-banner.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 324",
+      "sourcePage": 20,
+      "xref": 324,
+      "intrinsic": {
+        "w": 391,
+        "h": 536
+      },
+      "maxDisplayWidth": 391,
+      "bytes": 112955,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "A man in a blue and red blazer speaks into a microphone beside a Uganda Film Festival banner describing the festival's 2013 founding.",
+      "caption": "Interview beside the Uganda Film Festival banner, UCC Regional Film Competition. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 146.6,
+        "channelMeans": [
+          147.7,
+          145.7,
+          152.6
+        ],
+        "colourCast": 0.026,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-competition-winners-outdoor.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 326",
+      "sourcePage": 20,
+      "xref": 326,
+      "intrinsic": {
+        "w": 1060,
+        "h": 662
+      },
+      "maxDisplayWidth": 1060,
+      "bytes": 349765,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "Ten winners stand together on grass holding trophies and framed certificates, a cultural leader and a suited official among them.",
+      "caption": "UCC Regional Film Competition winners, outdoors. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 150.3,
+        "channelMeans": [
+          152,
+          152.5,
+          123.5
+        ],
+        "colourCast": 0.134,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-competition-trophy-cultural-leader.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 328",
+      "sourcePage": 20,
+      "xref": 328,
+      "intrinsic": {
+        "w": 1060,
+        "h": 777
+      },
+      "maxDisplayWidth": 1060,
+      "bytes": 401851,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "Four wooden trophies shaped like film-reel birds stand ready on a table backstage, lit by yellow stage lighting.",
+      "caption": "Trophies awaiting presentation, UCC Regional Film Competition. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 110.2,
+        "channelMeans": [
+          113.7,
+          105.2,
+          149.5
+        ],
+        "colourCast": 0.217,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-competition-winners-backdrop.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p20, xref 330",
+      "sourcePage": 20,
+      "xref": 330,
+      "intrinsic": {
+        "w": 1867,
+        "h": 942
+      },
+      "maxDisplayWidth": 1867,
+      "bytes": 376908,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "Seven winners hold gold trophies and framed certificates, smiling before a purple UCC 25 Regional Film Competitions backdrop.",
+      "caption": "UCC Regional Film Competition winners against the event backdrop. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 134.2,
+        "channelMeans": [
+          140,
+          131.8,
+          141.2
+        ],
+        "colourCast": 0.042,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-film-competition-prize-cheque.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p21, xref 340",
+      "sourcePage": 21,
+      "xref": 340,
+      "intrinsic": {
+        "w": 899,
+        "h": 675
+      },
+      "maxDisplayWidth": 899,
+      "bytes": 235362,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "Eight people on a lit stage hold an oversized Uganda Communications Commission cheque, with a cultural leader, a trophy and a framed certificate among them.",
+      "caption": "Prize presentation at the UCC Regional Film Competition. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 127,
+        "channelMeans": [
+          122.5,
+          125.2,
+          157.9
+        ],
+        "colourCast": 0.168,
+        "exposureFlag": null,
+        "castFlag": true
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/competitions/ucc-regional-film-competition-winners-group.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p21, xref 342",
+      "sourcePage": 21,
+      "xref": 342,
+      "intrinsic": {
+        "w": 1181,
+        "h": 839
+      },
+      "maxDisplayWidth": 1181,
+      "bytes": 377469,
+      "category": "photo",
+      "suggestedDestination": "programmes/competitions",
+      "alt": "About a dozen winners stand on turf holding trophies and certificates, with a cultural leader and men in WUFPA-branded shirts among them, against a UCC 25 backdrop.",
+      "caption": "UCC Regional Film Competition winners' group. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 135.1,
+        "channelMeans": [
+          132.3,
+          137.2,
+          122.4
+        ],
+        "colourCast": 0.063,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/unatcom-unesco-training-workshop.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p22, xref 352",
+      "sourcePage": 22,
+      "xref": 352,
+      "intrinsic": {
+        "w": 1502,
+        "h": 688
+      },
+      "maxDisplayWidth": 1502,
+      "bytes": 269438,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "About forty participants pose together indoors beneath two framed paintings, standing in rows behind those kneeling and seated at the front.",
+      "caption": "Training workshop with UNATCOM for UNESCO. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 160.6,
+        "channelMeans": [
+          172.9,
+          157.6,
+          154.3
+        ],
+        "colourCast": 0.07,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/training/unatcom-unesco-workshop-cohort.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p22, xref 354",
+      "sourcePage": 22,
+      "xref": 354,
+      "intrinsic": {
+        "w": 1200,
+        "h": 644
+      },
+      "maxDisplayWidth": 1200,
+      "bytes": 399643,
+      "category": "photo",
+      "suggestedDestination": "programmes/training",
+      "alt": "Participants sit at blue-clothed tables in rows inside a hall, facing a standing facilitator, during the UNATCOM workshop cohort session.",
+      "caption": "UNATCOM workshop cohort, delivered for UNESCO. Date not recorded.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 145.5,
+        "channelMeans": [
+          150.8,
+          142,
+          165.1
+        ],
+        "colourCast": 0.082,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": "Date not recorded",
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "sacco/wufm-sacco-certificate-presentation-2025.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p23, xref 372",
+      "sourcePage": 23,
+      "xref": 372,
+      "intrinsic": {
+        "w": 1793,
+        "h": 1013
+      },
+      "maxDisplayWidth": 1793,
+      "bytes": 481408,
+      "category": "photo",
+      "suggestedDestination": "sacco",
+      "alt": "Five people stand together outdoors under a tree, two of them holding a WUFM SACCO certificate between them, beside a table set with water bottles and documents.",
+      "caption": "WUFPA members receive the WUFM SACCO certificate, 24 October 2025.",
+      "date": "2025-10-24",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 138.7,
+        "channelMeans": [
+          146.2,
+          137.5,
+          127.9
+        ],
+        "colourCast": 0.068,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "sacco/wufm-sacco-certificate-commercial-officer-2025.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p23, xref 374",
+      "sourcePage": 23,
+      "xref": 374,
+      "intrinsic": {
+        "w": 765,
+        "h": 1013
+      },
+      "maxDisplayWidth": 765,
+      "bytes": 241699,
+      "category": "photo",
+      "suggestedDestination": "sacco",
+      "alt": "Two men shake hands and hold a certificate between them outdoors, both smiling, with a WUFPA polo shirt visible on the man at right.",
+      "caption": "WUFM SACCO certificate handover with the Mbarara City Commercial Officer, 24 October 2025.",
+      "date": "2025-10-24",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 139.8,
+        "channelMeans": [
+          140.7,
+          140,
+          134.9
+        ],
+        "colourCast": 0.027,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "sacco/wufm-sacco-certificate-handover-2025.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p23, xref 376",
+      "sourcePage": 23,
+      "xref": 376,
+      "intrinsic": {
+        "w": 368,
+        "h": 506
+      },
+      "maxDisplayWidth": 368,
+      "bytes": 99201,
+      "category": "photo",
+      "suggestedDestination": "sacco",
+      "alt": "Three men stand together outdoors, the two on the left holding a WUFM SACCO certificate out toward a third man in a WUFPA polo shirt.",
+      "caption": "WUFM SACCO certificate handover, 24 October 2025.",
+      "date": "2025-10-24",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 147.9,
+        "channelMeans": [
+          149.7,
+          148.6,
+          136.1
+        ],
+        "colourCast": 0.06,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "sacco/wufm-sacco-logo-embedded.png",
+      "source": "WUFPA PROFILE 2026.pdf, p23, xref 378",
+      "sourcePage": 23,
+      "xref": 378,
+      "intrinsic": {
+        "w": 719,
+        "h": 435
+      },
+      "maxDisplayWidth": 719,
+      "bytes": 91535,
+      "category": "photo",
+      "suggestedDestination": "sacco",
+      "alt": "The WUFM SACCO logo: a red and blue film reel with the wordmark 'WUFM SACCO' and the tagline 'Small Savings, Big Dreams'.",
+      "caption": "WUFM SACCO logo.",
+      "date": null,
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 200.3,
+        "channelMeans": [
+          217.9,
+          194.1,
+          210.4
+        ],
+        "colourCast": 0.065,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/ufmi-ceo-meeting-2025-discussion.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p24, xref 388",
+      "sourcePage": 24,
+      "xref": 388,
+      "intrinsic": {
+        "w": 1800,
+        "h": 1012
+      },
+      "maxDisplayWidth": 1800,
+      "bytes": 362891,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "A man in a yellow polo shirt stands and addresses a seated group gathered around a table indoors during a meeting with the UFMI CEO.",
+      "caption": "Meeting with the UFMI CEO, 26 October 2025.",
+      "date": "2025-10-26",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 109.5,
+        "channelMeans": [
+          118.7,
+          107.2,
+          104.8
+        ],
+        "colourCast": 0.077,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    },
+    {
+      "file": "programmes/advocacy/ufmi-ceo-meeting-2025-group.jpeg",
+      "source": "WUFPA PROFILE 2026.pdf, p24, xref 390",
+      "sourcePage": 24,
+      "xref": 390,
+      "intrinsic": {
+        "w": 1512,
+        "h": 941
+      },
+      "maxDisplayWidth": 1512,
+      "bytes": 348427,
+      "category": "photo",
+      "suggestedDestination": "programmes/advocacy",
+      "alt": "About fifteen people stand and kneel together outdoors in front of a hedge for a group photograph after the UFMI CEO meeting.",
+      "caption": "Group photograph following the UFMI CEO meeting, 26 October 2025.",
+      "date": "2025-10-26",
+      "credit": null,
+      "consent": "granted",
+      "visuallyConfirmed": true,
+      "measurements": {
+        "meanLuminance": 105.4,
+        "channelMeans": [
+          122.3,
+          100,
+          109.1
+        ],
+        "colourCast": 0.107,
+        "exposureFlag": null,
+        "castFlag": false
+      },
+      "correctionApplied": null,
+      "dateNote": null,
+      "consentDate": "2026-07-31",
+      "consentBasis": "Materials (photographs, names, association profile) supplied by WUFPA directly for the express purpose of building this website; consent to publish confirmed 2026-07-31."
+    }
+  ],
+  "reviewComplete": true,
+  "correctionAssessment": {
+    "date": "2026-07-26",
+    "task": "WUFPA-056",
+    "assetsMeasured": 72,
+    "exposureOutliers": 0,
+    "colourCastFlagged": 18,
+    "correctionsApplied": 0,
+    "decision": "No pixel corrections applied. All assets fall within normal exposure (mean luminance 68-202); there were zero exposure outliers. Each of the 18 colour-cast flags was verified as genuine scene colour rather than sensor error: orange-painted meeting rooms in Ankole, the purple UCC 25 competition backdrop, Sky TV's yellow set, warm outdoor light, and a subject in a blue suit. Automated white-balance correction would have destroyed real content. Confirmed by inspecting the most extreme case (cast 0.42): neutral white paper and shirts in frame prove the white balance is already correct.",
+    "reference": "docs/03_BRAND_GUIDELINES.md section 7.2 - correct exposure and white balance only",
+    "reviewMethod": "Per-image measurement, contact-sheet review of all 29 unmapped assets, and full-size inspection of extremes."
+  }
+}

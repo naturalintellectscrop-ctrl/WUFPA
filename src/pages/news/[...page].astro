@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import EntityCard from '../../components/content/EntityCard.astro';
+import { meta } from '../../lib/page-meta';
+import { newsArticleSchema } from '../../lib/structured-data';
+
+/**
+ * News index — paginated at 12, with real URLs.
+ *
+ * `/news/`, `/news/2/`, `/news/3/` — NOT infinite scroll. Infinite scroll
+ * breaks linking, breaks the footer and breaks back-button return, all of
+ * which matter for goal W4 (links live inside grant applications and printed
+ * material). It is also unusable on a metered connection.
+ *
+ * The `[...page]` rest parameter is what makes page one `/news/` rather than
+ * `/news/1/` — a separate `/news/1/` would duplicate `/news/` at a second URL,
+ * which is a duplicate-content signal.
+ *
+ * Source: docs/04 § 13.1 · WUFPA-050
+ */
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const articles = (await getCollection('news', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+  );
+
+  return paginate(articles, { pageSize: 12 });
+}) satisfies GetStaticPaths;
+
+type Article = Awaited<ReturnType<typeof getCollection<'news'>>>[number];
+
+interface Props {
+  page: Page<Article>;
+}
+
+const { page } = Astro.props;
+const { title, description } = meta('/news/');
+
+const base = Astro.site ?? new URL('https://wufpa.example.org');
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+/* Structured data for the articles ACTUALLY LISTED on this page — not the
+   whole collection. Marking up items that are not visible here is exactly the
+   mismatch docs/16 § 4.3 prohibits. */
+const schemas = page.data.map((article) =>
+  newsArticleSchema({
+    url: new URL(`/news/${article.id}/`, base).href,
+    base,
+    headline: article.data.title,
+    description: article.data.standfirst,
+    datePublished: article.data.publishDate,
+  }),
+);
+
+/* Pagination pages after the first are noindex: they carry no unique content
+   of their own — the same standfirsts a crawler already has from the articles
+   themselves — and indexing them competes with the articles. Page one stays
+   indexable because it IS the /news/ landing page. */
+const isFirstPage = page.currentPage === 1;
+
+const pageTitle = isFirstPage ? title : `News — page ${page.currentPage} — WUFPA`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={description}
+  noindex={!isFirstPage}
+  crumbs={[{ label: 'News' }]}
+  pageType="CollectionPage"
+  schemas={schemas}
+>
+  <PageHeader
+    title="News"
+    standfirst="Updates from WUFPA — programmes, partnerships, competitions and members."
+    crumbs={[{ label: 'News' }]}
+  />
+
+  <Section>
+    {
+      page.data.length === 0 ? (
+        /* docs/04 § 13.1 states this should not ship empty — five launch
+           articles are written from the documented activity record before
+           go-live (WUFPA-051). Until then this states the position plainly
+           rather than rendering an empty grid that looks broken. */
+        <p class="empty">
+          No articles have been published yet. WUFPA's activity record is on the{' '}
+          <a href="/programmes/">programmes pages</a>.
+        </p>
+      ) : (
+        <ul role="list" class="news-grid">
+          {page.data.map((article) => (
+            <li>
+              <EntityCard
+                variant="article"
+                title={article.data.title}
+                href={`/news/${article.id}/`}
+                description={article.data.standfirst}
+                eyebrow={dateFormat.format(article.data.publishDate)}
+              />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      page.lastPage > 1 && (
+        <nav class="pagination" aria-label="News pages">
+          {page.url.prev ? (
+            <a href={page.url.prev} rel="prev">
+              Newer articles
+            </a>
+          ) : (
+            <span />
+          )}
+
+          {/* Announced to screen readers as a sentence rather than as two
+              bare numbers either side of a slash. */}
+          <p class="pagination__position">
+            Page {page.currentPage} of {page.lastPage}
+          </p>
+
+          {page.url.next ? (
+            <a href={page.url.next} rel="next">
+              Older articles
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
+  </Section>
+</BaseLayout>
+
+<style>
+  .news-grid {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .news-grid {
+      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    }
+  }
+
+  .empty {
+    color: var(--text-secondary);
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
+  .pagination a {
+    font-family: var(--font-ui);
+    font-weight: var(--weight-semibold);
+    /* 44×44 target, docs/16 § 9. */
+    padding-block: var(--space-3);
+  }
+
+  .pagination__position {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+</style>

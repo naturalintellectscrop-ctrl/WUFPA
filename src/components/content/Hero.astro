@@ -1,0 +1,152 @@
+---
+import { Picture } from 'astro:assets';
+import Button from '../primitives/Button.astro';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Hero — the opening statement of a page. Establishes rung 1 of the trust
+ * ladder (docs/06 section 3): a real photograph of real people in a
+ * recognisable place, not a stock image, before a single sentence is read.
+ *
+ * Only the `home` variant is implemented — full-bleed photograph, one
+ * primary and one secondary CTA. `section` (image beside text, for
+ * programme/region indexes) and `page` (text only, tinted background) are
+ * named in docs/08 section 16 but have no caller yet; adding them is a
+ * variant, not a rebuild, when WUFPA-034+ needs one.
+ *
+ * TEXT BESIDE THE IMAGE, NEVER OVER IT. docs/08 section 16 prefers this
+ * explicitly — it is more readable, more responsive, and does not require
+ * the photograph to have a dead zone reserved for type. The prototype's
+ * three-CTA hero over a stock background is exactly what this replaces
+ * (docs/04 section 3.1).
+ *
+ * ALT IS ALWAYS MEANINGFUL, NEVER DECORATIVE — the headline does not
+ * describe the photograph, so a screen-reader user needs the real
+ * description to get the same rung-1 trust signal a sighted visitor gets
+ * for free.
+ *
+ * Source: docs/08 section 16 · docs/04 section 3.1 · WUFPA-023
+ */
+interface Props {
+  headline: string;
+  standfirst: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  image: ImageMetadata;
+  alt: string;
+}
+
+const { headline, standfirst, primaryCta, secondaryCta, image, alt } = Astro.props;
+
+// LCP element: eager, high priority, and the ONLY image on the page allowed
+// fetchpriority="high" (docs/07 section 8, docs/14 section 9).
+const widths = [640, 960, 1280, 1920, 2400].filter((w) => w <= image.width);
+if (widths.length === 0) widths.push(image.width);
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero__media">
+    <Picture
+      src={image}
+      alt={alt}
+      formats={['avif', 'webp', 'jpeg']}
+      widths={widths}
+      sizes="(min-width: 64rem) 55vw, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      quality={50}
+      class="hero__image"
+    />
+  </div>
+
+  <div class="container hero__content">
+    <h1 id="hero-heading" class="hero__headline">{headline}</h1>
+    <p class="hero__standfirst">{standfirst}</p>
+    <div class="hero__ctas">
+      <Button href={primaryCta.href} size="lg">{primaryCta.label}</Button>
+      {
+        secondaryCta && (
+          <Button href={secondaryCta.href} variant="secondary" size="lg">
+            {secondaryCta.label}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Base: image above (4:5), text below — docs/08 section 16's responsive
+     rule. No text-over-image scrim to measure because there is no overlay
+     at any breakpoint; side-by-side at --bp-lg keeps the same guarantee. */
+  .hero {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .hero__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .hero__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block-end: var(--space-6);
+  }
+
+  .hero__headline {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-heading);
+    /* Sentence case, not caps — docs/04 section 3.1's H1 is written that way
+       deliberately; this rule stops a future edit reintroducing caps. */
+    text-transform: none;
+  }
+
+  .hero__standfirst {
+    margin: 0;
+    max-inline-size: 42rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: stretch;
+      gap: var(--space-8);
+    }
+
+    .hero__media {
+      aspect-ratio: auto;
+      order: 2;
+    }
+
+    .hero__content {
+      order: 1;
+      justify-content: center;
+      padding-block: var(--space-8);
+    }
+  }
+</style>

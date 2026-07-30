@@ -1,0 +1,138 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import type { RelatedLink } from '../../components/content/RelatedLinks.astro';
+import { fromEntry } from '../../lib/page-meta';
+import { newsArticleSchema } from '../../lib/structured-data';
+
+/**
+ * Article template — the reusable pattern every future news item inherits.
+ *
+ * This is the template WUFPA-051's five launch articles and everything after
+ * them render through. Getting the SEO right here once means no future article
+ * can ship without `NewsArticle` structured data, article-type Open Graph, a
+ * canonical, or related links.
+ *
+ * BYLINES: deliberately absent. ⟦Q: does WUFPA want bylines?⟧ is open in
+ * docs/04 § 13.2, and the `news` schema has no author field. Attribution goes
+ * to the organisation, which is also what `newsArticleSchema()` emits — a
+ * named individual would need ⟦Q1⟧ spelling and ⟦Q4⟧ consent.
+ *
+ * Source: docs/04 § 13.2 · WUFPA-050
+ */
+
+export const getStaticPaths = (async () => {
+  const articles = await getCollection('news', ({ data }) => !data.draft);
+
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}) satisfies GetStaticPaths;
+
+type Article = Awaited<ReturnType<typeof getCollection<'news'>>>[number];
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+const base = Astro.site ?? new URL('https://wufpa.example.org');
+const url = new URL(`/news/${article.id}/`, base).href;
+
+const { title, description } = fromEntry(article.data.title, article.data.standfirst);
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+/* The hero renders only with recorded consent (⟦Q4⟧), and the same condition
+   gates the og:image — a photograph withheld from the page must not leak
+   through a social card. */
+const hero =
+  article.data.hero && article.data.hero.consent === 'granted' ? article.data.hero : undefined;
+
+const schema = newsArticleSchema({
+  url,
+  base,
+  headline: article.data.title,
+  description: article.data.standfirst,
+  datePublished: article.data.publishDate,
+  ...(hero ? { image: hero.src, imageAlt: hero.alt } : {}),
+});
+
+/**
+ * Related links, chosen by RELATIONSHIP (WUFPA-066).
+ *
+ * Built from this article's own frontmatter — the programmes it is about —
+ * never from "the latest three articles", which would produce identical links
+ * on every page and teach readers to ignore the block.
+ *
+ * Falls back to the two section indexes so the component always has the 2–4
+ * items it requires, and so every article has an exit that is not the nav.
+ */
+const related: RelatedLink[] = [
+  ...article.data.programmes.map((programme) => ({
+    label: `About our ${String(programme.id).replace(/-/g, ' ')} work`,
+    href: `/programmes/${programme.id}/`,
+    reason: 'The programme this story comes from.',
+  })),
+  { label: 'All WUFPA news', href: '/news/', reason: 'Everything else we have published.' },
+  {
+    label: 'What WUFPA does',
+    href: '/programmes/',
+    reason: 'The six areas our work divides into.',
+  },
+].slice(0, 4);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  publishedTime={article.data.publishDate}
+  crumbs={[{ label: 'News', href: '/news/' }, { label: article.data.title }]}
+  schemas={[schema]}
+  {...hero ? { image: hero.src, imageAlt: hero.alt } : {}}
+>
+  <PageHeader
+    title={article.data.title}
+    standfirst={article.data.standfirst}
+    crumbs={[{ label: 'News', href: '/news/' }, { label: article.data.title }]}
+  />
+
+  <Section container="prose">
+    {/* A real <time> element: the machine-readable date is what lets a crawler
+        and a reader agree on when this was published. */}
+    <p class="byline">
+      Published{' '}
+      <time datetime={article.data.publishDate.toISOString().slice(0, 10)}>
+        {dateFormat.format(article.data.publishDate)}
+      </time>
+    </p>
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <RelatedLinks links={related} />
+  </Section>
+</BaseLayout>
+
+<style>
+  .byline {
+    margin-block-end: var(--space-6);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+</style>

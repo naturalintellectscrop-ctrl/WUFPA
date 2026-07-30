@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import Seo from '../components/global/Seo.astro';
+import SkipLink from '../components/global/SkipLink.astro';
+import SiteHeader from '../components/global/SiteHeader.astro';
+import SiteFooter from '../components/global/SiteFooter.astro';
+import { site } from '../lib/site-config';
+import type { JsonLd, CrumbInput, PageType } from '../lib/structured-data';
+
+/**
+ * BaseLayout — the document shell every page renders inside.
+ *
+ * SkipLink, SiteHeader and SiteFooter are wired in for every page here — the
+ * global chrome trio (WUFPA-018 to 020) is now complete. SEO metadata and
+ * structured data are handled by <Seo>, which this layout renders for every
+ * route — so a page cannot omit them by forgetting, only by explicitly
+ * passing `noindex`.
+ *
+ * Source: docs/14_TECHNICAL_ARCHITECTURE.md section 4 · WUFPA-018 to 066
+ */
+
+/* `| undefined` is explicit because tsconfig sets
+   `exactOptionalPropertyTypes` — see the note in Seo.astro. */
+interface Props {
+  title: string;
+  description: string;
+  /** Set true on utility routes that must not be indexed. */
+  noindex?: boolean | undefined;
+  /** Sharing image, site-relative. Defaults to the site card. */
+  image?: string | undefined;
+  imageAlt?: string | undefined;
+  ogType?: 'website' | 'article' | 'profile' | undefined;
+  publishedTime?: Date | string | undefined;
+  modifiedTime?: Date | string | undefined;
+  /** Trail WITHOUT Home; <Seo> prepends it. Omit on the homepage. */
+  crumbs?: CrumbInput[] | undefined;
+  /** Page-type JSON-LD nodes, built with src/lib/structured-data.ts. */
+  schemas?: (JsonLd | null | undefined)[] | undefined;
+  pageType?: PageType | undefined;
+  /** Extra classes on <body>, for page-level layout hooks. */
+  bodyClass?: string | undefined;
+}
+
+const {
+  title,
+  description,
+  noindex = false,
+  image,
+  imageAlt,
+  ogType,
+  publishedTime,
+  modifiedTime,
+  crumbs,
+  schemas,
+  pageType,
+  bodyClass,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* THE DISPLAY FACE ONLY (WUFPA-014). Archivo sets every heading, the nav
+        and every button, so it is on the critical path for the largest text on
+        screen. Source Serif 4 is deliberately NOT preloaded: it sets article
+        body copy, it is the larger of the two files, and body text rendering in
+        the metric-matched Georgia fallback for a few hundred milliseconds is
+        not a problem — the fallback is tuned so nothing moves when it swaps.
+        Preloading both would put them in competition for the same early
+        bandwidth on a metered 3G connection, which is the audience this site is
+        actually built for.
+
+        latin only. The latin-ext face must NOT be preloaded — it is fetched on
+        demand via unicode-range and preloading it would spend 32 KB on almost
+        every page to serve a character that appears on almost none. */}
+    <link
+      rel="preload"
+      href="/fonts/archivo-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <Seo
+      title={title}
+      description={description}
+      noindex={noindex}
+      image={image}
+      imageAlt={imageAlt}
+      ogType={ogType}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      crumbs={crumbs}
+      schemas={schemas}
+      pageType={pageType}
+    />
+
+    {/* Marks JavaScript as available. Set in <head> so there is no flash.
+        Note this does NOT gate the reveal animation — that uses `.js-reveal`,
+        applied by the reveal script only once its observer is attached, so a
+        script failure can never leave content invisible. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body class={bodyClass}>
+    <SkipLink />
+    <SiteHeader />
+
+    {/* tabindex="-1" so the skip link can move focus here reliably. */}
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>

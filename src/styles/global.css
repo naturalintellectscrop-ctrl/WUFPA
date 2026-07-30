@@ -1,0 +1,177 @@
+/**
+ * GLOBAL ENTRY POINT
+ *
+ * Cascade layers give explicit control of specificity, so a utility never
+ * loses to a component selector by accident and nothing needs !important.
+ *
+ * Import order below defines the layer order.
+ */
+
+@layer reset, base, layout, components, utilities;
+
+@import url('./tokens/primitives.css') layer(reset);
+@import url('./tokens/semantic.css') layer(reset);
+@import url('./base/reset.css') layer(reset);
+@import url('./base/typography.css') layer(base);
+@import url('./base/a11y.css') layer(base);
+@import url('./base/print.css') layer(utilities);
+
+/* ── LAYOUT PRIMITIVES ────────────────────────────────────────────────────
+   Six primitives cover essentially every layout on this site. They are
+   intrinsic — they respond to available space rather than viewport width — so
+   most media queries simply are not needed.
+
+   Full specification: docs/07 section 5.3. Component implementations land in
+   WUFPA-015; these are the shared CSS they build on.                          */
+@layer layout {
+  .container {
+    inline-size: 100%;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    max-inline-size: var(--container-default);
+  }
+
+  .container[data-width='prose'] {
+    max-inline-size: var(--container-prose);
+  }
+  .container[data-width='narrow'] {
+    max-inline-size: var(--container-narrow);
+  }
+  .container[data-width='wide'] {
+    max-inline-size: var(--container-wide);
+  }
+  .container[data-width='full'] {
+    max-inline-size: none;
+    padding-inline: 0;
+  }
+
+  /* Stack — vertical flow with one gap token. The default layout. */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap);
+  }
+
+  /* Cluster — horizontal wrap. Tags, meta rows, button groups. */
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Grid — column count follows available space, so it needs no breakpoints. */
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 18rem), 100%), 1fr));
+  }
+
+  /* Switcher — equal columns above a threshold, stacked below, without a
+     media query. The negative margin trick is what makes it wrap as a unit. */
+  .switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+  }
+
+  .switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
+  }
+
+  /* Sidebar — aside drops below at a content-driven threshold, not a viewport
+     breakpoint. */
+  .sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+
+  .sidebar > :first-child {
+    flex-grow: 1;
+    flex-basis: var(--sidebar-width, 20rem);
+  }
+
+  .sidebar > :last-child {
+    flex-grow: 999;
+    flex-basis: 0;
+    min-inline-size: var(--sidebar-content-min, 50%);
+  }
+
+  /* Frame — fixed aspect ratio for media, reserved BEFORE load so there is no
+     layout shift. object-position is tuned per image so faces survive
+     responsive crops. */
+  .frame {
+    position: relative;
+    aspect-ratio: var(--frame-ratio, var(--ratio-landscape));
+    overflow: hidden;
+  }
+
+  .frame > img,
+  .frame > video,
+  .frame > picture > img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--frame-position, center);
+  }
+
+  /* Section — background, rhythm and container width in one place. */
+  .section {
+    padding-block: var(--section-spacing);
+    background-color: var(--surface-page);
+  }
+
+  .section[data-variant='subtle'] {
+    background-color: var(--surface-subtle);
+  }
+  .section[data-variant='muted'] {
+    background-color: var(--surface-muted);
+  }
+  .section[data-variant='accent'] {
+    background-color: var(--surface-accent-subtle);
+  }
+  .section[data-variant='inverse'] {
+    background-color: var(--surface-inverse);
+    color: var(--text-on-inverse);
+  }
+
+  .section[data-variant='inverse'] :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--text-on-inverse);
+  }
+
+  .section[data-variant='inverse'] a {
+    color: var(--text-accent-on-inverse);
+  }
+
+  .section[data-spacing='compact'] {
+    padding-block: var(--section-spacing-compact);
+  }
+  .section[data-spacing='loose'] {
+    padding-block: var(--section-spacing-loose);
+  }
+}
+
+/* ── UTILITIES ────────────────────────────────────────────────────────── */
+@layer utilities {
+  .u-measure {
+    max-inline-size: var(--measure-prose);
+  }
+  .u-measure-narrow {
+    max-inline-size: var(--measure-narrow);
+  }
+  .u-center {
+    margin-inline: auto;
+  }
+  .u-text-center {
+    text-align: center;
+  }
+
+  /* Horizontally scrollable region for wide tables. Carries tabindex="0" and
+     an accessible name in markup so keyboard users can scroll it. */
+  .u-scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+}

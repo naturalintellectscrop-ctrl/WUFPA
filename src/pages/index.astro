@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import Prose from '../components/layout/Prose.astro';
+import Hero from '../components/content/Hero.astro';
+import StatBlock from '../components/content/StatBlock.astro';
+import Button from '../components/primitives/Button.astro';
+import { getPhoto } from '../lib/photos';
+import { meta } from '../lib/page-meta';
+import type { Stat } from '../lib/types';
+
+/**
+ * Homepage — docs/04 section 3. Built in stages (WUFPA-023 onward); this
+ * pass covers the Hero, Proof band and "Who we are" — the top of the page,
+ * which is what establishes rungs 1 and 2 of the trust ladder before a
+ * visitor decides whether to keep reading (docs/06 section 3).
+ *
+ * Later bands (What we do, Where we work, Evidence, Partners, Membership,
+ * News/Events, Support — docs/04 section 3.4 onward) land in the same file
+ * as their own components are built (RegionMap, EvidenceStrip, PartnerList,
+ * CTABanner), each a genuine follow-on task rather than a rewrite of this
+ * one — WUFPA-026 to WUFPA-029.
+ *
+ * Every fact below traces to docs/02 section 13 and is quoted from
+ * docs/04 section 3 verbatim, not paraphrased — the H1 in particular is
+ * documented as deliberately literal (docs/04 section 3.1).
+ */
+
+const { title, description } = meta('/');
+
+const hero = getPhoto('regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg');
+
+// docs/04 section 3.2. Every figure dated; the "10,500 creatives" figure is
+// deliberately excluded here — it is 300 × 35, an estimate, not a count
+// (audit finding X13), and belongs in body copy phrased as such, not in a
+// proof band that reads as a hard number.
+const stats: Stat[] = [
+  { figure: '300+', label: 'film production houses', source: '[P1]' },
+  { figure: '6', label: 'sub-regions of Western Uganda', source: '[P1]' },
+  { figure: '10', label: 'film guilds, from directors to gaffers', source: '[P7]' },
+  { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Hero
+    headline="The film industry of Western Uganda has an address"
+    standfirst="WUFPA unites more than 300 film production houses across Ankole, Kigezi, Rwenzori, Tooro, Bunyoro and Greater Bushenyi. We train filmmakers, defend their copyright, open markets for their work, and represent them where decisions are made."
+    primaryCta={{ label: 'Become a member', href: '/membership/join/' }}
+    secondaryCta={{ label: 'See what we do', href: '/programmes/' }}
+    image={hero.image}
+    alt={hero.alt}
+  />
+
+  <Section labelledBy="proof-heading" spacing="compact">
+    <h2 id="proof-heading" class="u-visually-hidden">WUFPA in figures</h2>
+    <StatBlock stats={stats} note="Figures as recorded in the WUFPA association profile, 2025." />
+  </Section>
+
+  <Section labelledBy="who-we-are-heading" variant="subtle" container="narrow">
+    <h2 id="who-we-are-heading">We are the association Western Uganda's filmmakers built for themselves</h2>
+    <Prose>
+      <p>
+        In 2017, fourteen production companies from Ankole and Kigezi registered an
+        association. They were tired of an industry whose training, funding, buyers and policy
+        conversations all happened in Kampala — and of watching their films copied and sold
+        without permission.
+      </p>
+      <p>
+        Eight years later WUFPA is more than 300 production houses, organised into ten craft
+        guilds, with coordinators in six sub-regions and districts from Kabale to Kagadi.
+      </p>
+      <p>
+        We are a non-profit company limited by guarantee. We do not make films ourselves. We
+        make it possible for our members to.
+      </p>
+    </Prose>
+    <Button href="/about/" variant="tertiary">About WUFPA</Button>
+  </Section>
+</BaseLayout>

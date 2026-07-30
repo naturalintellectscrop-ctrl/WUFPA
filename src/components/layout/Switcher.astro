@@ -1,0 +1,47 @@
+---
+/**
+ * Switcher — N equal columns that flip to a single column all at once.
+ *
+ * Differs from Grid in one way that matters: Grid drops columns one at a time
+ * (3 -> 2 -> 1), Switcher goes from all-across to all-stacked in a single step.
+ * Use it where an intermediate state would be wrong — a three-up comparison
+ * reading as "two things and an orphan" is worse than three stacked.
+ *
+ * The mechanism is `flex-basis: calc((threshold - 100%) * 999)`. When the
+ * container is wider than the threshold the result is a large negative number,
+ * clamped to 0, so items share the row; when narrower it is a huge positive
+ * number, so each item takes a full row. It responds to the CONTAINER, not the
+ * viewport — this is one of the two primitives (with Sidebar) that make
+ * docs/21 section 12's "recompose, don't resize" real without a media query.
+ *
+ * CSS contract lives in global.css @layer layout (.switcher, --switcher-threshold).
+ *
+ * Source: docs/07 section 5.3 - WUFPA-015
+ */
+import type { SpaceToken } from '../../lib/types';
+
+interface Props {
+  /**
+   * Container width below which children stack. Defaults to --bp-sm (30rem).
+   * NOTE this is the CONTAINER's width, not the viewport's — a Switcher inside
+   * a narrow column stacks on a wide screen, which is correct.
+   */
+  threshold?: string;
+  gap?: SpaceToken;
+  as?: 'div' | 'ul' | 'ol';
+  class?: string;
+}
+
+const { threshold, gap, as: Tag = 'div', class: className }: Props = Astro.props;
+
+const styles = [
+  threshold ? `--switcher-threshold: ${threshold}` : null,
+  gap !== undefined ? `gap: var(--space-${gap})` : null,
+]
+  .filter(Boolean)
+  .join('; ');
+---
+
+<Tag class:list={['switcher', className]} style={styles || undefined}>
+  <slot />
+</Tag>

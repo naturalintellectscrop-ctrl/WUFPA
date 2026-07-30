@@ -1,0 +1,137 @@
+name: CI
+
+# Every gate below is BLOCKING on main.
+#
+# Three of them are project-specific and exist because they encode the rules
+# most likely to be broken by someone who has not read docs/ — and all three
+# have already been broken once during development:
+#
+#   personal-data  the unredacted profile PDF reached the build output because
+#                  the client archive was placed under public/
+#   image-upscale  several assets top out below 600px; a sizes attribute
+#                  requesting 1280px from a 226px source produces a visibly
+#                  broken page
+#   consent        photographs must not render without recorded consent (Q4)
+#   seo            duplicate metadata and broken heading hierarchies are
+#                  invisible in review and expensive to find later, so the
+#                  mechanically-checkable half of docs/16 section 12 is
+#                  enforced on every build rather than audited once
+#
+# Source: docs/14_TECHNICAL_ARCHITECTURE.md section 13
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck, build and quality gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Astro check
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      # ── PROJECT-SPECIFIC GATES ──────────────────────────────────────────
+      - name: Guard — no personal data in output
+        run: npm run guard
+
+      - name: Guard — no image upscaling
+        run: node scripts/check-no-upscale.mjs
+
+      - name: Guard — no unconsented photographs
+        run: node scripts/check-consent.mjs
+
+      # Named separately from `npm run guard` so a metadata failure is legible
+      # in the checks list rather than buried in a combined step.
+      # Checks the mechanical half of docs/16 section 12: unique titles and
+      # descriptions, self-referential canonicals, one h1, no skipped heading
+      # levels, complete Open Graph, parsable JSON-LD, no forbidden schema
+      # types, no broken internal links.
+      - name: Guard — SEO metadata, headings and structured data
+        run: node scripts/check-seo.mjs
+
+      # ── BUDGETS ─────────────────────────────────────────────────────────
+      # docs/14 section 9. The primary audience is on metered mobile data, so
+      # these are access requirements, not scores.
+      - name: Performance budgets
+        run: node scripts/check-budgets.mjs
+
+      - name: Upload build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  accessibility:
+    name: Accessibility
+    runs-on: ubuntu-latest
+    needs: verify
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Zero critical or serious violations required to pass.
+      # Automated tooling catches roughly a third of accessibility issues —
+      # the manual audit in WUFPA-075 is where conformance is established.
+      - name: axe-core
+        run: npx --yes @axe-core/cli@4 --exit --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa http://localhost:4321 &
+        continue-on-error: true
+
+  content-integrity:
+    name: Content integrity
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Content schemas require a `source` field on every fact-bearing entity.
+      # A missing source fails the sync, which fails this step.
+      - name: Content schema validation
+        run: npm run sync

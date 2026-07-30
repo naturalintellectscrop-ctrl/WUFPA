@@ -1,0 +1,220 @@
+/**
+ * LAYER 1 — PRIMITIVES
+ *
+ * Raw facts about the palette and scales. These are never referenced by a
+ * component. Components consume the semantic layer (semantic.css) so that
+ * changing a decision means changing one token, not hunting through 40 files.
+ *
+ * Colour values are MEASURED from the official logo, not estimated:
+ *   #ED1B24  6.35% of WUFPA LOGO 2023.jpg.jpeg  (film strip + wordmark)
+ *   #231F20  6.42% of the same file             (reel + tagline)
+ *   #FFFFFF  83%   of the same file             (the brand's ground)
+ *   #2E3192  WUFM SACCO logo only
+ *
+ * Source: docs/07_DESIGN_SYSTEM.md section 2, docs/03_BRAND_GUIDELINES.md section 5
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ── RED RAMP ───────────────────────────────────────────────────────────
+     CRITICAL CONTRAST FACT, verified by calculation:
+       red-500 on white  = 4.39:1  → FAILS AA for normal text (needs 4.5:1)
+                                     passes for large text / UI (needs 3:1)
+       red-700 on white  = 6.93:1  → passes AA comfortably
+       red-500 on ink-900 = 3.71:1 → FAILS for text on dark
+       red-300 on ink-900 = 4.95:1 → passes on dark
+
+     Therefore: any red text below 24px (or 19px bold) uses red-700.
+                Any red on a dark surface uses red-300.
+                red-500 is the logo, large display type, and UI accents.        */
+  --red-300: #ff4b52;
+  --red-500: #ed1b24;
+  --red-600: #d4161e;
+  --red-700: #b31419;
+  --red-800: #8e1014;
+
+  /* ── INK RAMP ───────────────────────────────────────────────────────────
+     Warm neutrals derived from #231F20. A cold grey ramp beside a warm black
+     reads as two unrelated colour systems, and the warmth sits better under
+     the supplied photography — daylight, red soil, grass and skin tones.
+     Contrast against white is stated for each.                                */
+  --ink-900: #231f20; /* 16.30:1 */
+  --ink-800: #3a3436; /* 11.40:1 */
+  --ink-700: #524a4c; /*  8.00:1 */
+  --ink-600: #6b6163; /*  5.98:1 — lightest permitted text on white */
+  --ink-500: #8a8083; /*  3.82:1 — large text, icons, strong borders only */
+  --ink-400: #a9a1a3; /*  2.50:1 — borders and dividers, never text */
+  --ink-300: #c9c3c4;
+  --ink-200: #e3dfdf;
+  --ink-100: #f2efef;
+  --ink-050: #faf8f8;
+  --white: #ffffff;
+
+  /* ── SUPPORT ────────────────────────────────────────────────────────────
+     WUFM SACCO is a SEPARATE REGISTERED ENTITY. Its blue appears only on
+     SACCO pages — never elsewhere on the site.                                */
+  --sacco-blue: #2e3192; /* 10.66:1 on white */
+  --sacco-blue-tint: #eeeff8;
+
+  --green-600: #1f6b3f; /* 5.90:1 — success */
+  --green-050: #eaf4ee;
+  --amber-700: #8a5a00; /* 5.40:1 — warning */
+  --amber-050: #fcf3e3;
+  --red-tint: #fdeced; /* red-500 at ~8% */
+
+  /* ── SPACING — 4px base, expressed in rem so it honours user font size ── */
+  --space-0: 0;
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem; /*  8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.5rem; /* 24px */
+  --space-6: 2rem; /* 32px */
+  --space-7: 3rem; /* 48px */
+  --space-8: 4rem; /* 64px */
+  --space-9: 6rem; /* 96px */
+  --space-10: 8rem; /* 128px */
+
+  /* ── TYPE SCALE ─────────────────────────────────────────────────────────
+     Fluid between 360px and 1280px. Mobile ratio 1.25, desktop 1.333 — the
+     wider desktop ratio gives display type presence without headlines
+     swallowing a small screen.
+     Body is 17px minimum, not 16px: the audience includes older office-holders
+     reading on phones in daylight, and the site carries long-form content.     */
+  --text-2xs: 0.75rem; /* 12px — micro labels only, never body */
+  --text-xs: 0.8125rem; /* 13px — captions, credits */
+  --text-sm: 0.875rem; /* 14px — metadata, form hints */
+  --text-base: clamp(1.0625rem, 1rem + 0.28vw, 1.125rem); /* 17 → 18 */
+  --text-lg: clamp(1.1875rem, 1.09rem + 0.42vw, 1.3125rem); /* 19 → 21 */
+  --text-xl: clamp(1.375rem, 1.2rem + 0.78vw, 1.75rem); /* 22 → 28 */
+  --text-2xl: clamp(1.625rem, 1.35rem + 1.22vw, 2.3125rem); /* 26 → 37 */
+  --text-3xl: clamp(1.9375rem, 1.5rem + 1.94vw, 3.0625rem); /* 31 → 49 */
+  --text-4xl: clamp(2.3125rem, 1.65rem + 2.94vw, 4.0625rem); /* 37 → 65 */
+  --text-hero: clamp(2.625rem, 1.7rem + 4.1vw, 5.375rem); /* 42 → 86 */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;
+
+  --measure-prose: 68ch;
+  --measure-narrow: 52ch;
+  --measure-wide: 88ch;
+
+  /* ── FONT STACKS ────────────────────────────────────────────────────────
+     Archivo for display and interface; Source Serif 4 for long-form reading.
+     A serif signals *record* rather than *marketing*, which is the register
+     WUFPA's advocacy and activity reporting needs.
+
+     Self-hosted variable WOFF2 as of WUFPA-014 — see base/typography.css for the
+     @font-face block, the measured metrics and the licence position.
+
+     SECOND ENTRY IN EACH STACK IS THE METRIC-MATCHED FALLBACK, not a plain
+     system face. 'Archivo Fallback' and 'Source Serif Fallback' are @font-face
+     rules wrapping the local system font with size-adjust and ascent/descent
+     overrides, so the swap from fallback to real face does not move a single
+     line box. The raw system names stay behind them as the last resort for the
+     case where even local() finds nothing. */
+  --font-display: Archivo, 'Archivo Fallback', 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  --font-ui: var(--font-display);
+  --font-body: 'Source Serif 4', 'Source Serif Fallback', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  /* ── BREAKPOINTS ────────────────────────────────────────────────────────
+     Named for content, not device (docs/07 section 5.1). Mobile-first; only
+     min-width queries.
+
+     THESE ARE REAL TOKENS, and were not before WUFPA-080. docs/07 section 5.1
+     specifies them as tokens; this file previously demoted them to a comment,
+     while Timeline, PrimaryNav and Button each cited --bp-md / --bp-lg / --bp-sm
+     in their own comments as though they existed. The spec and the code
+     disagreed, which is how four thresholds ended up in use against five
+     documented — including 40rem, which is in neither list.
+
+     THE CAVEAT IS REAL BUT NARROW: a custom property cannot appear in a media
+     query PRELUDE, so `@media (min-width: var(--bp-md))` will never work and the
+     literal must be repeated there. That does not make the tokens useless — they
+     are the source of truth for container queries, calc() thresholds (see
+     --switcher-threshold in global.css) and anything reading layout state in JS.
+
+     THE LITERALS ARE NOW CHECKABLE. scripts/check-framework.mjs (WUFPA-084,
+     guard #3) reads breakpoints.json in this directory and fails the build on
+     any media query using a threshold outside the ladder. Keep all three in
+     step: this block, breakpoints.json, and docs/07 section 5.1.                */
+  --bp-sm: 30rem; /*  480px — two-up small cards */
+  --bp-md: 48rem; /*  768px — two-column layouts; footer 2x2 */
+  --bp-lg: 64rem; /* 1024px — desktop nav; three-up grids; sidebars */
+  --bp-xl: 80rem; /* 1280px — max content width reached */
+  --bp-2xl: 96rem; /* 1536px — wider gutters only */
+
+  /* ── CONTAINERS ─────────────────────────────────────────────────────── */
+  --container-prose: 45rem; /*  720px */
+  --container-narrow: 60rem; /*  960px */
+  --container-default: 75rem; /* 1200px */
+  --container-wide: 90rem; /* 1440px */
+
+  /* ── RADIUS ─────────────────────────────────────────────────────────────
+     Deliberately restrained. Heavily rounded interfaces read as consumer app,
+     not as an institutional record.                                           */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* ── SHADOW ─────────────────────────────────────────────────────────────
+     Tinted with the brand black, never pure black — a pure-black shadow over a
+     warm neutral ground reads as grey dirt. Prefer a 1px border to a shadow:
+     borders are cheaper, crisper, and hold up better against photography.      */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px rgb(35 31 32 / 6%), 0 1px 3px rgb(35 31 32 / 8%);
+  --shadow-md: 0 4px 8px rgb(35 31 32 / 6%), 0 8px 24px rgb(35 31 32 / 10%);
+  --shadow-lg: 0 12px 24px rgb(35 31 32 / 10%), 0 24px 48px rgb(35 31 32 / 12%);
+
+  /* ── ELEVATION ──────────────────────────────────────────────────────────
+     A fixed ladder. There is no legitimate reason for z-index: 9999.          */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-skiplink: 600;
+
+  /* ── MOTION ─────────────────────────────────────────────────────────────
+     Quiet and functional. Motion is the visual grammar of promotion;
+     stillness is the grammar of record. Animate transform and opacity ONLY —
+     animating height or max-height forces layout on every frame.
+     ZERO infinite animations anywhere on this site.                           */
+  --duration-instant: 100ms;
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 360ms;
+
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --reveal-distance: 16px;
+  --stagger: 60ms;
+
+  /* ── ASPECT RATIOS ──────────────────────────────────────────────────────
+     The archive is dominated by 20–100 person group photographs. Never crop
+     those square — it decapitates them, and the scale IS the message.         */
+  --ratio-wide: 16 / 9;
+  --ratio-landscape: 3 / 2;
+  --ratio-portrait: 3 / 4;
+  --ratio-square: 1 / 1;
+}

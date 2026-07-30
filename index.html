@@ -78,19 +78,11 @@ section{padding:120px 20px}
 .stat-card{text-align:center;padding:40px 20px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
 .stat-num{font-family:'Cinzel',serif;font-size:3rem;font-weight:900;color:var(--gold);display:block;margin-bottom:10px}
 .stat-label{font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-grid{display:grid;grid-template-columns:1fr;gap:60px;align-items:center}
 .about-text p{color:var(--muted);margin-bottom:20px;font-size:1rem}
 .about-text ul{list-style:none;margin-bottom:30px}
 .about-text li{color:var(--text);padding:8px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
 .about-text li::before{content:'🎬';font-size:1.2rem}
-
-/* Funny BTS Section */
-.bts-box{background:linear-gradient(135deg, #1a0a00 0%, #000 100%);border:1px solid var(--gold);border-radius:8px;padding:40px;margin-top:40px;position:relative;overflow:hidden}
-.bts-box::before{content:'BEHIND THE SCENES';position:absolute;top:20px;right:-30px;font-size:5rem;font-weight:900;color:rgba(212,175,55,0.05);transform:rotate(-10deg);pointer-events:none}
-.bts-box h3{color:var(--gold);margin-bottom:20px;font-size:1.5rem}
-.bts-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
-.bts-q{color:var(--cyan);font-weight:800;font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:5px}
-.bts-a{color:var(--muted);font-style:italic}
 
 /* ─── EXECUTIVES (DROPDOWN LOGIC) ─── */
 #executives{background:var(--bg)}
@@ -110,20 +102,6 @@ section{padding:120px 20px}
 .dropdown-inner{padding:20px 0 10px;border-top:1px solid var(--line);margin-top:15px}
 .dropdown-inner p{color:var(--muted);font-size:.9rem;line-height:1.8;margin-bottom:15px}
 .dropdown-inner strong{color:var(--text)}
-
-/* ─── MOVIE SLIDER ─── */
-#movies{background:var(--bg2);overflow:hidden}
-.slider-container{position:relative;width:100%;max-width:1000px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,0.8);border-radius:8px;overflow:hidden;border:2px solid var(--line)}
-.slide{display:none;width:100%;position:relative}
-.slide.active{display:block;animation:fadeIn 0.8s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.slide-img{width:100%;height:500px;object-fit:cover;display:block}
-.slide-overlay{position:absolute;bottom:0;left:0;right:0;padding:40px;background:linear-gradient(to top, rgba(0,0,0,0.95), transparent);pointer-events:none}
-.slide-overlay h3{font-size:2rem;color:#fff;margin-bottom:5px}
-.slide-overlay p{color:var(--gold);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:1px}
-.slider-dots{display:flex;justify-content:center;gap:10px;margin-top:20px}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--line);cursor:pointer;transition:.3s}
-.dot.active{background:var(--red);transform:scale(1.2)}
 
 /* ─── MEMBERS ─── */
 .members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
@@ -158,8 +136,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
   .hamburger{display:block}
   .nav-links{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:rgba(10,10,10,0.98);flex-direction:column;padding:80px 40px;gap:25px;transition:.4s;border-left:1px solid var(--line)}
   .nav-links.open{right:0}
-  .about-grid{grid-template-columns:1fr}
-  .slide-img{height:300px}
 }
 @media(max-width:600px){
   .stats-row{grid-template-columns:1fr 1fr}
@@ -178,7 +154,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
     <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#executives">Leaders</a></li>
-    <li><a href="#movies">Films</a></li>
     <li><a href="#members">Members</a></li>
     <li><a href="#gallery">Photo Gallery</a></li>
     <li><a href="#footer-donate" class="btn-donate-nav">❤ Donate</a></li>
@@ -194,7 +169,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
     <h1 class="hero-title">WESTERN UGANDA<br/><span>FILM PRODUCERS</span><br/>ASSOCIATION</h1>
     <p class="hero-sub">"Telling our stories that Transform our Communities." Uniting 300+ filmmakers across 6 sub-regions to build a sustainable creative economy.</p>
     <div class="hero-btns">
-      <a href="#movies" class="btn btn-gold">▶ Watch Our Films</a>
       <a href="#about" class="btn btn-ghost">Discover WUFPA</a>
       <a href="#footer-donate" class="btn btn-red">❤ Support Us</a>
     </div>
@@ -213,7 +187,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
     <div class="stats-row reveal">
       <div class="stat-card"><span class="stat-num">300+</span><span class="stat-label">Production Houses</span></div>
       <div class="stat-card"><span class="stat-num">6</span><span class="stat-label">Sub-Regions Covered</span></div>
-      <div class="stat-card"><span class="stat-num">10,500+</span><span class="stat-label">Individual Creatives</span></div>
       <div class="stat-card"><span class="stat-num">2017</span><span class="stat-label">Year Founded</span></div>
     </div>
 
@@ -228,27 +201,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
           <li>Western Uganda Filmmakers SACCO (Financial Inclusion)</li>
           <li>International Festival Exposure (ZIFF, Mashariki)</li>
         </ul>
-      </div>
-      
-      <!-- Funny/Comic BTS Section -->
-      <div class="bts-box reveal">
-        <h3>🎬 Behind The Scenes (The Real Truth)</h3>
-        <div class="bts-item">
-          <div class="bts-q">Q: How do you shoot a car chase in Mbarara?</div>
-          <div class="bts-a">A: One boda-boda, a GoPro taped with masking tape, and a driver who thinks he's in Fast & Furious: Tokyo Drift.</div>
-        </div>
-        <div class="bts-item">
-          <div class="bts-q">Q: What does a 50,000 UGX budget get you?</div>
-          <div class="bts-a">A: A feature-length film that looks like it cost 50 Million UGX. Pure talent, zero CGI, 100% hustle.</div>
-        </div>
-        <div class="bts-item">
-          <div class="bts-q">Q: How do you handle actors crying on set?</div>
-          <div class="bts-a">A: We don't need onions. We just remind the producer that the UCC Regional Film Competition deadline is tomorrow.</div>
-        </div>
-        <div class="bts-item" style="border:none;margin:0;padding:0">
-          <div class="bts-q">Q: What is our special effect for rain?</div>
-          <div class="bts-a">A: We wait for the rainy season in Kigezi. God is our VFX Supervisor.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -331,21 +283,6 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
   </div>
 </section>
 
-<!-- MOVIES SLIDER -->
-<section id="movies">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="section-tag">WUFPA Productions</span>
-      <h2>Now Showing</h2>
-      <p>Explore the cinematic magic birthed from the heart of Western Uganda. Auto-playing loop of our finest.</p>
-    </div>
-    <div class="slider-container reveal">
-      <!-- Slides inserted via JS -->
-    </div>
-    <div class="slider-dots" id="slider-dots"></div>
-  </div>
-</section>
-
 <!-- MEMBERS LIST -->
 <section id="members">
   <div class="container">
@@ -358,13 +295,7 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
       <div class="member-card"><div class="member-avatar">AC</div><div class="member-info"><h4>Ankole City Filmz</h4><p>Mbarara • Feature Films</p></div></div>
       <div class="member-card"><div class="member-avatar">UF</div><div class="member-info"><h4>UPSKY Film Network</h4><p>Fort Portal • Social Impact</p></div></div>
       <div class="member-card"><div class="member-avatar">KU</div><div class="member-info"><h4>Kigezi Universal Drama</h4><p>Kabale • Cultural Drama</p></div></div>
-      <div class="member-card"><div class="member-avatar">BF</div><div class="member-info"><h4>Banyankitara Films</h4><p>Hoima • Local Language</p></div></div>
-      <div class="member-card"><div class="member-avatar">RC</div><div class="member-info"><h4>Rwenzori Cinematic Arts</h4><p>Kasese • Documentaries</p></div></div>
-      <div class="member-card"><div class="member-avatar">KT</div><div class="member-info"><h4>Kitanga Cultural Troupe</h4><p>Mbarara • Performing Arts</p></div></div>
-      <div class="member-card"><div class="member-avatar">BW</div><div class="member-info"><h4>Bunyoro Hollywood Studios</h4><p>Masindi • Action Films</p></div></div>
-      <div class="member-card"><div class="member-avatar">TW</div><div class="member-info"><h4>Tooro Warrior Films</h4><p>Fort Portal • Cultural Heritage</p></div></div>
-      <!-- Placeholder for the other 292+ members -->
-      <div class="member-card" style="justify-content:center;border-style:dashed;"><div class="member-info" style="text-align:center"><h4 style="color:var(--gold)">+ 292 More Production Houses</h4><p>Spanning 6 Sub-regions</p></div></div>
+      <div class="member-card"><div class="member-avatar">BF</div><div class="member-info"><h4>Banyankitara Films</h4><p>Local Language</p></div></div>
     </div>
   </div>
 </section>
@@ -411,7 +342,7 @@ footer{background:#000;padding:80px 20px 40px;border-top:1px solid var(--line)}
   <div class="container">
     <div class="footer-donate reveal">
       <h2>Invest in the Future of Ugandan Cinema</h2>
-      <p>While entry to WUFPA is free, creating magic costs money. Help us buy cameras, fund the SACCO, and build a regional film studio. Every dollar funds a dream.</p>
+      <p>WUFPA is seeking production equipment, sponsorship for training and master classes, seed capital for the Western Uganda Filmmakers SACCO, and a regional film production studio.</p>
       <!-- Replace '#' with your actual PayPal/GoFundMe/Mobile Money link -->
       <a href="#" target="_blank" class="btn btn-red" style="font-size:1.1rem; padding:20px 50px;">❤ Donate to WUFPA Now</a>
     </div>
@@ -476,48 +407,7 @@ function toggleDropdown(btn) {
   }
 }
 
-// 3. MOVIE SLIDER LOGIC (8 Movies, 5s loop)
-const movies = [
-  { title: "Echoes of Tooro", genre: "Cultural Drama", img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop" },
-  { title: "The Kigezi Resilience", genre: "Documentary", img: "https://images.unsplash.com/photo-1518676590747-1e3dcf5a0483?q=80&w=1000&auto=format&fit=crop" },
-  { title: "Mbarara Hustle", genre: "Urban Drama", img: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1000&auto=format&fit=crop" },
-  { title: "Tears of Ankole", genre: "Historical Epic", img: "https://images.unsplash.com/photo-1505577058444-a3dab90d4253?q=80&w=1000&auto=format&fit=crop" },
-  { title: "Rwenzori Shadows", genre: "Thriller", img: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1000&auto=format&fit=crop" },
-  { title: "Bunyoro Gold", genre: "Adventure", img: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=1000&auto=format&fit=crop" },
-  { title: "Love in Bushenyi", genre: "Romance", img: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=1000&auto=format&fit=crop" },
-  { title: "The Producer's Cut", genre: "Comedy", img: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=1000&auto=format&fit=crop" }
-];
-
-let currentSlide = 0;
-const sliderContainer = document.querySelector('.slider-container');
-const dotsContainer = document.getElementById('slider-dots');
-
-// Build slider HTML
-movies.forEach((m, i) => {
-  sliderContainer.innerHTML += `
-    <div class="slide ${i === 0 ? 'active' : ''}">
-      <img src="${m.img}" alt="${m.title}" class="slide-img">
-      <div class="slide-overlay">
-        <h3>${m.title}</h3>
-        <p>${m.genre} • WUFPA Productions</p>
-      </div>
-    </div>`;
-  dotsContainer.innerHTML += `<div class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`;
-});
-
-function goToSlide(index) {
-  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-  currentSlide = index;
-  document.querySelectorAll('.slide')[currentSlide].classList.add('active');
-  document.querySelectorAll('.dot')[currentSlide].classList.add('active');
-}
-
-setInterval(() => {
-  goToSlide((currentSlide + 1) % movies.length);
-}, 5000); // 5 seconds loop
-
-// 4. SCROLL REVEAL MAGIC
+// 3. SCROLL REVEAL
 const revealElements = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {

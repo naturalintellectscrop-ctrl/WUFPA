@@ -1,0 +1,165 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '../../lib/icons';
+
+/**
+ * Button — 4 variants x 3 sizes.
+ *
+ * Renders <a> when `href` is present, <button> otherwise. Never a <div> with a
+ * click handler — that is how the prototype's slider dots were built, and they
+ * were unreachable by keyboard.
+ *
+ * CONTRAST NOTE: white on #ED1B24 is 4.39:1, which qualifies as large text only
+ * at >=19px bold / >=24px regular. Primary labels are therefore 17px weight 600
+ * and MUST be verified in audit; escalate to 18px/700 if in doubt. This is the
+ * one place the brand red works near its limit (docs/07 section 7.1).
+ *
+ * Minimum 44x44px hit area at every size (WCAG 2.5.8, and a real requirement on
+ * a phone held one-handed outdoors).
+ */
+interface Props {
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'inverse';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  icon?: IconName;
+  /** Full width below --bp-sm when this is a page's primary action. */
+  block?: boolean;
+  disabled?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  icon,
+  block = false,
+  disabled = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' : '', className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<Tag
+  class={classes}
+  href={href}
+  type={href ? undefined : type}
+  aria-disabled={disabled ? 'true' : undefined}
+  {...rest}
+>
+  <span class="btn__label"><slot /></span>
+  {icon && <Icon name={icon} />}
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-weight: var(--weight-semibold);
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-control);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+    /* Guarantees a 44px hit area even where the visual height is smaller. */
+    min-block-size: var(--target-min);
+  }
+
+  /* Sizes */
+  .btn--sm {
+    block-size: var(--control-height-sm);
+    padding-inline: var(--space-4);
+    font-size: var(--text-sm);
+  }
+  .btn--md {
+    block-size: var(--control-height);
+    padding-inline: var(--space-5);
+    font-size: var(--text-base);
+  }
+  .btn--lg {
+    block-size: var(--control-height-lg);
+    padding-inline: var(--space-6);
+    font-size: var(--text-base);
+  }
+
+  .btn--block {
+    inline-size: 100%;
+  }
+
+  /* Primary */
+  .btn--primary {
+    background-color: var(--action-primary-bg);
+    color: var(--action-primary-text);
+  }
+  .btn--primary:hover {
+    background-color: var(--action-primary-bg-hover);
+    color: var(--action-primary-text);
+  }
+  .btn--primary:active {
+    background-color: var(--action-primary-bg-active);
+  }
+
+  /* Secondary */
+  .btn--secondary {
+    background-color: transparent;
+    color: var(--action-secondary-text);
+    border-color: var(--action-secondary-border);
+  }
+  .btn--secondary:hover {
+    background-color: var(--action-secondary-bg-hover);
+    color: var(--action-secondary-text);
+  }
+
+  /* Tertiary — inline, low emphasis. Underlined so it is not colour-only. */
+  .btn--tertiary {
+    background-color: transparent;
+    color: var(--link);
+    padding-inline: var(--space-2);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .btn--tertiary:hover {
+    color: var(--link-hover);
+  }
+
+  /* Inverse — for use on --surface-inverse */
+  .btn--inverse {
+    background-color: var(--action-inverse-bg);
+    color: var(--action-inverse-text);
+  }
+  .btn--inverse:hover {
+    background-color: var(--action-inverse-bg-hover);
+    color: var(--action-inverse-text);
+  }
+
+  /* aria-disabled rather than the disabled attribute: the control keeps its
+     place in the tab order so a screen-reader user can discover why it is
+     unavailable. Form submits are never disabled pending completion. */
+  .btn[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: 30rem) {
+    .btn--block-mobile {
+      inline-size: 100%;
+    }
+  }
+</style>

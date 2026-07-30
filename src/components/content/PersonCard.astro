@@ -1,0 +1,189 @@
+---
+/**
+ * PersonCard — a person in a grid: leadership, coordinators, guild heads.
+ *
+ * THE INITIALS FALLBACK IS THE POINT. Only four portraits exist for ~60
+ * office-holders. The prototype filled that gap with four Unsplash photographs
+ * of unrelated people presented as named Ugandan filmmakers — the single most
+ * trust-destroying decision the site could make.
+ *
+ * This component makes that impossible: there is no code path that renders an
+ * image without an explicit portrait for THIS person, and where none exists it
+ * renders typography instead.
+ *
+ * Name and role are programmatically associated. The prototype used a loose
+ * <span> after the heading, so screen readers announced them as unrelated
+ * fragments (docs/01 section 9.4, X29).
+ */
+import type { ConsentState, PersonRole } from '../../lib/types';
+
+interface Props {
+  name: string;
+  honorific?: string;
+  roles: PersonRole[];
+  district?: string;
+  company?: string;
+  href?: string;
+  portrait?: { src: string; width: number; height: number; objectPosition?: string };
+  nameConfirmed?: boolean;
+  consent?: ConsentState;
+  class?: string;
+}
+
+const {
+  name,
+  honorific,
+  roles,
+  district,
+  company,
+  href,
+  portrait,
+  nameConfirmed = false,
+  consent = 'pending',
+  class: className,
+} = Astro.props;
+
+const fullName = [honorific, name].filter(Boolean).join(' ');
+
+const initials = name
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0]?.toUpperCase() ?? '')
+  .join('');
+
+const primaryRole = roles[0];
+const termLabel =
+  primaryRole?.termStart !== undefined
+    ? `${primaryRole.termStart}–${primaryRole.termEnd ?? ''}`
+    : undefined;
+
+/* Portrait renders only with explicit consent. Name renders only once
+   confirmed. Both gates are here, not in the caller. */
+const showPortrait = Boolean(portrait) && consent === 'granted';
+const publishable = nameConfirmed && consent === 'granted';
+---
+
+{
+  publishable ? (
+    <article class:list={['person', className]}>
+      <div class="person__media">
+        {showPortrait && portrait ? (
+          <div
+            class="frame"
+            style={`--frame-ratio: var(--ratio-portrait); --frame-position: ${portrait.objectPosition ?? 'center top'};`}
+          >
+            <img
+              src={portrait.src}
+              alt={`${fullName}, ${primaryRole?.title ?? 'WUFPA'}`}
+              width={portrait.width}
+              height={portrait.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ) : (
+          <div class="person__initials frame" aria-hidden="true">
+            <span>{initials}</span>
+          </div>
+        )}
+      </div>
+
+      <div class="person__body">
+        <h3 class="person__name">{href ? <a href={href}>{fullName}</a> : fullName}</h3>
+
+        <ul class="person__roles" role="list">
+          {roles.map((r) => (
+            <li>
+              {r.title}
+              {r.termStart !== undefined && <span class="person__term"> {termLabel}</span>}
+            </li>
+          ))}
+        </ul>
+
+        {company && <p class="person__detail">{company}</p>}
+        {district && <p class="person__detail">{district}</p>}
+      </div>
+    </article>
+  ) : null
+}
+
+<style>
+  .person {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--surface-page);
+  }
+
+  .person__media {
+    background-color: var(--surface-muted);
+  }
+
+  /* Typographic fallback. Never a photograph of a different human being. */
+  .person__initials {
+    display: grid;
+    place-items: center;
+    aspect-ratio: var(--ratio-portrait);
+    background-color: var(--surface-inverse);
+  }
+
+  .person__initials span {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-on-inverse);
+  }
+
+  .person__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--card-padding);
+  }
+
+  .person__name {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .person__name a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .person__name a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .person:hover .person__name a {
+    text-decoration: underline;
+  }
+
+  .person__roles {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-accent);
+  }
+
+  .person__term {
+    font-weight: var(--weight-regular);
+    color: var(--text-muted);
+  }
+
+  .person__detail {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+</style>
