@@ -2,8 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Prose from '../components/layout/Prose.astro';
+import Grid from '../components/layout/Grid.astro';
 import Hero from '../components/content/Hero.astro';
 import StatBlock from '../components/content/StatBlock.astro';
+import EntityCard from '../components/content/EntityCard.astro';
+import Figure from '../components/media/Figure.astro';
 import Button from '../components/primitives/Button.astro';
 import { getPhoto } from '../lib/photos';
 import { meta } from '../lib/page-meta';
@@ -39,6 +42,114 @@ const stats: Stat[] = [
   { figure: '6', label: 'sub-regions of Western Uganda', source: '[P1]' },
   { figure: '10', label: 'film guilds, from directors to gaffers', source: '[P7]' },
   { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
+];
+
+// docs/04 section 6.1 — the six programme cards, copy verbatim.
+const programmes = [
+  {
+    title: 'Training & Capacity Building',
+    href: '/programmes/training/',
+    description:
+      'Workshops, master classes and mentorship in screenwriting, directing, acting, cinematography, editing and production — delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
+  },
+  {
+    title: 'Advocacy, Rights & Anti-Piracy',
+    href: '/programmes/advocacy/',
+    description:
+      'We campaign for filmmakers’ copyright, take that campaign to the streets, and press for film to be taught in Uganda’s schools.',
+  },
+  {
+    title: 'The Kibanda Initiative',
+    href: '/programmes/kibanda/',
+    description:
+      'Community film screenings that bring Western Ugandan films to towns, schools and rural communities.',
+  },
+  {
+    title: 'Distribution & Market Access',
+    href: '/programmes/distribution/',
+    description:
+      'We organised the region’s film distributors, and members’ films now air on five regional broadcasters.',
+  },
+  {
+    title: 'Competitions & Awards',
+    href: '/programmes/competitions/',
+    description:
+      'We persuaded the Uganda Communications Commission to create a regional film competition, and we run the Western Uganda Film Awards Gala.',
+  },
+  {
+    title: 'International Exposure',
+    href: '/programmes/international/',
+    description:
+      'Delegations to Zanzibar, Kigali and beyond, so our members meet the industry outside Uganda.',
+  },
+];
+
+/* docs/04 section 7.1 — the per-region opening lines are the only
+   region-specific prose in the whole site; everything else on a region page is
+   data. Reused here as the card descriptions rather than writing a second set,
+   so the homepage and the region pages cannot drift apart.
+
+   These link to /regions/ (the index), NOT to /regions/{key}/ — the six
+   individual region routes are collection-driven pages WUFPA-041 has not
+   built yet, and are not in page-meta.ts's registry, so linking to them now
+   would fail the build's internal-link check. Same reasoning as the Regions
+   nav item in nav-config.ts. */
+/* docs/04 section 3.6 — "Not a summary — the work itself." Six dated items,
+   each with the real photograph of that specific event, drawn from
+   docs/02 section 3's history. The undated march is last and says so rather
+   than being given a guessed date. */
+const evidence = [
+  {
+    date: '2022',
+    copy: 'Signed a memorandum of understanding with Sky TV, Mbarara City.',
+    photo: 'programmes/distribution/sky-tv-mbarara-mou-2022-group.jpeg',
+  },
+  {
+    date: '2023',
+    copy: 'Trained members with MTN YoTV on how to earn from film content.',
+    photo: 'programmes/training/mtn-yotv-monetisation-workshop-2023.jpeg',
+  },
+  {
+    date: 'November 2023',
+    copy: 'Took a delegation to the Kigali International Content Market.',
+    photo: 'programmes/international/kigali-content-market-2023-panel.jpeg',
+  },
+  {
+    date: '2024',
+    copy: 'Hosted the Matatu Film Lab with Film Possible and US Mission Uganda.',
+    photo: 'programmes/training/matatu-film-lab-training-room-2024.jpeg',
+  },
+  {
+    date: 'October 2025',
+    copy: 'Members received the WUFM SACCO certificate in Mbarara City.',
+    photo: 'sacco/wufm-sacco-certificate-presentation-2025.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'Marched through Mbarara for filmmakers’ copyright, with UCC, URSB and the Media Council.',
+    photo: 'programmes/advocacy/together-against-piracy-banner-mbarara.jpeg',
+  },
+].map((item) => ({ ...item, image: getPhoto(item.photo) }));
+
+const regions = [
+  {
+    name: 'Ankole (Rwizi)',
+    line: 'Ankole is where WUFPA began, and where its head office stands today.',
+  },
+  { name: 'Kigezi', line: 'Kigezi is one of the two sub-regions that founded WUFPA in 2017.' },
+  { name: 'Rwenzori', line: 'The Rwenzori sub-region is home to WUFPA’s current Vice President.' },
+  {
+    name: 'Tooro',
+    line: 'WUFPA’s Tooro sensitisation workshop was hosted at Obukama bwa Tooro.',
+  },
+  {
+    name: 'Bunyoro',
+    line: 'WUFPA held a sensitisation film workshop across the Bunyoro region in 2022.',
+  },
+  {
+    name: 'Greater Bushenyi',
+    line: 'WUFPA met film producers and actors across Greater Bushenyi in 2022.',
+  },
 ];
 ---
 
@@ -77,4 +188,146 @@ const stats: Stat[] = [
     </Prose>
     <Button href="/about/" variant="tertiary">About WUFPA</Button>
   </Section>
+
+  <Section labelledBy="what-we-do-heading">
+    <h2 id="what-we-do-heading">Six ways we work for our members</h2>
+    <p class="standfirst">Training, rights, audiences, markets, money and recognition.</p>
+    <Grid min="17rem" gap={5} class="band-grid">
+      {
+        programmes.map((programme) => (
+          <EntityCard
+            variant="programme"
+            title={programme.title}
+            href={programme.href}
+            description={programme.description}
+          />
+        ))
+      }
+    </Grid>
+    <Button href="/programmes/" variant="tertiary">All our programmes</Button>
+  </Section>
+
+  <Section labelledBy="where-we-work-heading" variant="subtle">
+    <h2 id="where-we-work-heading">From Kabale to Kagadi</h2>
+    <p class="standfirst">
+      WUFPA covers the six sub-regions of Western Uganda. Each has its own coordinator,
+      secretary and treasurer, and district coordinators working alongside them. Find yours.
+    </p>
+    <Grid min="17rem" gap={5} class="band-grid">
+      {
+        regions.map((region) => (
+          <EntityCard
+            variant="region"
+            title={region.name}
+            href="/regions/"
+            description={region.line}
+          />
+        ))
+      }
+    </Grid>
+    <Button href="/regions/" variant="tertiary">Find your sub-region</Button>
+  </Section>
+
+  <Section labelledBy="evidence-heading">
+    <h2 id="evidence-heading">Eight years on the record</h2>
+    <p class="standfirst">Not a summary — the work itself.</p>
+    <ul role="list" class="evidence">
+      {
+        evidence.map((item) => (
+          <li class="evidence__item">
+            <Figure
+              image={item.image.image}
+              alt={item.image.alt}
+              purpose="card"
+              ratio="landscape"
+              sizes="(min-width: 64rem) 30rem, 100vw"
+              variant="grid-item"
+            />
+            <p class="evidence__date">{item.date}</p>
+            <p class="evidence__copy">{item.copy}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <Button href="/impact/" variant="tertiary">See our impact</Button>
+  </Section>
+
+  <Section labelledBy="partners-heading" variant="subtle" container="narrow">
+    <h2 id="partners-heading">We do not work alone</h2>
+    <Prose>
+      <p>
+        WUFPA's training, competitions and campaigns are delivered with national and
+        international partners — the Uganda Communications Commission, UNATCOM for UNESCO, US
+        Mission Uganda and Film Possible, Alliance Française, the Goethe-Zentrum, the Uganda
+        Film Network and the National Producers Guild of Uganda.
+      </p>
+    </Prose>
+    <Button href="/partners/" variant="tertiary">Our partners</Button>
+  </Section>
+
+  <Section labelledBy="membership-heading" variant="inverse">
+    <h2 id="membership-heading">If you make films in Western Uganda, this is your association</h2>
+    <p class="standfirst standfirst--inverse">
+      Membership is open to production companies, community film groups, guilds and individual
+      creatives — writers, directors, actors, editors, camera operators, sound recordists,
+      animators, costume and make-up artists, and gaffers.
+    </p>
+    <div class="membership__ctas">
+      <Button href="/membership/join/" size="lg">Become a member</Button>
+      <Button href="/membership/" variant="inverse" size="lg">What members get</Button>
+    </div>
+  </Section>
 </BaseLayout>
+
+<style>
+  .standfirst {
+    max-inline-size: 42rem;
+  }
+
+  /* Space the card grid off the heading it belongs to, and off the CTA that
+     follows it. Section owns the band's outer rhythm; this is the internal
+     gap between a band's own parts. */
+  .band-grid {
+    margin-block: var(--space-6);
+  }
+
+  /* Evidence: photograph, then date, then what happened. The photograph leads
+     because docs/06 section 7's whole argument is that a real picture of a
+     real event carries more weight than the sentence beside it. */
+  .evidence {
+    display: grid;
+    gap: var(--space-6);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  }
+
+  .evidence__date {
+    margin: var(--space-3) 0 var(--space-1);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .evidence__copy {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+  }
+
+  .standfirst--inverse {
+    color: var(--text-muted-on-inverse);
+  }
+
+  .membership__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-6);
+  }
+</style>
