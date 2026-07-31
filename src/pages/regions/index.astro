@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import EntityCard from '../../components/content/EntityCard.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /regions/ — docs/04 § 7.
+ *
+ * THE ORGANISING INSIGHT OF THE WHOLE SITE (docs/05 § 1). Uganda's film
+ * industry has always been concentrated in Kampala; WUFPA's answer was to
+ * build leadership in every sub-region rather than open one office and hope
+ * people travelled to it. This page is where a filmmaker in Kanungu finds
+ * that there is someone in Kabale who covers their district.
+ *
+ * Card descriptions are the per-region opening lines from docs/04 § 7.1 —
+ * the only region-specific prose on the site. Everything else on a region
+ * page is data, which is what lets six pages exist without six sets of
+ * invented copy.
+ */
+
+const page = meta('/regions/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Our six sub-regions' }];
+
+const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="CollectionPage">
+  <PageHeader
+    title="Our six sub-regions"
+    standfirst="WUFPA covers Ankole (Rwizi), Kigezi, Rwenzori, Tooro, Bunyoro and Greater Bushenyi. Each has a coordinator, a secretary and a treasurer, with district coordinators working alongside them."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="why-heading" container="narrow">
+    <h2 id="why-heading">Why we organise by sub-region</h2>
+    <Prose>
+      <p>
+        Uganda’s film industry has always been concentrated in Kampala. WUFPA’s answer was not
+        to open one office and hope people travelled to it, but to build leadership in every
+        sub-region. Sub-regional committees were introduced specifically to decentralise
+        governance and deliver programmes efficiently.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="regions-heading" variant="subtle" reveal>
+    <h2 id="regions-heading">Find your sub-region</h2>
+    <Grid min="18rem" gap={5} class="regions">
+      {
+        regions.map((region) => (
+          <EntityCard
+            variant="region"
+            title={region.data.title}
+            href={`/regions/${region.data.key}/`}
+            description={region.data.opening}
+            meta={[
+              {
+                label: 'Districts',
+                value: region.data.districts.slice(0, 3).join(', ') +
+                  (region.data.districts.length > 3 ? ` +${region.data.districts.length - 3} more` : ''),
+              },
+            ]}
+          />
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="next-heading" container="narrow" reveal>
+    <h2 id="next-heading" class="u-visually-hidden">Where to go next</h2>
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/membership/join/',
+          label: 'Become a member',
+          reason: 'Your enquiry routes to the coordinator for the sub-region you name.',
+        },
+        {
+          href: '/guilds/',
+          label: 'The ten guilds',
+          reason: 'Organised by craft rather than by place — the other half of the structure.',
+        },
+        {
+          href: '/about/governance/',
+          label: 'How WUFPA is governed',
+          reason: 'How the sub-regional committees fit into the association.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .regions {
+    margin-block-start: var(--space-6);
+  }
+</style>

@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import RosterTable from '../../components/content/RosterTable.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+import type { RosterRow } from '../../lib/types';
+
+/**
+ * /about/governance/ — docs/02 § 9, docs/04 § 5.
+ *
+ * Experience intent: a funder's first question is "who is accountable?".
+ * The mechanism is the rosters — named people with named roles and named
+ * districts, published in full rather than summarised as "an elected
+ * committee".
+ *
+ * NO TELEPHONE NUMBERS ANYWHERE. RosterTable has no code path that can emit
+ * one regardless of what it is passed (docs/11 § 6); the supplied roster
+ * carries ~60 personal mobiles and Uganda's Data Protection and Privacy Act,
+ * 2019 applies. The `RosterRow` type has no telephone field at all.
+ *
+ * ONE NAME IS WITHHELD, DELIBERATELY. The Vice President is recorded as
+ * "Rev. Mwsigwa Samon Newton" on [P6] and "Rev. Mwesigwa Newtown Samson" on
+ * [P4] — docs/02 § 12 flags the conflict and it is unresolved. RosterTable
+ * only publishes rows with `nameConfirmed: true`, so that row is held back
+ * and the table says so. Publishing a real person's name misspelled is a
+ * failure docs/20 § 3 names explicitly; the office is still shown in the
+ * structure section above, so nothing is hidden — only the spelling is
+ * withheld until confirmed.
+ */
+
+const page = meta('/about/governance/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About WUFPA', href: '/about/' },
+  { label: 'How WUFPA is governed' },
+];
+
+const agm = getPhoto('governance/wufpa-agm-2023.jpeg');
+
+/* docs/02 § 9.2. `nameConfirmed` is false only where sources conflict. */
+const executive: RosterRow[] = [
+  { name: 'Katabazi George', role: 'President', district: 'Mbarara', nameConfirmed: true, consent: 'granted' },
+  { name: 'Rev. Mwsigwa Samon Newton', role: 'Vice President', district: 'Kasese', nameConfirmed: false, consent: 'granted' },
+  { name: 'Peace Bisirikirwa', role: 'Secretary General', district: 'Kazo', nameConfirmed: true, consent: 'granted' },
+  { name: 'Danson Bauba', role: 'Assistant Secretary', district: 'Bundibugyo', nameConfirmed: true, consent: 'granted' },
+  { name: 'Tayebwa Agnes', role: 'Treasurer', district: 'Ntungamo', nameConfirmed: true, consent: 'granted' },
+  { name: 'Twinamatsiko Lauben', role: 'Director of Production', district: 'Mbarara', nameConfirmed: true, consent: 'granted' },
+  { name: 'Asere Joan', role: 'Publicity and Communications Officer', district: 'Mbarara', nameConfirmed: true, consent: 'granted' },
+  { name: 'Barugahare Musa', role: 'Training and Capacity Building', district: 'Mbarara', nameConfirmed: true, consent: 'granted' },
+  { name: 'Kyomuhendo Ronald', role: 'Fundraising and Partnerships Officer', district: 'Fort Portal', nameConfirmed: true, consent: 'granted' },
+  { name: 'Nimusiima Editor', role: 'Membership and Welfare Officer', district: 'Ibanda', nameConfirmed: true, consent: 'granted' },
+  { name: 'Baguma Arnold', role: 'Regional Coordinator', district: 'Ibanda', nameConfirmed: true, consent: 'granted' },
+];
+
+/* docs/02 § 9.3. */
+const trustees: RosterRow[] = [
+  { name: 'Baryabawe Cyril', role: 'Chairperson of the Board', district: 'Kabale', nameConfirmed: true, consent: 'granted' },
+  { name: 'Mushana Amos', role: 'Secretary to the Board', district: 'Rukungiri', nameConfirmed: true, consent: 'granted' },
+  { name: 'Kamugisha William', role: 'Member', district: 'Ibanda', nameConfirmed: true, consent: 'granted' },
+  { name: 'Biryomumisho Moses', role: 'Member', district: 'Mbarara', nameConfirmed: true, consent: 'granted' },
+];
+
+/* docs/02 § 9.4. Coordinator names are published; the ~25 district
+   coordinators beneath them are not individually listed — the roster carries
+   phone numbers in the same cells and the counts are what a reader needs. */
+const subRegionTeams = [
+  { region: 'Ankole (Rwizi)', coordinator: 'Mwesigye Wycliff', base: 'Mbarara', team: 9, href: '/regions/ankole/' },
+  { region: 'Kigezi', coordinator: 'Kimonge Conrad', base: 'Kabale', team: 9, href: '/regions/kigezi/' },
+  { region: 'Rwenzori', coordinator: 'Penzi Adam', base: 'Kasese', team: 6, href: '/regions/rwenzori/' },
+  { region: 'Tooro', coordinator: 'Mukwikwi Mwesigye Zebidayo', base: 'Fort Portal', team: 5, href: '/regions/tooro/' },
+  { region: 'Bunyoro', coordinator: 'Muhereza Edmond', base: 'Kakumiro', team: 7, href: '/regions/bunyoro/' },
+  { region: 'Greater Bushenyi', coordinator: 'Besigye Wilfred', base: 'Sheema', team: 6, href: '/regions/greater-bushenyi/' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="How WUFPA is governed"
+    standfirst="WUFPA is run by an elected Executive Committee, overseen by a Board of Trustees, and supported by disciplinary and supervisory committees, sub-regional coordinators and ten craft guilds."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="structure-heading" container="narrow">
+    <h2 id="structure-heading">The structure</h2>
+    <Prose>
+      <p>
+        The Executive Committee is led by the President, Vice President, Treasurer and
+        Secretary. Alongside it, the association has a Board of Trustees, a Disciplinary
+        Committee, a Supervisory Committee, and regional and district coordinators who support
+        the running of association activities and ensure the bylaws are followed.
+      </p>
+      <p>
+        Sub-regional leadership committees were introduced to decentralise governance and
+        deliver programmes closer to members.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section spacing="compact">
+    <Figure
+      image={agm.image}
+      alt={agm.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...agm.caption ? { caption: agm.caption } : {}}
+      {...agm.dateNote ? { dateNote: agm.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="executive-heading" variant="subtle" reveal>
+    <h2 id="executive-heading">Executive Committee, 2025–2030</h2>
+    <RosterTable caption="WUFPA Executive Committee, term 2025–2030" rows={executive} />
+  </Section>
+
+  <Section labelledBy="trustees-heading" reveal>
+    <h2 id="trustees-heading">Board of Trustees</h2>
+    <Prose>
+      <p>
+        Both of the association’s founding officers — the first President and the founding
+        Vice President — moved to the Board of Trustees rather than leaving when their terms
+        ended.
+      </p>
+    </Prose>
+    <RosterTable caption="WUFPA Board of Trustees" rows={trustees} class="trustees-table" />
+  </Section>
+
+  <Section labelledBy="subregions-heading" variant="subtle" reveal>
+    <h2 id="subregions-heading">Sub-regional coordination</h2>
+    <p class="standfirst">
+      Each sub-region has a Regional Coordinator, a Secretary and a Treasurer, with district
+      coordinators working alongside them.
+    </p>
+
+    <Grid min="17rem" gap={5} class="teams">
+      {
+        subRegionTeams.map((team) => (
+          <article class="team">
+            <h3 class="team__region">
+              <a href={team.href}>{team.region}</a>
+            </h3>
+            <dl class="team__meta">
+              <div>
+                <dt>Coordinator</dt>
+                <dd>{team.coordinator}</dd>
+              </div>
+              <div>
+                <dt>Based in</dt>
+                <dd>{team.base}</dd>
+              </div>
+              <div>
+                <dt>Team</dt>
+                <dd>{team.team} people</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="committees-heading" container="narrow" reveal>
+    <h2 id="committees-heading">Committees</h2>
+    <Prose>
+      <p>
+        A four-member <strong>Disciplinary Committee</strong> and a
+        <strong>Supervisory Committee</strong> sit alongside the Executive Committee. Ten craft
+        guilds organise members by discipline rather than by place.
+      </p>
+    </Prose>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/about/legal/',
+          label: 'Legal status and registration',
+          reason: 'The registration this governance structure sits inside.',
+        },
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'The coordination teams above, and the districts they cover.',
+        },
+        {
+          href: '/guilds/',
+          label: 'The ten guilds',
+          reason: 'How members are organised by craft.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .trustees-table {
+    margin-block-start: var(--space-5);
+  }
+
+  .teams {
+    margin-block-start: var(--space-6);
+  }
+
+  .team {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+  }
+
+  .team__region {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-lg);
+  }
+
+  .team__meta {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .team__meta > div {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .team__meta dt {
+    min-inline-size: 7rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .team__meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-body);
+  }
+</style>

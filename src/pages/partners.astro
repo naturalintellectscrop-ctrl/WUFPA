@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Grid from '../components/layout/Grid.astro';
+import Figure from '../components/media/Figure.astro';
+import RelatedLinks from '../components/content/RelatedLinks.astro';
+import Button from '../components/primitives/Button.astro';
+import { getPhoto } from '../lib/photos';
+import { meta } from '../lib/page-meta';
+
+/**
+ * /partners/ — docs/04 § 11.
+ *
+ * Experience intent (docs/21 § 2.3): "Confidence · Credibility · Institutional
+ * strength." The mechanism is that these are all checkable third parties — a
+ * reader who doubts WUFPA can verify the Uganda Communications Commission
+ * exists and runs a regional film competition, which is a different kind of
+ * evidence from anything WUFPA says about itself.
+ *
+ * NO LOGOS. ⟦Q10⟧ — written permission has not been obtained, and several of
+ * these are government bodies and diplomatic missions with strict rules on
+ * the use of their identity. A partner listing implies endorsement. So the
+ * page is typographic and photographic, which docs/03 § 7.3 notes is the
+ * stronger treatment anyway: a photograph of WUFPA and a partner in the same
+ * room is better evidence than that partner's logo in a grid.
+ */
+
+const page = meta('/partners/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Partners and supporters' }];
+
+const hero = getPhoto('programmes/training/matatu-film-lab-training-room-2024.jpeg');
+const ufmi = getPhoto('programmes/advocacy/ufmi-ceo-meeting-2025-group.jpeg');
+
+/* docs/04 § 11. Grouped as the Content Bible groups them. */
+const groups = [
+  {
+    heading: 'Training and international support',
+    partners: [
+      'UCC / CineArts Academy',
+      'US Mission Uganda / Film Possible Uganda',
+      'Alliance Française',
+      'Goethe-Zentrum (German Cultural Centre)',
+      'Uganda Film Network',
+      'UNATCOM — the Uganda National Commission for UNESCO',
+      'National Producers Guild of Uganda (PGU)',
+    ],
+  },
+  {
+    heading: 'Broadcast and media',
+    partners: [
+      'TV West',
+      'Tayari West TV',
+      'GNTV',
+      'Lite TV',
+      'YoTV (Kibanda Express Channel)',
+      'Sky TV Mbarara',
+      'MTN YoTV',
+    ],
+  },
+  {
+    heading: 'Industry and regulatory',
+    partners: [
+      'Uganda Communications Commission (UCC)',
+      'Uganda Registration Services Bureau (URSB)',
+      'Uganda Film Council',
+      'Uganda Federation of Movie Industry (UFMI)',
+      'Media Council of Uganda',
+      'Uganda Film Association',
+      'Uganda Film Publishers Association',
+      'Kampala Film School',
+    ],
+  },
+];
+
+/* docs/02 § 10.3 — the six partnership types WUFPA is seeking. */
+const seeking = [
+  'Development partners and NGOs',
+  'Government institutions',
+  'Media houses and technology companies',
+  'Financial institutions and the private sector',
+  'International film institutions',
+  'Academic institutions',
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Partners and supporters"
+    standfirst="WUFPA’s training, competitions and campaigns are delivered with partners. These are the institutions we work alongside."
+    crumbs={crumbs}
+  />
+
+  <Section spacing="compact">
+    <Figure
+      image={hero.image}
+      alt={hero.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...hero.caption ? { caption: hero.caption } : {}}
+      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
+    />
+  </Section>
+
+  {
+    groups.map((group, index) => (
+      <Section
+        labelledBy={`group-${index}`}
+        variant={index % 2 === 0 ? 'subtle' : 'default'}
+        reveal
+      >
+        <h2 id={`group-${index}`}>{group.heading}</h2>
+        <ul role="list" class="partners">
+          {group.partners.map((partner) => (
+            <li class="partner">{partner}</li>
+          ))}
+        </ul>
+      </Section>
+    ))
+  }
+
+  <Section labelledBy="seeking-heading" variant="subtle" reveal>
+    <h2 id="seeking-heading">Who we want to work with</h2>
+    <p class="standfirst">
+      WUFPA is actively seeking partnerships in six areas.
+    </p>
+    <div class="split">
+      <Grid min="15rem" gap={4} class="seeking">
+        {seeking.map((type) => <p class="seeking__item">{type}</p>)}
+      </Grid>
+      <Figure
+        image={ufmi.image}
+        alt={ufmi.alt}
+        purpose="card"
+        ratio="landscape"
+        sizes="(min-width: 64rem) 26rem, 100vw"
+        {...ufmi.caption ? { caption: ufmi.caption } : {}}
+        {...ufmi.dateNote ? { dateNote: ufmi.dateNote } : {}}
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="cta-heading" container="narrow" reveal>
+    <h2 id="cta-heading">Partner with WUFPA</h2>
+    <Prose>
+      <p>
+        WUFPA works with more than 300 production houses across six sub-regions, with
+        coordinators in around twenty-five districts. If your organisation works in film,
+        culture, education or regional development in Western Uganda, there is a route in.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/contact/">Partner with WUFPA</Button>
+      <Button href="/support/" variant="tertiary">Support our work</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The six programmes these partnerships deliver.',
+        },
+        {
+          href: '/about/',
+          label: 'About WUFPA',
+          reason: 'The association’s legal status, objectives and governance.',
+        },
+        {
+          href: '/impact/',
+          label: 'Impact and gallery',
+          reason: 'Eight years of this work, in photographs.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  /* Names set as rules, not logo tiles — no logo is published without written
+     permission (⟦Q10⟧), and a typographic list of checkable institutions is
+     the stronger treatment regardless (docs/03 § 7.3). */
+  .partners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .partner {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  .split {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-5);
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: start;
+      gap: var(--space-8);
+    }
+  }
+
+  .seeking__item {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-subtle);
+    color: var(--text-body);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

@@ -99,6 +99,27 @@
     min-inline-size: var(--sidebar-content-min, 50%);
   }
 
+  /* ── QUERY CONTAINERS (WUFPA-081) ─────────────────────────────────────
+     THE CONVENTION: a component that recomposes by its own width declares
+     `container: <name> / inline-size` on its OUTER element, and queries that
+     name from a DESCENDANT. A component can never query itself — @container
+     resolves against ancestors — which is why the container sits on the
+     wrapper and the rule targets something inside it.
+
+     ALWAYS NAME THE CONTAINER. An anonymous container resolves to the nearest
+     ancestor of any name, so a card nested inside a card would silently answer
+     its grandparent's width.
+
+     ALWAYS `inline-size`, never `size`. Plain `size` containment requires the
+     block size to be independent of content too, which collapses any element
+     whose height comes from its text — that is nearly everything here.
+
+     Declared containers: `card` (EntityCard).
+
+     This block exists because EntityCard shipped an @container rule with no
+     container anywhere in the codebase, so it never matched and nothing
+     failed. WUFPA-084 guard #2 now fails the build on that combination. */
+
   /* Frame — fixed aspect ratio for media, reserved BEFORE load so there is no
      layout shift. object-position is tuned per image so faces survive
      responsive crops. */
@@ -131,6 +152,12 @@
   }
   .section[data-variant='accent'] {
     background-color: var(--surface-accent-subtle);
+  }
+  /* WUFM SACCO only. The SACCO is a separate registered entity with its own
+     palette; docs/03 section 8.6 restricts this blue to SACCO pages and
+     sections, and it must appear nowhere else on the site. */
+  .section[data-variant='sacco'] {
+    background-color: var(--surface-sacco);
   }
   .section[data-variant='inverse'] {
     background-color: var(--surface-inverse);

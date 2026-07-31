@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import EntityCard from '../../components/content/EntityCard.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/ — the index of the six programme areas.
+ *
+ * Experience intent (docs/21 § 2.3): "Encouraged · Included · Empowered."
+ * The mechanism is the standfirst, which frames the six areas as the whole of
+ * one filmmaker's problem rather than six departments of an organisation —
+ * so a reader recognises their own situation in the list before they read a
+ * single card.
+ *
+ * Reference: Academy Museum, editorial storytelling only — a programme index
+ * that reads as a body of work rather than a services menu.
+ *
+ * Copy verbatim from docs/04 § 6 and § 6.1. Card copy is NOT rewritten for
+ * this page; the same six strings appear on the homepage's "what we do" band,
+ * drawn from the same source, so the two cannot drift.
+ */
+
+const page = meta('/programmes/');
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'What we do' }];
+
+/* docs/04 § 6.1, verbatim. Order is the document's order, which runs the
+   filmmaker's problem end to end: learn the craft, keep the rights, reach an
+   audience, get paid, get financed, be recognised. */
+const programmes = [
+  {
+    title: 'Training & Capacity Building',
+    href: '/programmes/training/',
+    description:
+      'Workshops, master classes and mentorship in screenwriting, directing, acting, cinematography, editing and production — delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
+  },
+  {
+    title: 'Advocacy, Rights & Anti-Piracy',
+    href: '/programmes/advocacy/',
+    description:
+      'We campaign for filmmakers’ copyright, take that campaign to the streets, and press for film to be taught in Uganda’s schools.',
+  },
+  {
+    title: 'The Kibanda Initiative',
+    href: '/programmes/kibanda/',
+    description:
+      'Community film screenings that bring Western Ugandan films to towns, schools and rural communities.',
+  },
+  {
+    title: 'Distribution & Market Access',
+    href: '/programmes/distribution/',
+    description:
+      'We organised the region’s film distributors, and members’ films now air on five regional broadcasters.',
+  },
+  {
+    title: 'Competitions & Awards',
+    href: '/programmes/competitions/',
+    description:
+      'We persuaded the Uganda Communications Commission to create a regional film competition, and we run the Western Uganda Film Awards Gala.',
+  },
+  {
+    title: 'International Exposure',
+    href: '/programmes/international/',
+    description:
+      'Delegations to Zanzibar, Kigali and beyond, so our members meet the industry outside Uganda.',
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="CollectionPage">
+  <PageHeader
+    title="What we do"
+    standfirst="WUFPA’s work falls into six areas. Together they cover the whole problem a filmmaker in Western Uganda faces: learning the craft, keeping the rights, reaching an audience, getting paid, getting financed, and being recognised."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="programmes-heading">
+    <h2 id="programmes-heading" class="u-visually-hidden">The six programme areas</h2>
+    <Grid min="18rem" gap={5}>
+      {
+        programmes.map((programme) => (
+          <EntityCard
+            variant="programme"
+            title={programme.title}
+            href={programme.href}
+            description={programme.description}
+          />
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="join-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="join-heading">Every one of these is open to members</h2>
+    <Prose>
+      <p>
+        WUFPA does not make films. It makes it possible for its members to — by teaching the
+        craft, defending the rights, opening the markets and putting the work in front of
+        audiences and juries. Membership is what connects a filmmaker in any of the six
+        sub-regions to all six of these programmes.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+      <Button href="/membership/" variant="tertiary">What membership provides</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'Where these programmes are delivered, and who coordinates them.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The institutions this work is delivered with.',
+        },
+        {
+          href: '/about/',
+          label: 'About WUFPA',
+          reason: 'The objectives these six areas turn into work.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

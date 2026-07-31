@@ -62,7 +62,7 @@ const headingId = 'related-links-heading';
 <nav class:list={['related', className]} aria-labelledby={headingId}>
   <Heading id={headingId} class="related__heading">{heading}</Heading>
 
-  <ul role="list" class="related__list">
+  <ul role="list" class="grid related__list">
     {
       links.map((link) => (
         <li class="related__item">
@@ -88,18 +88,17 @@ const headingId = 'related-links-heading';
     font-size: var(--text-xl);
   }
 
+  /* Columns come from the intrinsic `.grid` primitive (global.css @layer
+     layout), not from a media query here. WUFPA-015: this component previously
+     hand-rolled the same auto-fit grid behind a 40rem breakpoint — which asked
+     the VIEWPORT how much room the list had, and so was wrong whenever
+     RelatedLinks sat in a narrow column on a wide screen. `--grid-min` makes it
+     answer to its own container instead. */
   .related__list {
-    display: grid;
-    gap: var(--space-5);
+    --grid-min: 16rem;
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  @media (min-width: 40rem) {
-    .related__list {
-      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    }
   }
 
   .related__link {

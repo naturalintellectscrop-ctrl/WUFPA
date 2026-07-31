@@ -1,0 +1,291 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Timeline from '../../components/content/Timeline.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+import type { TimelineEntry } from '../../lib/types';
+
+/**
+ * /about/history/ — the reconciled timeline from docs/02 § 3.
+ *
+ * Experience intent: an institution with a past is harder to dismiss than one
+ * with a plan. The mechanism is the timeline itself — dated, sourced, and
+ * long enough that its length is the argument.
+ *
+ * ROUGHLY A THIRD OF WUFPA'S ACTIVITY CARRIES NO DATE. Those entries are
+ * passed to Timeline without a `dateLabel`, which groups them under "Date not
+ * recorded" rather than interleaving them at a guessed position. Publishing a
+ * guessed year would be a fabrication that no reader could detect, which is
+ * exactly why the component makes the honest path the easy one.
+ *
+ * Reference: British Film Institute — institutional credibility only.
+ */
+
+const page = meta('/about/history/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About WUFPA', href: '/about/' },
+  { label: 'Our story' },
+];
+
+const pioneers = getPhoto('history/wufpa-pioneers-2017.jpeg');
+
+/* docs/02 § 3, verbatim. `date` is the machine-readable value; `dateLabel` is
+   what a reader sees. Entries with neither are grouped as undated. */
+const entries: TimelineEntry[] = [
+  {
+    date: '2017-09-04',
+    dateLabel: '4 September 2017',
+    title: 'WUFPA is registered',
+    description:
+      'Fourteen film production companies and groups from the Ankole and Kigezi regions register the association with the Uganda Registration Services Bureau as a company limited by guarantee. Cyril Baryabawe leads the registration and becomes first President; Mushana Amos becomes founding Vice President; Katabazi George serves on the founders’ executive committee.',
+    source: '[P1] [P4] [P5]',
+  },
+  {
+    date: '2017',
+    dateLabel: '2017–2022',
+    title: 'The founding period',
+    description:
+      'Focus on building unity among local filmmakers and raising awareness on film copyright and intellectual property rights, with early campaigns in Mbarara City and the surrounding areas.',
+    source: '[P4]',
+  },
+  {
+    date: '2022',
+    dateLabel: '2022',
+    title: 'Katabazi George elected President',
+    source: '[P5]',
+  },
+  {
+    date: '2022',
+    dateLabel: '2022',
+    title: 'Sensitisation across Greater Bushenyi',
+    description: 'A meeting with film producers and actors in the Greater Bushenyi region.',
+    source: '[P8]',
+  },
+  {
+    date: '2022',
+    dateLabel: '2022',
+    title: 'Memorandum of understanding with Sky TV',
+    description: 'Signed in Mbarara City, opening a broadcast route for members’ films.',
+    source: '[P8]',
+  },
+  {
+    date: '2022',
+    dateLabel: '2022',
+    title: 'Sensitisation film workshop in Bunyoro',
+    source: '[P9] [PH-2]',
+  },
+  {
+    date: '2023',
+    dateLabel: '2023',
+    title: 'Meeting with URSB regional offices',
+    source: '[P9]',
+  },
+  {
+    date: '2023',
+    dateLabel: '2023',
+    title: 'WUFPA Annual General Meeting',
+    source: '[P14]',
+  },
+  {
+    date: '2023',
+    dateLabel: '2023',
+    title: 'Monetising film content, with MTN YoTV',
+    description: 'A sensitisation workshop on how members earn from the YoTV channel.',
+    source: '[P15]',
+  },
+  {
+    date: '2023',
+    dateLabel: '2023',
+    title: 'Visit from US film expert Joshua Stoone',
+    source: '[P15]',
+  },
+  {
+    date: '2023-11-28',
+    dateLabel: '28–30 November 2023',
+    title: 'Delegation to the Kigali International Content Market',
+    description:
+      'WUFPA attends MashaRket, part of the Mashariki African Film Festival in Kigali, Rwanda. Delegates identified in festival materials include Kamugisha William and Katabazi George.',
+    source: '[P14]',
+  },
+  {
+    date: '2024',
+    dateLabel: '2024',
+    title: 'The Matatu Film Lab',
+    description:
+      'Engagement with international mentor Zavaleta Janson and Film Possible, supported by US Mission Uganda.',
+    source: '[P16]',
+  },
+  {
+    date: '2025',
+    dateLabel: '2025',
+    title: 'Rev. Mwesigwa Newtown Samson elected Vice President',
+    description: 'For the 2025–2030 term.',
+    source: '[P4]',
+  },
+  {
+    date: '2025',
+    dateLabel: '2025',
+    title: 'Katabazi George begins a second presidential term',
+    description: '2025–2030.',
+    source: '[P5]',
+  },
+  {
+    date: '2025-10-24',
+    dateLabel: '24 October 2025',
+    title: 'WUFM SACCO certificate received',
+    description:
+      'Members receive the SACCO certificate, with the Mbarara City Commercial Officer.',
+    source: '[P23]',
+  },
+  {
+    date: '2025-10-26',
+    dateLabel: '26 October 2025',
+    title: 'Meeting with the UFMI CEO',
+    source: '[P24]',
+  },
+
+  /* Undated — no dateLabel, so Timeline groups these under "Date not
+     recorded". Every one is documented in the profile; none has a year. */
+  {
+    title: 'Sensitisation film workshop in Tooro, at Obukama bwa Tooro',
+    source: '[P10] [PH-3]',
+  },
+  {
+    title:
+      'Sensitisation film workshops across Ibanda, Kazo, Kiruhura, Kamwengye and Kitagwenda',
+    source: '[P11]',
+  },
+  {
+    title: 'UCC “Western Uganda Film Makers” awareness workshop',
+    description:
+      'On the Content Development Support Programme and the Uganda Film Festival.',
+    source: '[P11]',
+  },
+  {
+    title: 'WUFPA attends the Uganda Parliamentary Forum for Creative Industries',
+    source: '[P12]',
+  },
+  {
+    title: '“Together Against Piracy” campaign and march',
+    description:
+      'Joint action with UCC, URSB, the Uganda Film Council, UFMI and the Media Council of Uganda.',
+    source: '[P13]',
+  },
+  {
+    title: 'Sensitisation workshop with Film Impact Movement (USA)',
+    source: '[P17]',
+  },
+  {
+    title: 'Hosting the Uganda Federation of Movie Industry and the Uganda Film Association',
+    description: 'Including sensitisation in Kigezi with the UFMI CEO.',
+    source: '[P17]',
+  },
+  {
+    title: 'Sensitisation in Ntungamo and Rukungiri',
+    description: 'With the Uganda Film Publishers Association.',
+    source: '[P18]',
+  },
+  {
+    title: 'Sensitisation with Healing Together Uganda',
+    source: '[P18]',
+  },
+  {
+    title: 'UCC Western Region Film Competition Festival master classes',
+    description: 'Delivered with Kampala Film School.',
+    source: '[P19]',
+  },
+  {
+    title: 'UCC Regional Film Competition awards ceremonies',
+    description:
+      'Trophies, certificates and a UCC prize cheque presented to Western Region winners.',
+    source: '[P20] [P21]',
+  },
+  {
+    title: 'Training workshop with UNATCOM for UNESCO',
+    source: '[P22]',
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Our story: 2017 to today"
+    standfirst="From fourteen production companies in Ankole and Kigezi to more than 300 production houses across six sub-regions. Eight years of Western Ugandan film, as recorded."
+    crumbs={crumbs}
+  />
+
+  <Section spacing="compact">
+    <Figure
+      image={pioneers.image}
+      alt={pioneers.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...pioneers.caption ? { caption: pioneers.caption } : {}}
+      {...pioneers.dateNote ? { dateNote: pioneers.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="beginning-heading" container="narrow" reveal>
+    <h2 id="beginning-heading">How it started</h2>
+    <Prose>
+      <p>
+        In 2017, fourteen film production companies and groups from Ankole and Kigezi
+        registered WUFPA with the Uganda Registration Services Bureau. They were working in an
+        industry whose training, funding, buyers and policy conversations all happened in
+        Kampala — and watching their films copied and sold without permission.
+      </p>
+      <p>
+        Both of the association’s founding officers remain involved today, serving on the
+        Board of Trustees.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="timeline-heading" variant="subtle" reveal>
+    <h2 id="timeline-heading">The record</h2>
+    <p class="standfirst">
+      Every entry below is drawn from WUFPA’s own association profile. Where an activity is
+      documented but carries no date, it is listed separately rather than given a year it does
+      not have.
+    </p>
+    <Timeline entries={entries} class="history-timeline" />
+  </Section>
+
+  <Section labelledBy="related-heading" container="narrow" reveal>
+    <h2 id="related-heading" class="u-visually-hidden">Where to go next</h2>
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/about/governance/',
+          label: 'How WUFPA is governed',
+          reason: 'The structure this history built.',
+        },
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The six areas these activities are organised into today.',
+        },
+        {
+          href: '/impact/',
+          label: 'Impact and gallery',
+          reason: 'The same eight years, in photographs.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .history-timeline {
+    margin-block-start: var(--space-7);
+  }
+</style>

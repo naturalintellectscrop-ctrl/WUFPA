@@ -55,7 +55,19 @@ export const primaryNav: NavItem[] = [
       { label: 'International exposure', href: '/programmes/international/' },
     ],
   },
-  { label: 'Regions', href: '/regions/' },
+  {
+    label: 'Regions',
+    href: '/regions/',
+    children: [
+      { label: 'All six sub-regions', href: '/regions/' },
+      { label: 'Ankole (Rwizi)', href: '/regions/ankole/' },
+      { label: 'Kigezi', href: '/regions/kigezi/' },
+      { label: 'Rwenzori', href: '/regions/rwenzori/' },
+      { label: 'Tooro', href: '/regions/tooro/' },
+      { label: 'Bunyoro', href: '/regions/bunyoro/' },
+      { label: 'Greater Bushenyi', href: '/regions/greater-bushenyi/' },
+    ],
+  },
   { label: 'Membership', href: '/membership/' },
   { label: 'News', href: '/news/' },
 ];

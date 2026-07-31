@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import KeyFacts from '../../components/content/KeyFacts.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import { meta } from '../../lib/page-meta';
+import { site } from '../../lib/site-config';
+import type { Fact } from '../../lib/types';
+
+/**
+ * /about/legal/ — docs/02 § 4.
+ *
+ * THIS PAGE EXISTS BECAUSE OF ONE SENTENCE. "Company limited by guarantee",
+ * with the URSB registration and the founding date, answers a sceptical
+ * funder's first question in a single line — and the prototype omitted it
+ * entirely. docs/05 § 4 places this at step 2 of the institutional-visitor
+ * journey for exactly that reason.
+ *
+ * Experience intent: institutional credibility. The mechanism is that every
+ * fact here is checkable against a public register, and the one fact that is
+ * NOT supplied — the registration number ⟦Q21⟧ — is shown as pending rather
+ * than quietly omitted. A reader who notices the gap learns the page is
+ * honest; a reader who does not loses nothing.
+ *
+ * NO TELEPHONE. docs/02 § 4 records the published number as the President's
+ * personal mobile (⟦Q3⟧), so it is not republished here — see
+ * docs/01 § 7 (C5).
+ */
+
+const page = meta('/about/legal/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About WUFPA', href: '/about/' },
+  { label: 'Legal status and registration' },
+];
+
+/* docs/02 § 4, verbatim. `pending` renders in place of a missing value, which
+   is how a gap is published honestly rather than hidden. */
+const facts: Fact[] = [
+  { label: 'Registered name', value: 'Western Uganda Film Producers Association Limited' },
+  { label: 'Legal form', value: 'Company limited by guarantee' },
+  { label: 'Status', value: 'Not-for-profit association' },
+  { label: 'Registrar', value: 'Uganda Registration Services Bureau (URSB)' },
+  { label: 'Date of registration', value: '4 September 2017' },
+  { label: 'Registration number', pending: 'Not yet published' },
+  {
+    label: 'Head office',
+    value: `${site.address.street}, ${site.address.locality}, ${site.address.country}`,
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Legal status and registration"
+    standfirst="WUFPA is registered with the Uganda Registration Services Bureau as a company limited by guarantee, operating as a not-for-profit association."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="facts-heading" container="narrow">
+    <h2 id="facts-heading" class="u-visually-hidden">Registration details</h2>
+    <KeyFacts facts={facts} />
+  </Section>
+
+  <Section labelledBy="meaning-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="meaning-heading">What “company limited by guarantee” means</h2>
+    <Prose>
+      <p>
+        It is the standard Ugandan legal form for a membership body with no shareholders and no
+        distributable profit. WUFPA has members rather than owners; any surplus is applied to
+        the association’s objects rather than paid out.
+      </p>
+      <p>
+        Together with the URSB registration and the founding date, that is the whole of
+        WUFPA’s legal position — checkable on a public register rather than asserted here.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="related-heading" container="narrow" reveal>
+    <h2 id="related-heading" class="u-visually-hidden">Where to go next</h2>
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/about/governance/',
+          label: 'How WUFPA is governed',
+          reason: 'The committees and rosters accountable under this registration.',
+        },
+        {
+          href: '/about/history/',
+          label: 'Our story',
+          reason: 'What has happened since the 2017 registration.',
+        },
+        {
+          href: '/contact/',
+          label: 'Contact WUFPA',
+          reason: 'The registered head office, and how to reach the association.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>

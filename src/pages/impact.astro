@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Grid from '../components/layout/Grid.astro';
+import Figure from '../components/media/Figure.astro';
+import RelatedLinks from '../components/content/RelatedLinks.astro';
+import Button from '../components/primitives/Button.astro';
+import { getPhoto } from '../lib/photos';
+import { meta } from '../lib/page-meta';
+
+/**
+ * /impact/ — docs/04 § 12. Eight albums, one per activity strand.
+ *
+ * THE CLAIM THIS PAGE MAKES IS THE ONE MOST ORGANISATIONS CANNOT: every
+ * photograph was taken at a WUFPA activity. Where the date, place and people
+ * are known, they are stated; where they are not, that is stated too. It is
+ * quiet, verifiable, and the direct antidote to the prototype's stock imagery
+ * (docs/04 § 12).
+ *
+ * CAPTIONS ARE VISIBLE IN THE GRID, NOT HIDDEN BEHIND HOVER. The prototype
+ * hid captions with `translateY(100%)`, making them unreachable by touch and
+ * keyboard. Captions are content, not a hover reward — every Figure below
+ * renders its caption inline.
+ *
+ * GROUP PHOTOGRAPHS ARE NOT CROPPED SQUARE. `ratio="auto"` lets each image
+ * keep its own shape: this archive is dominated by 20–100 person group shots
+ * and the scale IS the message (docs/07 § 10.3).
+ *
+ * No lightbox yet — the grid works completely without one, and a lightbox
+ * that traps focus badly is worse than none. Full-size images are reachable
+ * because each Figure serves a responsive srcset at the source's own width.
+ */
+
+const page = meta('/impact/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Impact and gallery' }];
+
+/* Eight albums, docs/04 § 12. Photograph selection is drawn from the manifest
+   by activity strand; every file listed carries its own alt text and caption,
+   written per-asset in the media library. */
+const albums = [
+  {
+    id: 'sensitisation',
+    title: 'Sensitisation across the sub-regions',
+    intro:
+      'The district-by-district programme that grew WUFPA from fourteen companies to more than three hundred.',
+    photos: [
+      'regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg',
+      'regions/bunyoro/sensitisation-workshop-bunyoro-2022-banner.jpeg',
+      'regions/greater-bushenyi/sensitisation-meeting-greater-bushenyi-2022.jpeg',
+      'regions/ankole/sensitisation-ibanda-kazo-kiruhura-kamwengye-kitagwenda.jpeg',
+      'regions/kigezi/sensitisation-ntungamo-rukungiri-film-publishers.jpeg',
+      'regions/tooro/sensitisation-workshop-tooro-craft-display.jpeg',
+    ],
+  },
+  {
+    id: 'training',
+    title: 'Training and master classes',
+    intro:
+      'Workshops and labs delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
+    photos: [
+      'programmes/training/matatu-film-lab-cohort-2024.jpeg',
+      'programmes/training/matatu-film-lab-training-room-2024.jpeg',
+      'programmes/training/mtn-yotv-monetisation-workshop-2023.jpeg',
+      'programmes/training/ucc-master-class-kampala-film-school-session.jpeg',
+      'programmes/training/unatcom-unesco-training-workshop.jpeg',
+      'programmes/training/joshua-stoone-visit-2023-outdoor-circle.jpeg',
+    ],
+  },
+  {
+    id: 'piracy',
+    title: 'Together Against Piracy',
+    intro:
+      'The copyright campaign, run with UCC, URSB, the Uganda Film Council, UFMI and the Media Council of Uganda.',
+    photos: [
+      'programmes/advocacy/together-against-piracy-banner-mbarara.jpeg',
+      'programmes/advocacy/together-against-piracy-march-street.jpeg',
+      'programmes/advocacy/together-against-piracy-march-mbarara-street.jpeg',
+      'programmes/advocacy/together-against-piracy-brass-band-placards.jpeg',
+    ],
+  },
+  {
+    id: 'competition',
+    title: 'UCC Regional Film Competition',
+    intro:
+      'The competition WUFPA argued into existence, and members at its Western Region ceremonies.',
+    photos: [
+      'programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg',
+      'programmes/competitions/ucc-regional-competition-ceremony-stage.jpeg',
+      'programmes/competitions/ucc-regional-film-competition-winners-group.jpeg',
+      'programmes/competitions/ucc-regional-film-competition-prize-cheque.jpeg',
+    ],
+  },
+  {
+    id: 'partners',
+    title: 'Partners and visitors',
+    intro: 'Meetings with the institutions WUFPA’s work is delivered alongside.',
+    photos: [
+      'programmes/advocacy/ufmi-ceo-meeting-2025-group.jpeg',
+      'programmes/advocacy/ufmi-uganda-film-association-visit.jpeg',
+      'programmes/advocacy/ursb-regional-offices-meeting-2023.jpeg',
+      'programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg',
+    ],
+  },
+  {
+    id: 'sacco',
+    title: 'WUFM SACCO',
+    intro:
+      'The Western Uganda Filmmakers SACCO certificate, received on 24 October 2025 with the Mbarara City Commercial Officer.',
+    photos: [
+      'sacco/wufm-sacco-certificate-presentation-2025.jpeg',
+      'sacco/wufm-sacco-certificate-commercial-officer-2025.jpeg',
+      'sacco/wufm-sacco-certificate-handover-2025.jpeg',
+    ],
+  },
+  {
+    id: 'agm',
+    title: 'Annual General Meetings',
+    intro: 'The association meeting as a whole membership.',
+    photos: ['governance/wufpa-agm-2023.jpeg', 'history/wufpa-pioneers-2017.jpeg'],
+  },
+  {
+    id: 'international',
+    title: 'International delegations',
+    intro:
+      'WUFPA members at the Kigali International Content Market and the Mashariki African Film Festival.',
+    photos: [
+      'programmes/international/kigali-content-market-2023-panel.jpeg',
+      'programmes/international/mashariki-film-festival-banner-2023.jpeg',
+      'programmes/international/kigali-delegate-card-katabazi-george.jpeg',
+    ],
+  },
+].map((album) => ({ ...album, images: album.photos.map((file) => getPhoto(file)) }));
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="CollectionPage">
+  <PageHeader
+    title="Impact and gallery"
+    standfirst="Eight years of workshops, campaigns, competitions and screenings across Western Uganda."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="claim-heading" container="narrow">
+    <h2 id="claim-heading" class="u-visually-hidden">About these photographs</h2>
+    <p class="claim">
+      Every photograph on this site was taken at a WUFPA activity. Where we know the date, the
+      place and the people, we say so. Where we do not, we say that too.
+    </p>
+  </Section>
+
+  <Section labelledBy="albums-nav-heading" variant="subtle" spacing="compact">
+    <h2 id="albums-nav-heading" class="u-visually-hidden">Jump to an album</h2>
+    <nav aria-label="Albums">
+      <ul role="list" class="album-nav">
+        {
+          albums.map((album) => (
+            <li>
+              <a href={`#${album.id}`}>{album.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </Section>
+
+  {
+    albums.map((album, index) => (
+      <Section
+        labelledBy={`${album.id}-heading`}
+        variant={index % 2 === 1 ? 'subtle' : 'default'}
+        reveal
+      >
+        <h2 id={`${album.id}-heading`}>{album.title}</h2>
+        <p class="standfirst">{album.intro}</p>
+
+        <Grid min="20rem" gap={6} class="album">
+          {album.images.map((photo) => (
+            <Figure
+              image={photo.image}
+              alt={photo.alt}
+              purpose="thumbnail"
+              ratio="auto"
+              variant="grid-item"
+              sizes="(min-width: 64rem) 26rem, 100vw"
+              {...photo.caption ? { caption: photo.caption } : {}}
+              {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
+            />
+          ))}
+        </Grid>
+      </Section>
+    ))
+  }
+
+  <Section labelledBy="cta-heading" container="narrow" reveal>
+    <h2 id="cta-heading">This is what membership builds</h2>
+    <Prose>
+      <p>
+        Every activity above was organised by the association for its members. Joining is how
+        a filmmaker in any of the six sub-regions gets into the next one.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+      <Button href="/support/" variant="tertiary">Support this work</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/about/history/',
+          label: 'Our story',
+          reason: 'The same eight years, as a dated record.',
+        },
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The six programme areas these activities belong to.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The institutions in many of these photographs.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .claim {
+    margin: 0;
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .album-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .album-nav a {
+    display: inline-block;
+    padding-block: var(--space-2);
+    min-block-size: var(--target-min);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+  }
+
+  .album {
+    margin-block-start: var(--space-6);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

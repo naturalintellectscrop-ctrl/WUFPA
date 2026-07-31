@@ -856,9 +856,28 @@ the build output. The two visual criteria above are the honest gap.
 
 | Category | Priority | Status | Complexity | Estimate | Dependencies |
 |---|---|---|---|---|---|
-| UI | **P1** | Not Started | S | 4 h | WUFPA-009 |
+| UI | **P1** | ✅ **Completed** | S | 4 h | WUFPA-009 ✅ |
 
-**Files:** `src/components/layout/`
+**Completed** 31 July 2026. All six primitives shipped as `.astro` components wrapping the CSS
+WUFPA-009 had already laid down: `Stack`, `Cluster`, `Grid`, `Switcher`, `Sidebar`, `Frame`.
+`Grid` is already in production use on the homepage (`index.astro`, the programmes and regions
+bands).
+
+> **Typed to the scale, not to `string`.** `SpaceToken` (0–10) and `FrameRatio` in
+> `src/lib/types.ts` mean a caller cannot pass a gap or ratio that is off the design system —
+> R6 enforced by the compiler instead of by code review. `Grid` deliberately has **no `columns`
+> prop**: a fixed column count is a viewport assumption wearing a different hat, and `--grid-min`
+> is the only control it needs.
+
+> **The three bespoke grids are gone.** `RelatedLinks`, `/events/` and `/news/` each hand-rolled
+> the same auto-fit grid behind a `40rem` media query while `.grid` sat unused — the drift
+> WUFPA-080 recorded as `transitional` in `breakpoints.json`. All three now set `--grid-min` and
+> take their columns from the primitive. **`grep "min-width: 40rem" src/` returns nothing**, so
+> that file's `"expected": "empty"` is now true.
+
+**Files:** `src/components/layout/{Stack,Cluster,Grid,Switcher,Sidebar,Frame}.astro`,
+`src/lib/types.ts`, `src/components/content/RelatedLinks.astro`, `src/pages/events/index.astro`,
+`src/pages/news/[...page].astro`
 
 **Description.** Implement the six primitives in
 [`docs/07 § 5.3`](docs/07_DESIGN_SYSTEM.md#53-layout-primitives): Stack, Cluster, Grid, Sidebar,
@@ -3003,7 +3022,29 @@ autoplay carousels.
 
 | Category | Priority | Status | Complexity | Estimate | Dependencies |
 |---|---|---|---|---|---|
-| UX | **P1** | [x] **Completed** | XS | 2 h | WUFPA-067 |
+| UX | **P1** | ✅ **Completed** *(reopened and finished 31 Jul)* | XS | 2 h + 2 h | WUFPA-067 ✅ |
+
+> **Reopened 31 July 2026: this shipped as a system that animated nothing.** The mechanism below
+> was correct and well built — and completely inert. `reveal.ts` was imported by exactly one
+> file, `component-gallery.astro`, so it never loaded on a single real route; and
+> `class="reveal"` appeared on **zero elements** anywhere in `src/`, so even there it had no
+> targets. The CSS in `base/a11y.css` animated nothing, on every page, for five days. Nothing
+> failed, which is why nothing caught it.
+>
+> **Now genuinely live.** `reveal.ts` is imported once in `BaseLayout.astro` as a deferred module
+> (860 bytes, non-blocking), and `Section` carries an opt-in `reveal` prop. Six homepage bands
+> use it; the hero and the stat band deliberately do not, since animating what is already on
+> screen at load delays the LCP element for no gain. Verified in `dist/index.html`: six
+> `class="container reveal"` elements and the script in the entry graph.
+>
+> **Two defects fixed while it was open.** `--stagger` was defined as a token and the script
+> hard-coded `60` beside it, so the token had no consumer — it is now read from computed style.
+> And the stagger was indexed **globally across the document**, which gave the fourth band on a
+> long page a 180ms delay it had not earned: it enters the viewport alone, seconds after the
+> first, so the delay read as lag. Stagger is now counted **within a parent**, so the delay
+> expresses the one thing it should — that these items arrived together and are related. That is
+> motion communicating hierarchy ([`docs/21 § 5`](docs/21_DIGITAL_EXPERIENCE_FRAMEWORK.md))
+> rather than decorating a scroll.
 
 Completed 26 July 2026. **Content is visible by default.** `src/scripts/reveal.ts` adds `.js-reveal` to `<html>` only AFTER its IntersectionObserver has successfully attached, so a script that fails to load, throws, or has not yet run can never leave the page blank — the prototype's failure mode, and the likeliest one for an audience on metered 3G. Uses IntersectionObserver rather than the prototype's unthrottled scroll handler, reveals once, and staggers a maximum of five items.
 
@@ -3487,7 +3528,25 @@ claimed; owed before this ships.
 
 | Category | Priority | Status | Complexity | Estimate | Dependencies |
 |---|---|---|---|---|---|
-| UI | **P1** | Not Started | S | 4 h | WUFPA-015 |
+| UI | **P1** | ✅ **Completed** | S | 4 h | WUFPA-015 ✅ |
+
+**Completed** 31 July 2026. `EntityCard`'s `.card` now declares `container: card / inline-size`
+and its rule queries `@container card (min-width: 30rem)`. **Confirmed live in the build
+output** — both the declaration and the named query are present in the homepage's compiled CSS,
+where before the query matched nothing because `container-type` appeared nowhere in the
+repository.
+
+> **The failure mode is why this needed a task rather than a one-line fix.** Nothing was broken.
+> Nothing errored. A rule simply never applied, silently, on a component used across the whole
+> homepage. WUFPA-084 guard #2 now fails the build on any `@container` in a file with no
+> `container-type`, so this cannot recur unnoticed.
+
+> **Named, not anonymous, and `inline-size`, not `size`.** An anonymous container resolves to the
+> nearest ancestor of any name, so a card nested in a card would answer its grandparent's width.
+> Plain `size` containment additionally requires block size to be content-independent, which
+> collapses any element whose height comes from its text — nearly everything here. The
+> convention is documented in `global.css` so the next component follows it rather than
+> reinventing it.
 
 **Files:** `src/styles/global.css`, `src/components/content/EntityCard.astro`, and any component
 adopting the contract

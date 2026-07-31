@@ -1,0 +1,177 @@
+---
+import type { SelectOption } from '../../lib/types';
+
+/**
+ * Fieldset — a radio or checkbox group (docs/08 § 36).
+ *
+ * THE LEGEND IS THE GROUP'S ACCESSIBLE NAME. Individual labels are not
+ * sufficient for a radio group: a screen-reader user tabbing into "An
+ * individual creative" with no group name has no idea what question is being
+ * asked. `<fieldset>`/`<legend>` is the only construct that carries that
+ * relationship natively, which is why this is not a div with a heading.
+ *
+ * Checkbox groups over selects for multi-answer questions: filmmakers in this
+ * context routinely do several jobs (docs/10 § 5.2, field 8), and a select
+ * that permits one answer would force a false choice.
+ *
+ * "Required" is a WORD in the legend, matching Field.astro — colour and
+ * asterisks are never the only carrier of meaning (WCAG 1.4.1).
+ */
+interface Props {
+  /** Rendered as <legend> — the group's accessible name. */
+  legend: string;
+  name: string;
+  type: 'radio' | 'checkbox';
+  options: SelectOption[];
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  /** Pre-checked values, for re-rendering a submitted form. */
+  value?: string[];
+  class?: string;
+}
+
+const {
+  legend,
+  name,
+  type,
+  options,
+  required = false,
+  hint,
+  error,
+  value = [],
+  class: className,
+} = Astro.props;
+
+const id = `field-${name}`;
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<fieldset
+  class:list={['fieldset', error && 'fieldset--error', className]}
+  id={id}
+  aria-describedby={describedBy}
+  aria-invalid={error ? 'true' : undefined}
+>
+  <legend class="fieldset__legend">
+    {legend}
+    {required && <span class="fieldset__required">(Required)</span>}
+  </legend>
+
+  {hint && <p id={hintId} class="fieldset__hint">{hint}</p>}
+
+  <div class="fieldset__options">
+    {
+      options.map((option) => {
+        const optionId = `${id}-${option.value}`;
+        return (
+          <div class="choice">
+            <input
+              type={type}
+              id={optionId}
+              name={type === 'checkbox' ? `${name}[]` : name}
+              value={option.value}
+              checked={value.includes(option.value)}
+              required={required && type === 'radio'}
+            />
+            <label for={optionId}>{option.label}</label>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  {
+    error && (
+      <p id={errorId} class="fieldset__error">
+        <svg
+          width="1em"
+          height="1em"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4" />
+          <path d="M12 16h.01" />
+        </svg>
+        <span>{error}</span>
+      </p>
+    )
+  }
+</fieldset>
+
+<style>
+  .fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .fieldset__legend {
+    padding: 0;
+    margin-block-end: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  .fieldset__required {
+    margin-inline-start: var(--space-2);
+    font-weight: var(--weight-regular);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .fieldset__hint {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .fieldset__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  /* Whole row is the target, not just the 16px box — the audience is
+     one-handed on a phone outdoors (docs/16 § 9). */
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-block-size: var(--target-min);
+  }
+
+  .choice input {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    accent-color: var(--action-primary-bg);
+  }
+
+  .choice label {
+    flex: 1;
+    padding-block: var(--space-2);
+    font-family: var(--font-ui);
+    /* 16px minimum or iOS zooms the page on focus. */
+    font-size: var(--text-base);
+    color: var(--text-body);
+    cursor: pointer;
+  }
+
+  .fieldset__error {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    color: var(--feedback-error);
+  }
+</style>

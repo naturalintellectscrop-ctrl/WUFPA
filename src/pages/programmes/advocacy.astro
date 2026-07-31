@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/advocacy/ — docs/04 § 6.3, verbatim.
+ *
+ * Experience intent: "Encouraged · Included · Empowered." The mechanism here
+ * is the street march photography — advocacy is shown as something WUFPA did
+ * in public with named institutions beside it, not as a position statement.
+ *
+ * Reference: National Geographic, documentary authenticity only. The images
+ * are records of an event, presented without treatment.
+ */
+
+const page = meta('/programmes/advocacy/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'What we do', href: '/programmes/' },
+  { label: 'Advocacy and filmmakers’ rights' },
+];
+
+const hero = getPhoto('programmes/advocacy/together-against-piracy-banner-mbarara.jpeg');
+
+/* The campaign partners, docs/04 § 6.3 from [P13]. */
+const campaignPartners = [
+  'Uganda Communications Commission',
+  'Uganda Registration Services Bureau',
+  'Uganda Film Council',
+  'Uganda Federation of Movie Industry',
+  'Media Council of Uganda',
+];
+
+/* Sensitisation record, docs/04 § 6.3. Each entry is a recorded meeting or
+   workshop with a photograph in the archive. */
+const sensitisation = [
+  {
+    place: 'Greater Bushenyi',
+    photo: 'regions/greater-bushenyi/sensitisation-meeting-greater-bushenyi-2022.jpeg',
+  },
+  { place: 'Bunyoro', photo: 'regions/bunyoro/sensitisation-film-workshop-bunyoro-2022.jpeg' },
+  { place: 'Tooro', photo: 'regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg' },
+  {
+    place: 'Ntungamo and Rukungiri',
+    photo: 'regions/kigezi/sensitisation-ntungamo-rukungiri-film-publishers.jpeg',
+  },
+  {
+    place: 'Ibanda, Kazo, Kiruhura, Kamwengye and Kitagwenda',
+    photo: 'regions/ankole/sensitisation-ibanda-kazo-kiruhura-kamwengye-kitagwenda.jpeg',
+  },
+].map((item) => ({ ...item, image: getPhoto(item.photo) }));
+
+const representation = getPhoto(
+  'programmes/advocacy/parliamentary-forum-creative-industries-podium.jpeg',
+);
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Advocacy and filmmakers’ rights"
+    standfirst="When WUFPA was founded, piracy in Western Uganda was normal. Changing that meant saying so publicly, repeatedly, and in the street."
+    crumbs={crumbs}
+  />
+
+  <Section spacing="compact">
+    <Figure
+      image={hero.image}
+      alt={hero.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...hero.caption ? { caption: hero.caption } : {}}
+      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="copyright-heading" container="narrow" reveal>
+    <h2 id="copyright-heading">Copyright</h2>
+    <Prose>
+      <p>
+        WUFPA’s first president led early campaigns in Mbarara City and the surrounding areas
+        on a single principle: infringement on one’s copyright is a crime. At the time, piracy
+        was normalised — saying it out loud was a bold step.
+      </p>
+      <p>
+        That work continues as the <strong>Together Against Piracy</strong> campaign, run
+        jointly with:
+      </p>
+      <ul>
+        {campaignPartners.map((partner) => <li>{partner}</li>)}
+      </ul>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="representation-heading" variant="subtle" reveal>
+    <h2 id="representation-heading">Representation</h2>
+    <div class="split">
+      <Prose>
+        <p>
+          Representing filmmakers’ interests on national and regional platforms is one of
+          WUFPA’s five core objectives. WUFPA representatives have attended the Uganda
+          Parliamentary Forum for Creative Industries, met the Uganda Registration Services
+          Bureau’s regional offices, and hosted the Uganda Federation of Movie Industry and
+          the Uganda Film Association.
+        </p>
+      </Prose>
+      <Figure
+        image={representation.image}
+        alt={representation.alt}
+        purpose="card"
+        ratio="landscape"
+        sizes="(min-width: 64rem) 28rem, 100vw"
+        {...representation.caption ? { caption: representation.caption } : {}}
+        {...representation.dateNote ? { dateNote: representation.dateNote } : {}}
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="curriculum-heading" container="narrow" reveal>
+    <h2 id="curriculum-heading">Film in the curriculum</h2>
+    <Prose>
+      <p>
+        WUFPA is campaigning to have film and media production included in Uganda’s national
+        education curriculum, particularly in vocational and secondary schools.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="sensitisation-heading" variant="subtle" reveal>
+    <h2 id="sensitisation-heading">Sensitisation across the region</h2>
+    <p class="standfirst">
+      WUFPA’s district-by-district sensitisation programme is how the association grew from 14
+      companies to more than 300.
+    </p>
+
+    <Grid min="18rem" gap={6} class="sensitisation">
+      {
+        sensitisation.map((item) => (
+          <article class="sensitisation__item">
+            <Figure
+              image={item.image.image}
+              alt={item.image.alt}
+              purpose="card"
+              ratio="landscape"
+              variant="grid-item"
+              sizes="(min-width: 64rem) 22rem, 100vw"
+            />
+            <h3 class="sensitisation__place">{item.place}</h3>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="cta-heading" container="narrow" reveal>
+    <h2 id="cta-heading">This work is done on behalf of members</h2>
+    <Prose>
+      <p>
+        Every campaign, forum appearance and sensitisation meeting above was WUFPA
+        representing film producers in Western Uganda. Membership is what gives that
+        representation its mandate.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Related work"
+      links={[
+        {
+          href: '/programmes/distribution/',
+          label: 'Distribution and market access',
+          reason: 'Copyright matters most where the work is actually sold.',
+        },
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'Where the sensitisation programme reached, district by district.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The institutions this campaign is run with.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .split {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-5);
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: var(--space-8);
+    }
+  }
+
+  .sensitisation {
+    margin-block-start: var(--space-6);
+  }
+
+  .sensitisation__place {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-lg);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

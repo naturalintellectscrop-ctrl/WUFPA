@@ -96,7 +96,7 @@ const pageTitle = isFirstPage ? title : `News — page ${page.currentPage} — W
           <a href="/programmes/">programmes pages</a>.
         </p>
       ) : (
-        <ul role="list" class="news-grid">
+        <ul role="list" class="grid news-grid">
           {page.data.map((article) => (
             <li>
               <EntityCard
@@ -143,18 +143,14 @@ const pageTitle = isFirstPage ? title : `News — page ${page.currentPage} — W
 </BaseLayout>
 
 <style>
+  /* Columns come from the intrinsic `.grid` primitive, not a breakpoint here
+     (WUFPA-015/050). See the note in /events/ — same refactor, same reason. */
   .news-grid {
-    display: grid;
+    --grid-min: 18rem;
     gap: var(--space-6);
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  @media (min-width: 40rem) {
-    .news-grid {
-      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    }
   }
 
   .empty {

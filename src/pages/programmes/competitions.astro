@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/competitions/ — docs/04 § 6.6.
+ *
+ * TWO OPEN CLIENT QUESTIONS ARE HANDLED BY OMISSION, NOT BY GUESSING.
+ *
+ *   ⟦Q7⟧ The current competition edition and whether entries are open. The
+ *   profile records a 3rd edition "being organised" as of November 2025. That
+ *   is a status which may have changed, so no edition number and no entry
+ *   status is published — the page describes the competition and WUFPA's role
+ *   in creating it, both of which are settled history.
+ *
+ *   ⟦Q6⟧ The Western Uganda Film Awards Gala was scheduled for 13 December
+ *   2025 and no supplied source records the outcome. docs/04 § 6.6 is explicit:
+ *   DO NOT PUBLISH THIS SECTION IN THE FUTURE TENSE. A date that has passed,
+ *   written as upcoming, is the single clearest signal that a site is
+ *   abandoned (docs/20's two-year test). So the Gala is named as something
+ *   WUFPA organises — true in the present tense, and independent of what
+ *   happened on any one date — with no date attached until WUFPA confirms.
+ *
+ * The winners' photographs carry the argument instead: members have taken
+ * trophies at this competition, and that is documented.
+ */
+
+const page = meta('/programmes/competitions/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'What we do', href: '/programmes/' },
+  { label: 'Film competitions and awards' },
+];
+
+const hero = getPhoto('programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg');
+
+const winners = [
+  'programmes/competitions/ucc-regional-competition-ceremony-stage.jpeg',
+  'programmes/competitions/ucc-regional-film-competition-winners-group.jpeg',
+  'programmes/competitions/ucc-regional-film-competition-prize-cheque.jpeg',
+].map((file) => getPhoto(file));
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Film competitions and awards"
+    standfirst="WUFPA argued a regional film competition into existence, then prepared its members to win it."
+    crumbs={crumbs}
+  />
+
+  <Section spacing="compact">
+    <Figure
+      image={hero.image}
+      alt={hero.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...hero.caption ? { caption: hero.caption } : {}}
+      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="ucc-heading" container="narrow" reveal>
+    <h2 id="ucc-heading">The UCC Regional Film Competition</h2>
+    <Prose>
+      <p>
+        WUFPA successfully advocated to the Uganda Communications Commission to launch a
+        regional film competition — one of the association’s first and most consequential
+        wins.
+      </p>
+      <p>
+        WUFPA has supported the competition with master classes delivered alongside Kampala
+        Film School, and members have taken trophies, certificates and prizes at its Western
+        Region ceremonies.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="winners-heading" variant="subtle" reveal>
+    <h2 id="winners-heading">Members at the Western Region ceremonies</h2>
+    <Grid min="18rem" gap={6} class="winners">
+      {
+        winners.map((photo) => (
+          <Figure
+            image={photo.image}
+            alt={photo.alt}
+            purpose="card"
+            ratio="landscape"
+            variant="grid-item"
+            sizes="(min-width: 64rem) 22rem, 100vw"
+            {...photo.caption ? { caption: photo.caption } : {}}
+            {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
+          />
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="gala-heading" container="narrow" reveal>
+    <h2 id="gala-heading">The Western Uganda Film Awards Gala</h2>
+    <Prose>
+      <p>
+        WUFPA organises the Western Uganda Film Awards Gala, the association’s own awards
+        ceremony recognising filmmakers across the six sub-regions.
+      </p>
+      <p>
+        Details of the next Gala — including the date, venue and how members enter — are
+        announced through our news page and to members directly.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/news/" variant="secondary">WUFPA news</Button>
+      <Button href="/events/" variant="tertiary">Upcoming events</Button>
+    </div>
+  </Section>
+
+  <Section labelledBy="cta-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="cta-heading">Competing as a WUFPA member</h2>
+    <Prose>
+      <p>
+        The master classes that prepare members for these competitions, and the announcements
+        of when entries open, both run through the association.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Related work"
+      links={[
+        {
+          href: '/programmes/training/',
+          label: 'Training and master classes',
+          reason: 'The preparation that precedes a competition entry.',
+        },
+        {
+          href: '/programmes/international/',
+          label: 'International exposure',
+          reason: 'Festivals beyond Uganda, for members ready for them.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The Uganda Communications Commission, who run the competition.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .winners {
+    margin-block-start: var(--space-6);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

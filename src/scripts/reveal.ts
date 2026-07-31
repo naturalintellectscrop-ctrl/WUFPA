@@ -17,6 +17,19 @@
 
 const REVEAL_SELECTOR = '.reveal';
 
+/**
+ * Reads the --stagger token instead of hard-coding its value.
+ *
+ * WUFPA-067 defined --stagger: 60ms and this file then wrote `60` by hand, so
+ * the token had no consumer and changing it would have changed nothing — the
+ * exact drift the token system exists to prevent (R6).
+ */
+function staggerMs(): number {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--stagger').trim();
+  const parsed = Number.parseFloat(raw);
+  return Number.isFinite(parsed) ? (raw.endsWith('ms') ? parsed : parsed * 1000) : 60;
+}
+
 export function initReveal(): void {
   // Respect the user's setting before doing anything at all.
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,10 +55,25 @@ export function initReveal(): void {
     { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
   );
 
-  targets.forEach((el, index) => {
-    // Stagger, capped at 5 items so a long list never becomes a queue.
-    if (index < 5) {
-      el.style.transitionDelay = `${index * 60}ms`;
+  /* Stagger is counted WITHIN A PARENT, not across the document.
+     A global index gives the fourth band on a long page a 180ms delay it has
+     not earned — it enters the viewport alone, seconds after the first, and
+     the delay reads as lag rather than as sequence. Staggering only among
+     siblings means the delay expresses the one thing it should: that these
+     items arrived together and are related. That is motion communicating
+     hierarchy (docs/21 section 5) rather than decorating a scroll. */
+  const step = staggerMs();
+  const seenPerParent = new Map<Element, number>();
+
+  targets.forEach((el) => {
+    const parent = el.parentElement;
+    if (parent) {
+      const index = seenPerParent.get(parent) ?? 0;
+      seenPerParent.set(parent, index + 1);
+      // Capped at 5 so a long list never becomes a queue.
+      if (index > 0 && index < 5) {
+        el.style.transitionDelay = `${index * step}ms`;
+      }
     }
     observer.observe(el);
   });

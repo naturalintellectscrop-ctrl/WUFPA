@@ -1,0 +1,266 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import PersonCard from '../../components/content/PersonCard.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /leadership/ — docs/04 § 5, rosters from docs/02 § 9.
+ *
+ * Experience intent: "named, photographed, accountable people" — step 3 of
+ * the institutional-visitor journey (docs/05 § 4). The mechanism is that
+ * every card carries a real name and a real role, and the four cards that
+ * carry a portrait carry a portrait OF THAT PERSON.
+ *
+ * THE INITIALS FALLBACK IS THE WHOLE POINT. Only four portraits exist for
+ * fifteen office-holders. The prototype filled that gap with four stock
+ * photographs of unrelated people presented as named Ugandan filmmakers —
+ * docs/20 § 3 calls it "the single worst thing this website could do".
+ * PersonCard has no code path that renders an image without an explicit
+ * portrait for that specific person; everyone else gets typography.
+ *
+ * ONE NAME IS WITHHELD. The Vice President's spelling conflicts across
+ * [P4] and [P6] (docs/02 § 12), so `nameConfirmed` is false and PersonCard
+ * withholds the card rather than publishing a guess at a real person's name.
+ *
+ * Portraits are processed through the image pipeline at portrait widths —
+ * two of the four are small originals (316×409, 370×434) and must never be
+ * upscaled (docs/12 § 5.4); `getImage` is capped at each source's own width.
+ */
+
+const page = meta('/leadership/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Leadership and governance' }];
+
+/** Build a portrait at a width the source can actually support. */
+async function portraitFor(file: string) {
+  const photo = getPhoto(file);
+  const width = Math.min(400, photo.image.width);
+  const rendered = await getImage({
+    src: photo.image,
+    width,
+    format: 'webp',
+    quality: 72,
+  });
+  return {
+    src: rendered.src,
+    width: rendered.attributes.width ?? width,
+    height: rendered.attributes.height ?? width,
+  };
+}
+
+const katabazi = await portraitFor('leadership/katabazi-george-portrait.jpeg');
+const baryabawe = await portraitFor('leadership/cyril-baryabawe-portrait.jpeg');
+const mushana = await portraitFor('leadership/mushana-amos-portrait.jpeg');
+
+/* docs/02 § 9.2 — Executive Committee, 2025–2030. */
+const executive = [
+  {
+    name: 'Katabazi George',
+    roles: [{ title: 'President', termStart: 2025, termEnd: 2030 }],
+    district: 'Mbarara',
+    portrait: katabazi,
+    nameConfirmed: true,
+  },
+  {
+    name: 'Rev. Mwsigwa Samon Newton',
+    roles: [{ title: 'Vice President', termStart: 2025, termEnd: 2030 }],
+    district: 'Kasese',
+    /* Spelling conflicts across [P4] and [P6] — withheld until confirmed. */
+    nameConfirmed: false,
+  },
+  {
+    name: 'Peace Bisirikirwa',
+    roles: [{ title: 'Secretary General' }],
+    district: 'Kazo',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Danson Bauba',
+    roles: [{ title: 'Assistant Secretary' }],
+    district: 'Bundibugyo',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Tayebwa Agnes',
+    roles: [{ title: 'Treasurer' }],
+    district: 'Ntungamo',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Twinamatsiko Lauben',
+    roles: [{ title: 'Director of Production' }],
+    district: 'Mbarara',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Asere Joan',
+    roles: [{ title: 'Publicity and Communications Officer' }],
+    district: 'Mbarara',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Barugahare Musa',
+    roles: [{ title: 'Training and Capacity Building' }],
+    district: 'Mbarara',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Kyomuhendo Ronald',
+    roles: [{ title: 'Fundraising and Partnerships Officer' }],
+    district: 'Fort Portal',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Nimusiima Editor',
+    roles: [{ title: 'Membership and Welfare Officer' }],
+    district: 'Ibanda',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Baguma Arnold',
+    roles: [{ title: 'Regional Coordinator' }],
+    district: 'Ibanda',
+    nameConfirmed: true,
+  },
+];
+
+/* docs/02 § 9.3 — Board of Trustees. Both founding officers sit here. */
+const trustees = [
+  {
+    name: 'Baryabawe Cyril',
+    roles: [{ title: 'Chairperson of the Board' }],
+    district: 'Kabale',
+    portrait: baryabawe,
+    nameConfirmed: true,
+  },
+  {
+    name: 'Mushana Amos',
+    roles: [{ title: 'Secretary to the Board' }],
+    district: 'Rukungiri',
+    portrait: mushana,
+    nameConfirmed: true,
+  },
+  {
+    name: 'Kamugisha William',
+    roles: [{ title: 'Member' }],
+    district: 'Ibanda',
+    nameConfirmed: true,
+  },
+  {
+    name: 'Biryomumisho Moses',
+    roles: [{ title: 'Member' }],
+    district: 'Mbarara',
+    nameConfirmed: true,
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Leadership and governance"
+    standfirst="WUFPA is run by an elected Executive Committee, overseen by a Board of Trustees, and supported by disciplinary and supervisory committees, sub-regional coordinators and ten craft guilds."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="executive-heading">
+    <h2 id="executive-heading">Executive Committee, 2025–2030</h2>
+    <p class="standfirst">Eleven officers, elected for the 2025–2030 term.</p>
+    <Grid min="14rem" gap={6} class="people">
+      {
+        executive.map((person) => (
+          <PersonCard
+            name={person.name}
+            roles={person.roles}
+            district={person.district}
+            nameConfirmed={person.nameConfirmed}
+            consent="granted"
+            {...person.portrait ? { portrait: person.portrait } : {}}
+          />
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="trustees-heading" variant="subtle" reveal>
+    <h2 id="trustees-heading">Board of Trustees</h2>
+    <Prose>
+      <p>
+        Both of the association’s founding officers — the first President, who led the 2017
+        registration, and the founding Vice President — moved to the Board of Trustees rather
+        than leaving when their terms ended.
+      </p>
+    </Prose>
+    <Grid min="14rem" gap={6} class="people">
+      {
+        trustees.map((person) => (
+          <PersonCard
+            name={person.name}
+            roles={person.roles}
+            district={person.district}
+            nameConfirmed={person.nameConfirmed}
+            consent="granted"
+            {...person.portrait ? { portrait: person.portrait } : {}}
+          />
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="founders-heading" container="narrow" reveal>
+    <h2 id="founders-heading">The founders</h2>
+    <Prose>
+      <p>
+        In 2017, fourteen film production companies and groups from Ankole and Kigezi
+        registered WUFPA with the Uganda Registration Services Bureau. Cyril Baryabawe led the
+        registration and became the association’s first President; Mushana Amos was founding
+        Vice President; Katabazi George served on the founders’ executive committee.
+      </p>
+      <p>Both founding officers remain involved today, serving on the Board of Trustees.</p>
+    </Prose>
+    <div class="actions">
+      <Button href="/about/history/" variant="secondary">Our story: 2017 to today</Button>
+      <Button href="/about/governance/" variant="tertiary">How WUFPA is governed</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'The coordination teams working alongside the Executive Committee.',
+        },
+        {
+          href: '/about/legal/',
+          label: 'Legal status',
+          reason: 'The registration this leadership is accountable under.',
+        },
+        {
+          href: '/membership/join/',
+          label: 'Become a member',
+          reason: 'Membership is what gives this leadership its mandate.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .people {
+    margin-block-start: var(--space-6);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/kibanda/ — docs/04 § 6.4, verbatim.
+ *
+ * THE SHORTEST PROGRAMME PAGE, DELIBERATELY. docs/04 § 6.4 carries an explicit
+ * instruction: the screening schedule, locations and how to host a screening
+ * are not in any supplied source, and must be asked of WUFPA before being
+ * written. So this page states what is documented and stops.
+ *
+ * It does NOT pad the gap with a decorative band, a stock photograph or a
+ * "coming soon" panel — docs/21 § 2.4 rules out all three, and docs/20's
+ * first principle rules out inventing the missing content. A short page that
+ * is entirely true is the correct output here.
+ *
+ * No photograph: the archive contains no Kibanda screening. Using a workshop
+ * photograph to illustrate a screening would caption a real event as
+ * something it was not.
+ */
+
+const page = meta('/programmes/kibanda/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'What we do', href: '/programmes/' },
+  { label: 'The Kibanda Initiative' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="The WUFPA Kibanda Initiative"
+    standfirst="A community film screening project bringing local films to towns, schools and rural communities across Western Uganda — promoting access, education and engagement."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="about-heading" container="narrow">
+    <h2 id="about-heading" class="u-visually-hidden">About the initiative</h2>
+    <Prose>
+      <p>
+        Films made in Western Uganda should be watched in Western Uganda. The Kibanda
+        Initiative takes members’ films to the places where audiences already are, rather than
+        waiting for audiences to find them.
+      </p>
+      <p>
+        The initiative was launched under the association’s current leadership and is being
+        scaled up across the sub-regions.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="cta-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="cta-heading">Getting your film screened</h2>
+    <Prose>
+      <p>
+        Screenings are organised through the association. If you are a WUFPA member with a
+        finished film, or you would like to host a screening in your community, contact us and
+        we will put you in touch with the coordinator for your sub-region.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/contact/">Contact WUFPA</Button>
+      <Button href="/membership/join/" variant="tertiary">Become a member</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Related work"
+      links={[
+        {
+          href: '/programmes/distribution/',
+          label: 'Distribution and market access',
+          reason: 'The broadcast side of getting members’ films seen.',
+        },
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'Where screenings are organised, and who coordinates them.',
+        },
+        {
+          href: '/support/',
+          label: 'Support WUFPA',
+          reason: 'Screening equipment is one of the association’s stated needs.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

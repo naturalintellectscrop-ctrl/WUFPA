@@ -1,0 +1,195 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { templates } from '../../lib/page-meta';
+
+/**
+ * /regions/[key]/ — one page per sub-region, docs/04 § 7.1.
+ *
+ * Experience intent: a filmmaker in Kanungu should recognise their own
+ * district in a list and know the association reaches them. The mechanism is
+ * the districts list plus the photograph of work delivered in that
+ * sub-region — both are specific to the place, neither is boilerplate.
+ *
+ * NO PERSONAL TELEPHONE NUMBERS, EVER — docs/01 § 7 (C5). The roster carries
+ * ~60 personal mobiles and none of them appear here or anywhere in the
+ * output; contact routes through the enquiry form, which reaches the same
+ * coordinator without publishing their number.
+ *
+ * COORDINATOR NAMES ARE NOT PUBLISHED HERE EITHER. Consent covers
+ * publication of the supplied material, but docs/02 § 12 records unresolved
+ * spelling conflicts across [P6]/[P7] for several roster names — publishing a
+ * real person's name misspelled is its own failure (docs/20 § 3). The
+ * structure is stated ("a coordinator, a secretary and a treasurer") and the
+ * names land once the spellings are confirmed.
+ */
+
+export const getStaticPaths = (async () => {
+  const regions = await getCollection('regions');
+  return regions.map((region) => ({
+    params: { key: region.data.key },
+    props: { region },
+  }));
+}) satisfies GetStaticPaths;
+
+type RegionEntry = Awaited<ReturnType<typeof getCollection<'regions'>>>[number];
+
+interface Props {
+  region: RegionEntry;
+}
+
+const { region } = Astro.props;
+const { Content } = await render(region);
+
+const page = templates.region(region.data.title);
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Our six sub-regions', href: '/regions/' },
+  { label: region.data.title },
+];
+
+/* The photograph of work actually delivered in this sub-region. Regions with
+   no archive photograph get no image rather than a borrowed one — captioning
+   a Bunyoro workshop as Rwenzori would be exactly the invention docs/20
+   forbids. */
+const regionPhotos: Partial<Record<string, string>> = {
+  ankole: 'regions/ankole/sensitisation-ibanda-kazo-kiruhura-kamwengye-kitagwenda.jpeg',
+  kigezi: 'regions/kigezi/sensitisation-ntungamo-rukungiri-film-publishers.jpeg',
+  tooro: 'regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg',
+  bunyoro: 'regions/bunyoro/sensitisation-workshop-bunyoro-2022-banner.jpeg',
+  'greater-bushenyi': 'regions/greater-bushenyi/sensitisation-meeting-greater-bushenyi-2022.jpeg',
+};
+
+const photoFile = regionPhotos[region.data.key];
+const photo = photoFile ? getPhoto(photoFile) : null;
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title={`Film in ${region.data.title}`}
+    standfirst={`WUFPA in the ${region.data.title} sub-region — who coordinates here, which districts we cover, and what we have delivered.`}
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="opening-heading" container="narrow">
+    <h2 id="opening-heading" class="u-visually-hidden">About this sub-region</h2>
+    <p class="opening">{region.data.opening}</p>
+    <Prose>
+      <Content />
+    </Prose>
+  </Section>
+
+  {
+    photo && (
+      <Section spacing="compact">
+        <Figure
+          image={photo.image}
+          alt={photo.alt}
+          purpose="hero"
+          ratio="auto"
+          variant="wide"
+          sizes="(min-width: 64rem) 60rem, 100vw"
+          {...photo.caption ? { caption: photo.caption } : {}}
+          {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
+        />
+      </Section>
+    )
+  }
+
+  <Section labelledBy="districts-heading" variant="subtle" reveal>
+    <h2 id="districts-heading">Districts we cover</h2>
+    <ul role="list" class="districts">
+      {region.data.districts.map((district) => <li class="district">{district}</li>)}
+    </ul>
+  </Section>
+
+  <Section labelledBy="team-heading" container="narrow" reveal>
+    <h2 id="team-heading">Your coordination team</h2>
+    <Prose>
+      <p>
+        {region.data.title} has a Regional Coordinator, a Secretary and a Treasurer, with
+        District Coordinators working alongside them in the districts listed above.
+      </p>
+      <p>
+        To reach the coordinator for your district, send us your details through the
+        membership form — enquiries are routed by sub-region, and the coordinator will contact
+        you directly.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+      <Button href="/contact/" variant="tertiary">Contact WUFPA</Button>
+    </div>
+  </Section>
+
+  <Section labelledBy="related-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="related-heading" class="u-visually-hidden">Where to go next</h2>
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/regions/',
+          label: 'All six sub-regions',
+          reason: 'How WUFPA is organised across Western Uganda.',
+        },
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The six programmes delivered in this sub-region and the other five.',
+        },
+        {
+          href: '/guilds/',
+          label: 'The ten guilds',
+          reason: 'Find the craft guild that matches your work.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .opening {
+    margin: 0 0 var(--space-5);
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  /* A row of district names, set as rules rather than cards — five short
+     strings do not need five containers (docs/21 § 10). */
+  .districts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .district {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

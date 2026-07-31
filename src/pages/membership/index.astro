@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import Stack from '../../components/layout/Stack.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /membership/ — docs/04 § 9.
+ *
+ * Experience intent (docs/21 § 2.3): "Valued · Represented · Ready to join."
+ * The mechanism is the benefits list, where every one of the nine items is
+ * tied to a programme that demonstrably ran — so "what you get" reads as a
+ * description of existing activity rather than a prospectus.
+ *
+ * ⟦Q8⟧ IS BLOCKING AND IS HANDLED BY OMISSION. No supplied source states a
+ * membership fee, eligibility criteria or application process. docs/04 § 9 is
+ * explicit that the prototype's "entry to WUFPA is free" claim is unsourced
+ * and must not be repeated. So there is no "What it costs" section and no
+ * numbered "How to join" list — the page routes to the enquiry form, which is
+ * honest about being a first contact rather than an application with a known
+ * outcome.
+ *
+ * Adding a "Fees: coming soon" panel was considered and rejected: it occupies
+ * the same space as the answer while adding nothing, and docs/21 § 2.4 rules
+ * out filling space with components that carry no content.
+ */
+
+const page = meta('/membership/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Membership' }];
+
+/* docs/04 § 9, from [P2]. */
+const whoCanJoin = [
+  'Independent filmmakers and film production companies',
+  'Community-based film groups',
+  'Regional film guilds and creative collectives',
+  'Youth, women and professionals involved in film and visual storytelling',
+];
+
+/* docs/04 § 9. Every benefit is evidenced by the activity record — the `href`
+   is what makes that checkable rather than asserted. */
+const benefits = [
+  {
+    title: 'Training',
+    text: 'Workshops and master classes with UCC, UNESCO’s national commission, US Mission Uganda, Alliance Française, the Goethe-Zentrum and others.',
+    href: '/programmes/training/',
+  },
+  {
+    title: 'Finance',
+    text: 'Access to WUFM SACCO — savings, and affordable credit for productions.',
+    href: '/sacco/',
+  },
+  {
+    title: 'Distribution',
+    text: 'A route to buyers through the Western Uganda Film Distributors Group, and to audiences through five regional broadcasters.',
+    href: '/programmes/distribution/',
+  },
+  {
+    title: 'Audiences',
+    text: 'Screenings through the WUFPA Kibanda Initiative.',
+    href: '/programmes/kibanda/',
+  },
+  {
+    title: 'Competition',
+    text: 'Entry routes to the UCC Regional Film Competition and the Western Uganda Film Awards Gala.',
+    href: '/programmes/competitions/',
+  },
+  {
+    title: 'International exposure',
+    text: 'Selection for delegations to festivals including ZIFF and the African Mashariki Film Festival.',
+    href: '/programmes/international/',
+  },
+  {
+    title: 'Protection',
+    text: 'Copyright advocacy and anti-piracy campaigning on your behalf.',
+    href: '/programmes/advocacy/',
+  },
+  {
+    title: 'Representation',
+    text: 'A voice on national platforms, from the regulator to Parliament.',
+    href: '/about/governance/',
+  },
+  {
+    title: 'A guild',
+    text: 'One of ten craft guilds, and a coordinator in your own district.',
+    href: '/guilds/',
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Membership"
+    standfirst="WUFPA membership is open to anyone making film in Western Uganda — from registered production companies to community film groups to individual creatives."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="who-heading" container="narrow">
+    <h2 id="who-heading">Who can join</h2>
+    <Prose>
+      <p>WUFPA brings together:</p>
+      <ul>
+        {whoCanJoin.map((who) => <li>{who}</li>)}
+      </ul>
+      <p>
+        Members span the entire Western Uganda region, from Ankole (Rwizi) to Kigezi,
+        Rwenzori, Tooro, Bunyoro and Greater Bushenyi.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="benefits-heading" variant="subtle" reveal>
+    <h2 id="benefits-heading">What membership gives you</h2>
+    <p class="standfirst">
+      Nine things, each one a programme the association already runs. Follow any of them to see
+      the work behind it.
+    </p>
+
+    <Grid min="18rem" gap={5} class="benefits">
+      {
+        benefits.map((benefit) => (
+          <article class="benefit">
+            <h3 class="benefit__title">
+              <a href={benefit.href}>{benefit.title}</a>
+            </h3>
+            <p class="benefit__text">{benefit.text}</p>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="join-heading" container="narrow" reveal>
+    <h2 id="join-heading">How to join</h2>
+    <Prose>
+      <p>
+        Membership begins with a conversation, not a form fee. Tell us who you are, where you
+        work and what you do in film, and the coordinator for your sub-region will contact you
+        directly to take it from there.
+      </p>
+    </Prose>
+
+    <Stack as="ol" gap={4} class="steps">
+      <li>
+        <strong>Tell us about yourself and your work.</strong> The enquiry form takes about two
+        minutes and asks only what a coordinator needs in order to reach you.
+      </li>
+      <li>
+        <strong>A coordinator in your sub-region contacts you.</strong> They cover your
+        districts and know the guilds working there.
+      </li>
+      <li>
+        <strong>You are registered, and receive your membership certificate.</strong>
+      </li>
+    </Stack>
+
+    <div class="actions">
+      <Button href="/membership/join/" size="lg">Become a member</Button>
+      <Button href="/regions/" variant="tertiary">Find your sub-region</Button>
+    </div>
+  </Section>
+
+  <Section labelledBy="members-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="members-heading">Our members</h2>
+    <Prose>
+      <p>
+        WUFPA is made up of more than 300 film production houses across Western Uganda. Four of
+        our member production companies:
+      </p>
+      <ul>
+        <li>Ankole City Filmz, Mbarara</li>
+        <li>Kigezi Universal Drama Actors/Artist, Kabale</li>
+        <li>Banyankitara Films</li>
+        <li>UPSKY Film Network</li>
+      </ul>
+    </Prose>
+
+    <RelatedLinks
+      heading="Before you apply"
+      links={[
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The six programmes membership gives you access to.',
+        },
+        {
+          href: '/guilds/',
+          label: 'The ten guilds',
+          reason: 'Find the craft guild that matches your work.',
+        },
+        {
+          href: '/sacco/',
+          label: 'WUFM SACCO',
+          reason: 'Savings and affordable credit for member productions.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .benefits {
+    margin-block-start: var(--space-6);
+  }
+
+  .benefit {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+  }
+
+  .benefit__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+
+  .benefit__text {
+    margin: 0;
+    color: var(--text-body);
+  }
+
+  .steps {
+    margin-block-start: var(--space-6);
+    max-inline-size: var(--measure-prose);
+    padding-inline-start: var(--space-5);
+    color: var(--text-body);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-7);
+  }
+</style>

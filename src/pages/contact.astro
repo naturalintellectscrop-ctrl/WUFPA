@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Form from '../components/forms/Form.astro';
+import Field from '../components/forms/Field.astro';
+import Icon from '../components/primitives/Icon.astro';
+import RelatedLinks from '../components/content/RelatedLinks.astro';
+import { meta } from '../lib/page-meta';
+import { site } from '../lib/site-config';
+import type { SelectOption } from '../lib/types';
+
+/**
+ * /contact/ — docs/04 § 15, form spec at § 15.1.
+ *
+ * Experience intent (docs/21 § 2.3): "Supported · Comfortable reaching out ·
+ * Connected to a real organisation." The mechanism is the head office
+ * address and the routing select — a visitor can see there is a physical
+ * place and that their message will reach a specific person rather than an
+ * inbox.
+ *
+ * ⟦Q3⟧ — NO EMAIL, NO TELEPHONE. The profile lists an address and a number,
+ * but docs/02 § 4 records that number as the President's personal mobile.
+ * Publishing it would expose an individual (docs/01 § 7, C5) and Uganda's
+ * Data Protection and Privacy Act, 2019 applies. The form is therefore the
+ * published contact route, which is what a contact form is for; the postal
+ * address is published because it is the association's own.
+ *
+ * ⟦Q9⟧ — no "Follow us" section. The profile names Facebook, WhatsApp and
+ * YouTube but supplies no URLs, and dead social icons are worse than none
+ * (docs/08 § 5's SocialLinks contract: renders nothing when no URL is
+ * configured).
+ */
+
+const page = meta('/contact/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact WUFPA' }];
+
+const subRegions: SelectOption[] = [
+  ...site.subRegions.map((region) => ({ value: region.key, label: region.name })),
+];
+
+/* docs/04 § 15.1 — the five routing options. */
+const topics: SelectOption[] = [
+  { value: 'membership', label: 'Membership' },
+  { value: 'partnership', label: 'Partnership' },
+  { value: 'press', label: 'Media and press' },
+  { value: 'support', label: 'Supporting WUFPA' },
+  { value: 'other', label: 'Something else' },
+];
+
+const mapQuery = encodeURIComponent(
+  `${site.address.street}, ${site.address.locality}, ${site.address.country}`,
+);
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="ContactPage">
+  <PageHeader
+    title="Contact WUFPA"
+    standfirst="Send us a message and it will reach the right person — a coordinator, the membership officer, or the executive, depending on what you are writing about."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="form-heading" container="narrow">
+    <h2 id="form-heading">Get in touch</h2>
+
+    <Form action="/contact/" name="contact" submitLabel="Send message" class="contact-form">
+      <Field name="name" label="Your name" required autocomplete="name" />
+
+      <Field
+        name="email"
+        label="Email address"
+        type="email"
+        required
+        hint="We will reply to this address."
+        autocomplete="email"
+        inputmode="email"
+      />
+
+      <Field
+        name="subregion"
+        label="Your sub-region"
+        type="select"
+        options={subRegions}
+        hint="Optional. Helps us route your message to the nearest coordinator."
+      />
+
+      <Field
+        name="topic"
+        label="I am writing about"
+        type="select"
+        required
+        options={topics}
+      />
+
+      <Field name="message" label="Message" type="textarea" required rows={6} />
+    </Form>
+  </Section>
+
+  <Section labelledBy="office-heading" variant="subtle" reveal>
+    <h2 id="office-heading">Head office</h2>
+    <div class="office">
+      <address class="office__address">
+        {site.address.street}<br />
+        {site.address.locality}<br />
+        {site.address.country}
+      </address>
+      <p class="office__map">
+        <a href={mapHref} target="_blank" rel="noopener noreferrer">
+          Find us on the map
+          <Icon name="external" label="Opens in a new tab" />
+        </a>
+      </p>
+    </div>
+  </Section>
+
+  <Section labelledBy="press-heading" container="narrow" reveal>
+    <h2 id="press-heading">For press and researchers</h2>
+    <Prose>
+      <p>
+        The WUFPA association profile is available as a download. For interviews, photographs
+        or background on the association’s work in any of the six sub-regions, use the form
+        above and choose “Media and press”.
+      </p>
+      <p>
+        <a href="/downloads/wufpa-association-profile-2026-redacted.pdf">
+          Download the WUFPA association profile (PDF)
+        </a>
+      </p>
+    </Prose>
+
+    <RelatedLinks
+      heading="You may be looking for"
+      links={[
+        {
+          href: '/membership/join/',
+          label: 'Become a member',
+          reason: 'Membership enquiries have their own form, with sub-region routing.',
+        },
+        {
+          href: '/regions/',
+          label: 'Our six sub-regions',
+          reason: 'Find the coordination team covering your district.',
+        },
+        {
+          href: '/support/',
+          label: 'Support WUFPA',
+          reason: 'Six specific things the association is asking for.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .office {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-8);
+    margin-block-start: var(--space-5);
+  }
+
+  .office__address {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: var(--text-heading);
+  }
+
+  .office__map {
+    margin: 0;
+  }
+</style>

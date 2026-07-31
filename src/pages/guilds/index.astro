@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Grid from '../../components/layout/Grid.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /guilds/ — docs/04 § 8.
+ *
+ * Experience intent: "Included". The mechanism is the ten-craft list — a
+ * gaffer in Kakumiro reading it finds their own job named, which is a more
+ * specific welcome than any sentence about inclusion.
+ *
+ * TEN CARDS, NO TEN PAGES. docs/04 § 8.2 specifies a guild page template
+ * whose central sections are the guild head (blocked on the same ⟦Q1⟧
+ * spelling conflicts as the leadership roster) and guild-specific activities,
+ * standards and rates — for which docs/04 § 8.2 states plainly: "no supplied
+ * source. Ask WUFPA."
+ *
+ * Ten pages carrying a craft definition and nothing else would be ten pages
+ * that fail docs/21 § 14's "does this page justify its existence" test, and
+ * building them would mean either padding with invented guild activity or
+ * shipping near-empty routes. So the guilds are presented as one complete,
+ * honest page until WUFPA supplies the per-guild content — at which point the
+ * cards become links without this page changing shape.
+ *
+ * Descriptions below are craft definitions, not claims about WUFPA — the
+ * distinction docs/04 § 8.1 draws explicitly.
+ */
+
+const page = meta('/guilds/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'The ten guilds' }];
+
+/* docs/04 § 8.1, verbatim. */
+const guilds = [
+  { name: 'Directors Guild', description: 'Directors working across the six sub-regions.' },
+  {
+    name: 'Producers Guild',
+    description: 'The producers and production companies who carry the films.',
+  },
+  {
+    name: 'Screen Writers’ Guild',
+    description: 'Writers developing stories rooted in Western Uganda.',
+  },
+  { name: 'Actors Guild', description: 'Performers on screen and stage.' },
+  {
+    name: 'Sound and Music Guild',
+    description: 'Sound recordists, designers and composers.',
+  },
+  {
+    name: 'Animators and Visual Effects Guild',
+    description: 'Animation and VFX artists.',
+  },
+  { name: 'Costume and Make-Up Guild', description: 'Costume, wardrobe and make-up.' },
+  { name: 'Editors Guild', description: 'Picture editors and post-production.' },
+  {
+    name: 'Cinematography Guild',
+    description: 'Camera operators and directors of photography.',
+  },
+  { name: 'Gaffers and Lighting Guild', description: 'Lighting technicians and grips.' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="CollectionPage">
+  <PageHeader
+    title="The ten WUFPA film guilds"
+    standfirst="A film is made by ten different crafts. WUFPA is organised so that each of them has a voice, a head, and a place to belong."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="why-heading" container="narrow">
+    <h2 id="why-heading">Why guilds</h2>
+    <Prose>
+      <p>
+        A producer’s problems are not a gaffer’s problems. Organising by craft as well as by
+        place means that training, rates, standards and representation can be specific rather
+        than general — and that a costume designer in Kakumiro has somewhere to go that is
+        genuinely about their work.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="guilds-heading" variant="subtle" reveal>
+    <h2 id="guilds-heading">The ten guilds</h2>
+    <Grid min="17rem" gap={5} class="guilds">
+      {
+        guilds.map((guild) => (
+          <article class="guild">
+            <h3 class="guild__name">{guild.name}</h3>
+            <p class="guild__description">{guild.description}</p>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="join-heading" container="narrow" reveal>
+    <h2 id="join-heading">Joining a guild</h2>
+    <Prose>
+      <p>
+        Guild membership comes with WUFPA membership. The application form asks what you do in
+        film — you can choose as many crafts as apply, because most filmmakers here do several
+        jobs — and your details route to both the coordinator for your sub-region and the
+        relevant guild.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+      <Button href="/regions/" variant="tertiary">Find your sub-region</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/programmes/training/',
+          label: 'Training and master classes',
+          reason: 'Craft training across screenwriting, directing, camera, sound and editing.',
+        },
+        {
+          href: '/about/governance/',
+          label: 'How WUFPA is governed',
+          reason: 'Where the guilds sit in the association’s structure.',
+        },
+        {
+          href: '/membership/',
+          label: 'Membership',
+          reason: 'What membership provides, guild access included.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .guilds {
+    margin-block-start: var(--space-6);
+  }
+
+  .guild {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+  }
+
+  .guild__name {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+
+  .guild__description {
+    margin: 0;
+    color: var(--text-body);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

@@ -84,6 +84,18 @@ const ladder = WIDTH_LADDERS[purpose];
 const clamped = ladder.filter((w) => w <= image.width);
 const widths: number[] = clamped.length > 0 ? clamped : [image.width];
 
+/* AVIF + WebP only for thumbnails, all three formats elsewhere.
+ *
+ * Each format multiplies the srcset markup in the HTML, and a gallery page
+ * carrying thirty-odd thumbnails pushed /impact/ over the 100 KB per-document
+ * budget (docs/14 § 9) on markup alone. Dropping the JPEG fallback there
+ * costs nothing real: every browser that lacks WebP also lacks the CSS this
+ * site is built on, and <picture> degrades to the last <source> regardless.
+ * Hero and card images keep the full chain — they are fewer per page, and a
+ * hero is the one image worth a belt-and-braces fallback. */
+const formats: ('avif' | 'webp' | 'jpeg')[] =
+  purpose === 'thumbnail' ? ['avif', 'webp'] : ['avif', 'webp', 'jpeg'];
+
 const dateLabel = date
   ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
   : dateNote;
@@ -101,7 +113,7 @@ const hasCaption = Boolean(caption || metaParts.length || credit);
     <Picture
       src={image}
       alt={alt}
-      formats={['avif', 'webp', 'jpeg']}
+      formats={formats}
       widths={widths}
       sizes={sizes}
       loading={priority ? 'eager' : 'lazy'}

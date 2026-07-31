@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Figure from '../components/media/Figure.astro';
+import RelatedLinks from '../components/content/RelatedLinks.astro';
+import Button from '../components/primitives/Button.astro';
+import { getPhoto } from '../lib/photos';
+import { meta } from '../lib/page-meta';
+
+/**
+ * /sacco/ — docs/04 § 10.
+ *
+ * A SEPARATE ENTITY, PRESENTED AS ONE. WUFM SACCO has its own mark, its own
+ * blue (#2E3192) and its own strapline (docs/03 § 8.6). SACCO blue appears on
+ * this page and nowhere else on the site; the two logos may appear together
+ * here, WUFPA first. The legal and financial distinction between the
+ * association and the SACCO matters, so the page never presents the SACCO as
+ * a WUFPA service.
+ *
+ * ⟦Q15⟧ — registration number, who may join, what the SACCO offers and
+ * current capitalisation are all unsupplied. The page states what is
+ * documented (the constitutional object since 2017, the certificate received
+ * on 24 October 2025, seed capital as the first stated need) and routes to
+ * contact for the rest, rather than describing products that may not exist
+ * yet.
+ */
+
+const page = meta('/sacco/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'WUFM SACCO' }];
+
+const certificate = getPhoto('sacco/wufm-sacco-certificate-presentation-2025.jpeg');
+const handover = getPhoto('sacco/wufm-sacco-certificate-commercial-officer-2025.jpeg');
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="WUFM SACCO"
+    standfirst="Small savings, big dreams. The Western Uganda Filmmakers SACCO helps members save together and borrow affordably for their productions."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="why-heading" container="narrow">
+    <h2 id="why-heading">Why a SACCO</h2>
+    <Prose>
+      <p>
+        Film costs money before it earns money. For an emerging filmmaker in Western Uganda,
+        that gap has usually meant the film does not get made.
+      </p>
+      <p>
+        WUFPA established the Western Uganda Filmmakers SACCO to close it — to offer
+        low-interest loans and grants to young and emerging filmmakers, and small grants for
+        local film projects and talent development.
+      </p>
+      <p>
+        Establishing a fund to support members’ welfare and to invest in members’ development
+        activities has been one of the association’s constitutional objects since 2017.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="status-heading" variant="sacco" reveal>
+    <h2 id="status-heading">Where the SACCO stands</h2>
+    <div class="split">
+      <Prose>
+        <p>
+          On 24 October 2025, WUFPA members received the WUFM SACCO certificate, with the
+          Mbarara City Commercial Officer.
+        </p>
+        <p>
+          Membership terms, savings products and lending criteria are being finalised. If you
+          are a WUFPA member and want to be told when the SACCO opens to savers, contact the
+          association and we will add you to the list.
+        </p>
+      </Prose>
+      <Figure
+        image={certificate.image}
+        alt={certificate.alt}
+        purpose="card"
+        ratio="landscape"
+        sizes="(min-width: 64rem) 28rem, 100vw"
+        {...certificate.caption ? { caption: certificate.caption } : {}}
+        {...certificate.dateNote ? { dateNote: certificate.dateNote } : {}}
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="capital-heading" container="narrow" reveal>
+    <h2 id="capital-heading">Seed capital</h2>
+    <Prose>
+      <p>
+        Seed capital for the SACCO is the first item on WUFPA’s list of current needs. A
+        SACCO’s capacity to lend is limited by what it holds, so early capital is what decides
+        how many productions it can support in its first years.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/support/">Support the SACCO</Button>
+      <Button href="/contact/" variant="tertiary">Contact WUFPA</Button>
+    </div>
+  </Section>
+
+  <Section labelledBy="handover-heading" variant="subtle" reveal>
+    <h2 id="handover-heading" class="u-visually-hidden">The certificate handover</h2>
+    <Figure
+      image={handover.image}
+      alt={handover.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...handover.caption ? { caption: handover.caption } : {}}
+      {...handover.dateNote ? { dateNote: handover.dateNote } : {}}
+    />
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/membership/',
+          label: 'Membership',
+          reason: 'The SACCO is open to WUFPA members.',
+        },
+        {
+          href: '/support/',
+          label: 'Support WUFPA',
+          reason: 'Seed capital is the association’s first stated need.',
+        },
+        {
+          href: '/programmes/distribution/',
+          label: 'Distribution and market access',
+          reason: 'The earning side of the gap the SACCO exists to close.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .split {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-5);
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: var(--space-8);
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

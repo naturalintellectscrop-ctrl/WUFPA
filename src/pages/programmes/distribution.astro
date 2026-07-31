@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/distribution/ — docs/04 § 6.5, verbatim.
+ *
+ * Experience intent: "Encouraged · Included · Empowered." The mechanism is
+ * the broadcaster list — five named channels a member's film can actually
+ * air on, which is a concrete outcome rather than an aspiration.
+ *
+ * Reference: British Film Institute, institutional credibility only.
+ */
+
+const page = meta('/programmes/distribution/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'What we do', href: '/programmes/' },
+  { label: 'Distribution and market access' },
+];
+
+const hero = getPhoto('programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg');
+const distributors = getPhoto(
+  'programmes/distribution/ufmi-ceo-arthur-mpeirwe-film-distributors.jpeg',
+);
+
+/* docs/04 § 6.5 from [P2]. Five named platforms — a fact, not a claim. */
+const broadcasters = [
+  'TV West',
+  'Tayari West TV',
+  'GNTV',
+  'Lite TV',
+  'YoTV (Kibanda Express Channel)',
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Distribution and market access"
+    standfirst="Making a film and selling it are different problems. WUFPA works on the second one."
+    crumbs={crumbs}
+  />
+
+  <Section spacing="compact">
+    <Figure
+      image={hero.image}
+      alt={hero.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...hero.caption ? { caption: hero.caption } : {}}
+      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="group-heading" reveal>
+    <h2 id="group-heading">The Film Distributors Group</h2>
+    <div class="split">
+      <Prose>
+        <p>
+          WUFPA organised Western Uganda’s film distributors and librarians to buy and promote
+          local film content — a step towards a regional film economy rather than a regional
+          film hobby. The Western Uganda Film Distributors Group connects producers directly
+          with content buyers.
+        </p>
+      </Prose>
+      <Figure
+        image={distributors.image}
+        alt={distributors.alt}
+        purpose="card"
+        ratio="landscape"
+        sizes="(min-width: 64rem) 28rem, 100vw"
+        {...distributors.caption ? { caption: distributors.caption } : {}}
+        {...distributors.dateNote ? { dateNote: distributors.dateNote } : {}}
+      />
+    </div>
+  </Section>
+
+  <Section labelledBy="broadcast-heading" variant="subtle" reveal>
+    <h2 id="broadcast-heading">Broadcast</h2>
+    <p class="standfirst">Members’ films are aired regularly on regional platforms.</p>
+
+    <ul role="list" class="broadcasters">
+      {broadcasters.map((channel) => <li class="broadcaster">{channel}</li>)}
+    </ul>
+
+    <Prose class="mou">
+      <p>
+        In 2022, WUFPA signed a memorandum of understanding to work with Sky TV in Mbarara
+        City.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section labelledBy="cta-heading" container="narrow" reveal>
+    <h2 id="cta-heading">Getting your film to an audience</h2>
+    <Prose>
+      <p>
+        Distribution introductions, the distributors group and the broadcast relationships
+        above are all reached through the association. Membership is the route in.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Related work"
+      links={[
+        {
+          href: '/programmes/kibanda/',
+          label: 'The Kibanda Initiative',
+          reason: 'Community screenings — the other half of reaching an audience.',
+        },
+        {
+          href: '/programmes/advocacy/',
+          label: 'Advocacy and rights',
+          reason: 'Distribution only pays if copyright holds.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The broadcasters and institutions behind this work.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .split {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-5);
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: var(--space-8);
+    }
+  }
+
+  /* A list of five names, set as a row of plain rules rather than cards.
+     Five boxes to hold five short strings would be the "oversized cards
+     simply to occupy space" docs/21 § 2.4 rules out. */
+  .broadcasters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .broadcaster {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+    font-family: var(--font-ui);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  .mou {
+    margin-block-start: var(--space-7);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

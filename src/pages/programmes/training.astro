@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Stack from '../../components/layout/Stack.astro';
+import Grid from '../../components/layout/Grid.astro';
+import Figure from '../../components/media/Figure.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
+import { meta } from '../../lib/page-meta';
+
+/**
+ * /programmes/training/ — docs/04 § 6.2, verbatim.
+ *
+ * Experience intent: "Encouraged · Included · Empowered." The mechanism is
+ * the delivered-training list — six real, dated sessions with named partners
+ * — which tells a prospective member that training here is a thing that
+ * happens, not a thing that is promised.
+ *
+ * Reference: British Film Institute, institutional credibility only.
+ *
+ * Every partner named below is in docs/02 § 13's approved list. The
+ * photographs are of these exact sessions.
+ */
+
+const page = meta('/programmes/training/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'What we do', href: '/programmes/' },
+  { label: 'Training and master classes' },
+];
+
+const hero = getPhoto('programmes/training/matatu-film-lab-cohort-2024.jpeg');
+
+/* docs/04 § 6.2, verbatim from [P2]. */
+const partners = [
+  'UCC / CineArts Academy',
+  'US Mission Uganda / Film Possible Uganda',
+  'Alliance Française and the Goethe-Zentrum',
+  'Uganda Film Network',
+  'UNATCOM — the Uganda National Commission for UNESCO',
+  'National Producers Guild of Uganda (PGU)',
+];
+
+/* Delivered training, docs/04 § 6.2. Each carries its own photograph where one
+   exists in the archive — the evidence is the point of this section. */
+const delivered = [
+  {
+    title: 'Master classes with Kampala Film School',
+    detail: 'For the UCC Western Region Film Competition Festival.',
+    photo: 'programmes/training/ucc-master-class-kampala-film-school-session.jpeg',
+  },
+  {
+    title: 'The Matatu Film Lab',
+    detail:
+      'With Film Possible and US Mission Uganda, led by international mentor Zavaleta Janson, 2024.',
+    photo: 'programmes/training/matatu-film-lab-training-room-2024.jpeg',
+  },
+  {
+    title: 'Monetising film content',
+    detail: 'With MTN YoTV, 2023 — how members earn from the YoTV channel.',
+    photo: 'programmes/training/mtn-yotv-monetisation-workshop-2023.jpeg',
+  },
+  {
+    title: 'Training workshop with UNATCOM for UNESCO',
+    detail: null,
+    photo: 'programmes/training/unatcom-unesco-training-workshop.jpeg',
+  },
+  {
+    title: 'A workshop with Film Impact Movement (USA)',
+    detail: null,
+    photo: 'programmes/training/film-impact-movement-usa-workshop.jpeg',
+  },
+  {
+    title: 'A visit from US film expert Joshua Stoone',
+    detail: '2023.',
+    photo: 'programmes/training/joshua-stoone-us-film-expert-2023.jpeg',
+  },
+].map((item) => ({ ...item, image: getPhoto(item.photo) }));
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Training and master classes"
+    standfirst="Skills in screenwriting, directing, acting, cinematography, editing and production — taught in the sub-regions, not only in Kampala."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="intro-heading" container="narrow">
+    <h2 id="intro-heading" class="u-visually-hidden">Why we train</h2>
+    <Prose>
+      <p>
+        Capacity building is WUFPA’s first core objective: to develop skills among members
+        through workshops, mentorships and hands-on training.
+      </p>
+    </Prose>
+  </Section>
+
+  <Section spacing="compact">
+    <Figure
+      image={hero.image}
+      alt={hero.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...hero.caption ? { caption: hero.caption } : {}}
+      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
+    />
+  </Section>
+
+  <Section labelledBy="partners-heading" variant="subtle" reveal>
+    <h2 id="partners-heading">Who we train with</h2>
+    <p class="standfirst">
+      WUFPA receives annual workshops and training support from national and international
+      partners.
+    </p>
+    <Stack as="ul" gap={3} class="partner-list">
+      {partners.map((partner) => <li>{partner}</li>)}
+    </Stack>
+  </Section>
+
+  <Section labelledBy="delivered-heading" reveal>
+    <h2 id="delivered-heading">Training we have delivered</h2>
+    <p class="standfirst">Each of these happened. The photographs are from the sessions.</p>
+
+    <Grid min="20rem" gap={7} class="delivered">
+      {
+        delivered.map((item) => (
+          <article class="delivered__item">
+            <Figure
+              image={item.image.image}
+              alt={item.image.alt}
+              purpose="card"
+              ratio="landscape"
+              variant="grid-item"
+              sizes="(min-width: 64rem) 30rem, 100vw"
+            />
+            <h3 class="delivered__title">{item.title}</h3>
+            {item.detail && <p class="delivered__detail">{item.detail}</p>}
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="cta-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="cta-heading">Training is a membership benefit</h2>
+    <Prose>
+      <p>
+        Every session above was open to WUFPA members. Joining is how a filmmaker in any of
+        the six sub-regions gets access to the next one.
+      </p>
+    </Prose>
+    <div class="actions">
+      <Button href="/membership/join/">Become a member</Button>
+    </div>
+
+    <RelatedLinks
+      heading="Related work"
+      links={[
+        {
+          href: '/programmes/competitions/',
+          label: 'Competitions and awards',
+          reason: 'Several of these master classes prepared members for the UCC competition.',
+        },
+        {
+          href: '/programmes/international/',
+          label: 'International exposure',
+          reason: 'Where training turns into festival delegations.',
+        },
+        {
+          href: '/partners/',
+          label: 'Our partners',
+          reason: 'The institutions that deliver this training with us.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .partner-list {
+    margin-block-start: var(--space-5);
+    max-inline-size: var(--measure-prose);
+    padding-inline-start: var(--space-5);
+  }
+
+  .partner-list li {
+    color: var(--text-body);
+  }
+
+  .delivered {
+    margin-block-start: var(--space-6);
+  }
+
+  .delivered__title {
+    margin: var(--space-4) 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+
+  .delivered__detail {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

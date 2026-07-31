@@ -117,5 +117,17 @@ const {
     </main>
 
     <SiteFooter />
+
+    {/* WUFPA-068. Loaded here rather than per-page: the reveal was previously
+        imported only by the component gallery, so on every real route the CSS
+        in base/a11y.css animated nothing and the whole system was inert.
+
+        Costs nothing on pages that do not use it — initReveal() returns early
+        when it finds no `.reveal` targets, before adding the class that lets
+        CSS hide anything. `is:inline` is deliberately NOT used: this must be a
+        deferred module, never render-blocking, on a metered connection. */}
+    <script>
+      import '../scripts/reveal';
+    </script>
   </body>
 </html>

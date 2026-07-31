@@ -89,7 +89,7 @@ const card = (event: (typeof upcoming)[number]) => {
           announced in our <a href="/news/">news</a>.
         </p>
       ) : (
-        <ul role="list" class="event-grid">
+        <ul role="list" class="grid event-grid">
           {upcoming.map((event) => (
             <li>
               <EntityCard variant="event" {...card(event)} />
@@ -109,7 +109,7 @@ const card = (event: (typeof upcoming)[number]) => {
           association has done.
         </p>
 
-        <ul role="list" class="event-grid">
+        <ul role="list" class="grid event-grid">
           {past.map((event) => (
             <li>
               <EntityCard variant="event" {...card(event)} />
@@ -122,18 +122,16 @@ const card = (event: (typeof upcoming)[number]) => {
 </BaseLayout>
 
 <style>
+  /* Columns come from the intrinsic `.grid` primitive, not a breakpoint here
+     (WUFPA-015/052). The 40rem media query this replaces asked the viewport how
+     wide the list was; `--grid-min` asks the container, which is the same
+     distinction docs/21 section 12 draws between recomposing and resizing. */
   .event-grid {
-    display: grid;
+    --grid-min: 18rem;
     gap: var(--space-6);
     margin-block-start: var(--space-6);
     padding: 0;
     list-style: none;
-  }
-
-  @media (min-width: 40rem) {
-    .event-grid {
-      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    }
   }
 
   .empty,

@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Prose from '../components/layout/Prose.astro';
+import Grid from '../components/layout/Grid.astro';
+import RelatedLinks from '../components/content/RelatedLinks.astro';
+import Button from '../components/primitives/Button.astro';
+import { meta } from '../lib/page-meta';
+import { site } from '../lib/site-config';
+
+/**
+ * /support/ — docs/04 § 14.
+ *
+ * SIX SPECIFIC ASKS, NOT A DONATE BUTTON. Each is work WUFPA has already
+ * designed with people ready to do it, waiting only on means — which is a
+ * fundamentally more credible request than a general appeal, and is what
+ * docs/04 § 14 specifies.
+ *
+ * ⟦Q22⟧ — NO PAYMENT CHANNEL IS PUBLISHED, DELIBERATELY. No verified bank or
+ * mobile-money detail has been supplied. The prototype shipped a "Donate"
+ * button pointing at a dead anchor (audit finding X8); publishing an
+ * unverified payment detail would be considerably worse than that, because
+ * money could go to the wrong place. So this page offers three real routes —
+ * a partnership conversation, an equipment-donation enquiry, and the head
+ * office address — and no payment form.
+ */
+
+const page = meta('/support/');
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Support WUFPA' }];
+
+/* docs/02 § 11.1 — the six current needs, verbatim from [P3]. */
+const needs = [
+  {
+    title: 'WUFM SACCO seed capital',
+    text: 'To offer low-interest loans and grants to young and emerging filmmakers, and small grants for local film projects and talent development.',
+  },
+  {
+    title: 'Production equipment',
+    text: 'Professional video cameras, lighting kits, sound gear, editing software and computers.',
+  },
+  {
+    title: 'Training and capacity building',
+    text: 'Sponsorship for workshops and master classes; screenwriting, directing and post-production training; mentorships with national and international professionals.',
+  },
+  {
+    title: 'Infrastructure',
+    text: 'Office space and administrative facilities; a Regional Film Production Studio in Western Uganda; support to build or access community cinema halls.',
+  },
+  {
+    title: 'International exposure',
+    text: 'Exchange programmes and travel support to attend film festivals, labs and residencies, including ZIFF and the African Mashariki Film Festival.',
+  },
+  {
+    title: 'Advocacy for policy change',
+    text: 'Support to include film and media production in Uganda’s national education curriculum, especially in vocational and secondary schools.',
+  },
+];
+
+/* docs/02 § 11.2 — five reasons, headings verbatim from [P3]. */
+const reasons = [
+  {
+    title: 'Empowering youth and women',
+    text: 'Creative arts training and production activities open employment and income opportunities, especially for underrepresented groups in rural and semi-urban communities.',
+  },
+  {
+    title: 'Preserving indigenous cultures',
+    text: 'Authentic local storytelling in native languages ensures Western Uganda’s heritage is captured, celebrated and passed on.',
+  },
+  {
+    title: 'Strengthening regional creative economies',
+    text: 'Film production and distribution create value chains in acting, editing, costume design, music and tourism.',
+  },
+  {
+    title: 'Bridging regional gaps in national film strategy',
+    text: 'Visibility, structure and professional opportunity for creatives outside Kampala.',
+  },
+  {
+    title: 'Promoting education and civic awareness through film',
+    text: 'Members’ films address health, gender-based violence, environmental conservation and civic responsibility.',
+  },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Support WUFPA"
+    standfirst="WUFPA is asking for six specific things. Each one is work we have already designed, with people ready to do it, waiting only on the means."
+    crumbs={crumbs}
+  />
+
+  <Section labelledBy="needs-heading">
+    <h2 id="needs-heading">What your support would fund</h2>
+    <Grid min="19rem" gap={6} class="needs">
+      {
+        needs.map((need, index) => (
+          <article class="need">
+            <p class="need__number" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 class="need__title">{need.title}</h3>
+            <p class="need__text">{need.text}</p>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="why-heading" variant="subtle" reveal>
+    <h2 id="why-heading">Why support WUFPA</h2>
+    <Grid min="19rem" gap={6} class="reasons">
+      {
+        reasons.map((reason) => (
+          <article class="reason">
+            <h3 class="reason__title">{reason.title}</h3>
+            <p class="reason__text">{reason.text}</p>
+          </article>
+        ))
+      }
+    </Grid>
+  </Section>
+
+  <Section labelledBy="how-heading" container="narrow" reveal>
+    <h2 id="how-heading">How to support us</h2>
+    <Prose>
+      <p>
+        Support starts with a conversation. Tell us which of the six areas above you are
+        interested in, and we will tell you exactly what it would take and what it would
+        change.
+      </p>
+      <p>
+        We are equally glad to hear from organisations offering equipment, training capacity or
+        facilities rather than funding — several of the needs above are met more usefully in
+        kind than in cash.
+      </p>
+    </Prose>
+
+    <div class="actions">
+      <Button href="/contact/">Talk to us about supporting WUFPA</Button>
+      <Button href="/partners/" variant="tertiary">Our current partners</Button>
+    </div>
+
+    <address class="office">
+      <strong>WUFPA head office</strong><br />
+      {site.address.street}<br />
+      {site.address.locality}, {site.address.country}
+    </address>
+
+    <RelatedLinks
+      heading="Elsewhere on this site"
+      links={[
+        {
+          href: '/sacco/',
+          label: 'WUFM SACCO',
+          reason: 'Seed capital is the first item on the list above.',
+        },
+        {
+          href: '/programmes/',
+          label: 'What we do',
+          reason: 'The work your support would extend.',
+        },
+        {
+          href: '/about/legal/',
+          label: 'Legal status and registration',
+          reason: 'WUFPA’s registration, for institutional due diligence.',
+        },
+      ]}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .needs,
+  .reasons {
+    margin-block-start: var(--space-6);
+  }
+
+  .need {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-accent);
+  }
+
+  .need__number {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.08em;
+    color: var(--text-accent);
+  }
+
+  .need__title,
+  .reason__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+
+  .need__text,
+  .reason__text {
+    margin: 0;
+    color: var(--text-body);
+  }
+
+  .reason {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 2px solid var(--line-subtle);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+
+  .office {
+    margin-block-start: var(--space-7);
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+</style>

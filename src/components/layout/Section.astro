@@ -11,11 +11,27 @@
  * render as a plain <div>.
  */
 interface Props {
-  variant?: 'default' | 'subtle' | 'muted' | 'inverse' | 'accent' | 'bleed';
+  /** `sacco` is WUFM SACCO only — docs/03 § 8.6 restricts that blue to
+   *  SACCO pages and sections. */
+  variant?: 'default' | 'subtle' | 'muted' | 'inverse' | 'accent' | 'sacco' | 'bleed';
   container?: 'prose' | 'narrow' | 'default' | 'wide' | 'full';
   spacing?: 'compact' | 'default' | 'loose';
   /** id of the heading that names this section. Omit for unnamed bands. */
   labelledBy?: string;
+  /**
+   * Opt in to the scroll reveal (WUFPA-068).
+   *
+   * OFF BY DEFAULT, deliberately. Motion is a signal, and a signal every band
+   * emits is noise — docs/21 section 5 asks motion to communicate continuity
+   * and hierarchy, and section 15 makes restraint the point. Reveal the bands
+   * that introduce something; leave the hero and the first band alone, since
+   * animating what is already on screen at load delays the LCP element for no
+   * gain.
+   *
+   * Safe by construction: the class only hides anything once reveal.ts has
+   * attached its observer, so a script failure leaves the content visible.
+   */
+  reveal?: boolean;
   class?: string;
 }
 
@@ -24,6 +40,7 @@ const {
   container = 'default',
   spacing = 'default',
   labelledBy,
+  reveal = false,
   class: className,
 } = Astro.props;
 
@@ -40,7 +57,10 @@ const Wrapper = labelledBy ? 'section' : 'div';
   data-spacing={spacing === 'default' ? undefined : spacing}
   aria-labelledby={labelledBy}
 >
-  <div class="container" data-width={container === 'default' ? undefined : container}>
+  <div
+    class:list={['container', reveal && 'reveal']}
+    data-width={container === 'default' ? undefined : container}
+  >
     <slot />
   </div>
 </Wrapper>

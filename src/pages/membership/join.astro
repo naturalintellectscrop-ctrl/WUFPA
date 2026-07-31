@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Form from '../../components/forms/Form.astro';
+import Field from '../../components/forms/Field.astro';
+import Fieldset from '../../components/forms/Fieldset.astro';
+import { meta } from '../../lib/page-meta';
+import { site } from '../../lib/site-config';
+import type { SelectOption } from '../../lib/types';
+
+/**
+ * /membership/join/ — the membership enquiry form. docs/10 § 5.
+ *
+ * ELEVEN FIELDS, SEVEN REQUIRED, TWO CONDITIONAL — exactly the specified set
+ * (docs/10 § 5.2). Every field earns its place; each additional one costs
+ * completions, and the coordinator collects the rest in conversation.
+ *
+ * WHAT IS DELIBERATELY NOT ASKED (docs/10 § 5.3): postal address, date of
+ * birth, gender, national ID, company registration number, showreel upload,
+ * payment. Each is either a barrier, a data-protection liability with no
+ * launch use, or excludes the informal groups WUFPA explicitly welcomes.
+ *
+ * PHONE IS REQUIRED AND EMAIL IS NOT. That inversion is deliberate: WhatsApp
+ * is the primary contact channel for this audience, and many members do not
+ * have email. Requiring it would exclude them (docs/10 § 5.2).
+ *
+ * ⟦Q3⟧ — WUFPA's own submission address is unconfirmed, so `action` posts to
+ * the hosting platform's form handler rather than a mailto: with a guessed
+ * address. The sub-region field carries the routing information the
+ * coordinator needs regardless of the endpoint.
+ *
+ * NO CAPTCHA (docs/13 FR-58). Honeypot only — a CAPTCHA is an accessibility
+ * barrier and a conversion tax at WUFPA's volume.
+ */
+
+const page = meta('/membership/join/');
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Membership', href: '/membership/' },
+  { label: 'Become a member' },
+];
+
+const subRegions: SelectOption[] = site.subRegions.map((region) => ({
+  value: region.key,
+  label: region.name,
+}));
+
+/* docs/10 § 5.2, field 6 — the documented membership categories from [P2]. */
+const applyingAs: SelectOption[] = [
+  { value: 'individual', label: 'An individual creative' },
+  { value: 'company', label: 'A production company or group' },
+  { value: 'guild', label: 'A film guild or collective' },
+];
+
+/* docs/10 § 5.2, field 8 — the ten guild crafts, plus Other. A checkbox group
+   rather than a select because filmmakers here routinely do several jobs. */
+const crafts: SelectOption[] = [
+  { value: 'directing', label: 'Directing' },
+  { value: 'producing', label: 'Producing' },
+  { value: 'screenwriting', label: 'Screenwriting' },
+  { value: 'acting', label: 'Acting' },
+  { value: 'cinematography', label: 'Cinematography' },
+  { value: 'editing', label: 'Editing' },
+  { value: 'sound', label: 'Sound' },
+  { value: 'lighting', label: 'Lighting and gaffing' },
+  { value: 'costume', label: 'Costume and make-up' },
+  { value: 'animation', label: 'Animation' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
+  <PageHeader
+    title="Become a member"
+    standfirst="Tell us about yourself and your work. A coordinator in your sub-region will contact you directly — usually on WhatsApp."
+    crumbs={crumbs}
+  />
+
+  <Section container="narrow">
+    <Prose class="intro">
+      <p>
+        This takes about two minutes. We ask only what a coordinator needs in order to reach
+        you and route your enquiry to the right guild and district — everything else is a
+        conversation, not a form.
+      </p>
+    </Prose>
+
+    <Form
+      action="/membership/join/"
+      name="membership"
+      submitLabel="Send my details"
+      class="join-form"
+    >
+      <Field
+        name="name"
+        label="Your name"
+        required
+        autocomplete="name"
+      />
+
+      <Field
+        name="phone"
+        label="Phone number"
+        type="tel"
+        required
+        hint="WhatsApp preferred — it is how most coordinators make contact."
+        autocomplete="tel"
+        inputmode="tel"
+      />
+
+      <Field
+        name="email"
+        label="Email address"
+        type="email"
+        hint="Optional. Leave this blank if you do not use email."
+        autocomplete="email"
+        inputmode="email"
+      />
+
+      <Field
+        name="subregion"
+        label="Your sub-region"
+        type="select"
+        required
+        options={subRegions}
+        hint="This routes your enquiry to the coordinator nearest you."
+      />
+
+      <Field
+        name="district"
+        label="Your district"
+        required
+        autocomplete="address-level2"
+      />
+
+      <Fieldset
+        legend="I am applying as"
+        name="applying-as"
+        type="radio"
+        required
+        options={applyingAs}
+      />
+
+      <Field
+        name="organisation"
+        label="Name of your company or group"
+        hint="Only if you are applying as a company, group, guild or collective."
+      />
+
+      <Fieldset
+        legend="What do you do in film?"
+        name="crafts"
+        type="checkbox"
+        required
+        options={crafts}
+        hint="Choose as many as apply — most filmmakers here do several jobs."
+      />
+
+      <Field
+        name="about"
+        label="Tell us about your work"
+        type="textarea"
+        hint="Optional. Anything you would like the coordinator to know before they call."
+        rows={5}
+      />
+    </Form>
+  </Section>
+
+  <Section labelledBy="next-heading" variant="subtle" container="narrow" reveal>
+    <h2 id="next-heading">What happens next</h2>
+    <Prose>
+      <p>
+        Your details go to WUFPA and are forwarded to the coordinator for the sub-region you
+        named. They will contact you on the number you gave us.
+      </p>
+      <p>
+        While you wait, read about <a href="/programmes/">what we do</a>, or find
+        <a href="/regions/">your sub-region</a> and the districts it covers.
+      </p>
+    </Prose>
+  </Section>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-block-end: var(--space-7);
+  }
+</style>

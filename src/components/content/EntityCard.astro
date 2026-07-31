@@ -99,6 +99,13 @@ const clickable = Boolean(href);
 
 <style>
   .card {
+    /* Establishes the query container the rule at the foot of this file needs.
+       WUFPA-081: that @container rule shipped with WUFPA-025 and had NEVER
+       matched, because `container-type` was declared nowhere in the repository —
+       a query with no container ancestor silently never applies. Named `card`
+       rather than left anonymous so a card nested inside another card resolves
+       to its own container and not its grandparent's. */
+    container: card / inline-size;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -193,8 +200,13 @@ const clickable = Boolean(href);
   }
 
   /* Container query: the card adapts to ITS width, not the viewport's, so the
-     same component works in a sidebar and in a three-up grid. */
-  @container (min-width: 30rem) {
+     same component works in a sidebar and in a three-up grid.
+
+     This is what docs/21 section 12 means by "recompose, don't resize" at
+     component scale — a media query here would ask the VIEWPORT how wide the
+     card is, which is the wrong question the moment the card is placed in a
+     narrow column on a wide screen. */
+  @container card (min-width: 30rem) {
     .card--article .card__body {
       padding: var(--space-6);
     }
