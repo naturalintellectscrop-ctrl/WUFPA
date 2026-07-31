@@ -1,0 +1,118 @@
+/**
+ * RESET
+ *
+ * Minimal and opinionated. Removes browser inconsistencies without imposing
+ * decisions that belong in the design system.
+ *
+ * Logical properties are used throughout (margin-inline, padding-block) so
+ * that adding a second language later is a content problem, not a CSS rewrite
+ * (constraint C7).
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin-block: 0;
+}
+
+/* Lists only lose their markers when they are explicitly a presentational list.
+   Stripping list-style globally removes them from the accessibility tree in
+   Safari, which silently degrades screen-reader output. */
+ul[role='list'],
+ol[role='list'] {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+body {
+  min-block-size: 100vh;
+  min-block-size: 100svh;
+  text-rendering: optimizeSpeed;
+}
+
+/* Media defaults. `max-inline-size: 100%` prevents the single most common
+   source of horizontal overflow at 320px. */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+svg {
+  fill: currentcolor;
+}
+
+/* Form controls do not inherit typography by default — a persistent browser
+   inconsistency and a common cause of 13px inputs that trigger iOS zoom. */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+textarea:not([rows]) {
+  min-block-size: 10em;
+}
+
+/* Anchored elements need room beneath the sticky header, or in-page links
+   land with the target hidden under it (WCAG 2.4.11). */
+:target {
+  scroll-margin-block-start: 6rem;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  block-size: 1px;
+  border: 0;
+  background-color: var(--line-subtle);
+}
+
+/* Long unbroken strings — URLs, some place names — must not force overflow. */
+p,
+li,
+dd,
+figcaption,
+td,
+th {
+  overflow-wrap: break-word;
+}

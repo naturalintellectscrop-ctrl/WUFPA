@@ -1,0 +1,298 @@
+/**
+ * TYPOGRAPHY
+ *
+ * Element defaults from docs/07 section 4.4.
+ *
+ * Two families, two jobs: Archivo carries the interface and display type,
+ * Source Serif 4 carries long-form reading. The site has two genuinely
+ * different reading modes — scanning an interface, and reading 800 words about
+ * copyright advocacy — and one typeface optimised for both is a compromise in
+ * both.
+ *
+ * ── SELF-HOSTED, ZERO THIRD-PARTY (WUFPA-014) ──────────────────────────────
+ *
+ * Both families are variable WOFF2, served from this origin. Nothing is
+ * requested from fonts.googleapis.com or fonts.gstatic.com — that would be a
+ * render-blocking cross-origin request on a metered mobile connection (R9,
+ * constraint C1) and a privacy exposure for the reader.
+ *
+ * WHAT ACTUALLY DOWNLOADS. Four files exist; two load. The latin-ext faces
+ * carry U+0100–024F and are fetched ONLY if a character in that range appears
+ * on the page — that is what unicode-range is for. Baseline cost is therefore
+ * Archivo latin (34.1 KB) + Source Serif 4 latin (49.6 KB) = 83.7 KB, inside
+ * the 90 KB budget, and latin-ext is available at no cost until something
+ * needs it. It is kept because Luganda's ŋ (U+014B) sits in Latin Extended-A;
+ * dropping the range to save bytes that are never spent would be a false economy
+ * that breaks a name.
+ *
+ * Licence: both families are SIL Open Font License 1.1. The licences are served
+ * alongside the fonts at /fonts/LICENSE-*.txt, which is how the OFL's
+ * redistribution requirement is met.
+ *
+ * WHY public/ AND NOT src/assets/. Fonts here have stable, unhashed URLs so the
+ * preload below can name one without a build-time lookup. The trade-off is
+ * deliberate: cache-busting is by rename, not content hash. A font file changes
+ * approximately never, and the alternative couples a <link rel="preload"> in the
+ * layout to Vite's hashing.
+ */
+
+/* ── FALLBACK METRIC OVERRIDES ────────────────────────────────────────────
+   These two faces are what make font-display: swap safe. Without them the swap
+   reflows every line box on the page and CLS is charged for it — which is why
+   WUFPA-014's acceptance criteria name "CLS from font swap = 0" specifically.
+
+   EVERY NUMBER BELOW WAS MEASURED, not looked up. Extracted from the actual
+   font binaries with fontkit on 31 July 2026:
+
+     face             upem   ascent  descent  x-height
+     Archivo          1000    878     -210      526
+     Source Serif 4   1000   1036     -335      475
+     Segoe UI         2048   2210     -514     1024
+     Georgia          2048   1878     -449      986
+
+   size-adjust matches x-height, the dominant cue for perceived size:
+     Archivo/Segoe UI      0.526 / (1024/2048) = 1.0520  -> 105.20%
+     Source Serif/Georgia  0.475 / ( 986/2048) = 0.98670 ->  98.67%
+
+   ascent/descent are then expressed against the ADJUSTED em (value / s):
+     Archivo       asc 0.878 / 1.0520  = 83.46%   desc 0.210 / 1.0520  = 19.96%
+     Source Serif  asc 1.036 / 0.98670 = 105.00%  desc 0.335 / 0.98670 = 33.95%
+
+   ⚠ MEASURED AGAINST DESKTOP WINDOWS FACES ONLY. The primary audience is a
+   mid-range Android, where the real fallback is Roboto — which was not present
+   on the build machine and so was NOT measured. It is not tuned here and must
+   not be claimed as such. The mismatch is expected to be small (Archivo's
+   x-height of 0.526 em is close to Roboto's), but "expected to be small" is an
+   estimate, and the honest statement is that Android tuning is owed. Confirming
+   it belongs to WUFPA-076, which tests on a real mid-range Android. */
+
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 105.2%;
+  ascent-override: 83.46%;
+  descent-override: 19.96%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Serif Fallback';
+  src: local('Georgia'), local('Times New Roman'), local('Times');
+  size-adjust: 98.67%;
+  ascent-override: 105%;
+  descent-override: 33.95%;
+  line-gap-override: 0%;
+}
+
+/* ── THE REAL FACES ──────────────────────────────────────────────────────
+   One @font-face per family per unicode-range. font-weight carries the full
+   variable axis, so 400/500/600/700/900 all come from one file and
+   font-synthesis-weight: none below is finally telling the truth — before
+   WUFPA-014 it suppressed synthesis for a font that was not there, which meant
+   weight requests silently snapped to whatever static weights the system face
+   happened to ship. */
+
+@font-face {
+  font-family: Archivo;
+  src: url('/fonts/archivo-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: Archivo;
+  src: url('/fonts/archivo-latin-ext-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/source-serif-4-latin-wght-normal.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/source-serif-4-latin-ext-wght-normal.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-body);
+  background-color: var(--surface-page);
+  font-synthesis-weight: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  color: var(--text-heading);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+h4 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+h5,
+h6 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Inline links are underlined at rest. Removing the underline leaves colour as
+   the only signal, which fails WCAG 1.4.1. */
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration-thickness: 2px;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+strong,
+b {
+  font-weight: var(--weight-semibold);
+}
+
+small {
+  font-size: var(--text-xs);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+blockquote {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-heading);
+}
+
+figcaption {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+/* Figures align numerals in tables and statistic blocks. */
+table,
+.u-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Long-form reading context. Applied by the Prose component so that markdown
+   authored by WUFPA needs no classes in the content itself. */
+.prose {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  max-inline-size: var(--measure-prose);
+}
+
+.prose > * + * {
+  margin-block-start: var(--space-4);
+}
+
+.prose h2 {
+  margin-block-start: var(--space-7);
+}
+
+.prose h3,
+.prose h4 {
+  margin-block-start: var(--space-6);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: var(--space-5);
+}
+
+.prose li + li {
+  margin-block-start: var(--space-2);
+}
+
+/* Eyebrow label — the only permitted use of all-caps.
+   Caps reduce legibility and are announced letter-by-letter by some screen
+   readers, so they never appear in body copy. */
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+.standfirst {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  max-inline-size: var(--measure-wide);
+}

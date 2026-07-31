@@ -1,0 +1,105 @@
+/**
+ * PRINT
+ *
+ * Cheap, and genuinely used: funders print pages for funding files and
+ * researchers print for reference (audiences A2 and A4).
+ *
+ * Source: docs/07 section 12
+ */
+
+@media print {
+  /* Always black on white — dark bands waste toner and print illegibly. */
+  :root {
+    --surface-page: #fff;
+    --surface-subtle: #fff;
+    --surface-muted: #fff;
+    --surface-inverse: #fff;
+    --text-heading: #000;
+    --text-body: #000;
+    --text-secondary: #000;
+    --text-muted: #333;
+    --text-on-inverse: #000;
+    --text-muted-on-inverse: #333;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Interface chrome carries no meaning on paper. */
+  .site-header,
+  .site-footer nav,
+  .skip-link,
+  .mobile-nav,
+  .search-field,
+  .share-row,
+  .cta-banner,
+  form,
+  [data-print='hide'] {
+    display: none !important;
+  }
+
+  /* Disclosures print expanded — a collapsed panel on paper is lost content. */
+  [hidden][data-disclosure-panel],
+  details:not([open]) > *:not(summary) {
+    display: revert !important;
+  }
+
+  details > summary {
+    list-style: none;
+  }
+
+  /* Reveal animations must never leave printed content invisible. */
+  .reveal,
+  .js .reveal {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+
+  /* Link destinations are lost on paper unless written out. */
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    word-break: break-all;
+  }
+
+  a[href^='#']::after,
+  a[href^='mailto']::after {
+    content: '';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  figure,
+  table,
+  tr,
+  .card,
+  blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  img {
+    max-inline-size: 100% !important;
+  }
+
+  @page {
+    margin: 18mm;
+  }
+}

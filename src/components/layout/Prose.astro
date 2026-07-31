@@ -1,0 +1,61 @@
+---
+/**
+ * Prose — typographic defaults for editor-authored markdown.
+ *
+ * Content authors write markdown and never HTML with classes. Anything they
+ * need that markdown cannot express becomes a documented component, not raw
+ * HTML — otherwise the design system leaks into the content and both rot.
+ */
+interface Props {
+  width?: 'prose' | 'narrow' | 'wide';
+  class?: string;
+}
+
+const { width = 'prose', class: className } = Astro.props;
+---
+
+<div class:list={['prose', `prose--${width}`, className]}>
+  <slot />
+</div>
+
+<style>
+  .prose--narrow {
+    max-inline-size: var(--measure-narrow);
+  }
+  .prose--wide {
+    max-inline-size: var(--measure-wide);
+  }
+
+  .prose :global(blockquote) {
+    margin-inline-start: 0;
+    padding-inline-start: var(--space-5);
+    border-inline-start: 3px solid var(--line-accent);
+  }
+
+  .prose :global(figure) {
+    margin-inline: 0;
+  }
+
+  .prose :global(hr) {
+    margin-block: var(--space-7);
+  }
+
+  /* Tables inside prose scroll rather than overflow the measure. */
+  .prose :global(table) {
+    inline-size: 100%;
+    font-size: var(--text-sm);
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: var(--space-3);
+    text-align: start;
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  .prose :global(thead th) {
+    background-color: var(--surface-muted);
+    font-family: var(--font-ui);
+    font-weight: var(--weight-semibold);
+  }
+</style>

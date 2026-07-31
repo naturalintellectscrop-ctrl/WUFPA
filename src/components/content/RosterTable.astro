@@ -1,0 +1,136 @@
+---
+/**
+ * RosterTable — the governance rosters: Executive Committee, Board of Trustees,
+ * sub-region coordination teams, guild heads.
+ *
+ * Makes WUFPA's ~60-person governance structure legible, which is the strongest
+ * answer to a funder asking "who is accountable?".
+ *
+ * PRIVACY CONTRACT — ENFORCED IN THE COMPONENT, NOT LEFT TO CONTENT AUTHORS:
+ * this component renders Name, Role and District. There is NO code path that
+ * can output a telephone number or personal email, regardless of what the data
+ * contains. The supplied roster carries ~60 personal mobile numbers; Uganda's
+ * Data Protection and Privacy Act, 2019 applies (docs/11 section 6).
+ *
+ * Responsive strategy is horizontal scroll, NOT reflow into cards. Four columns
+ * reflowed becomes harder to scan, not easier (docs/07 section 7.4).
+ */
+import type { RosterRow } from '../../lib/types';
+
+interface Props {
+  caption: string;
+  rows: RosterRow[];
+  /** Hide the district column where it carries no information. */
+  showDistrict?: boolean;
+  class?: string;
+}
+
+const { caption, rows, showDistrict = true, class: className } = Astro.props;
+
+/* A person appears only once their name is confirmed AND consent is granted.
+   Filtering here rather than in the page template means no caller can bypass
+   it by forgetting. */
+const publishable = rows.filter((r) => r.nameConfirmed === true && r.consent === 'granted');
+const withheld = rows.length - publishable.length;
+---
+
+<div class:list={['roster', className]}>
+  {
+    publishable.length > 0 ? (
+      <div class="u-scroll-x" tabindex="0" role="region" aria-label={caption}>
+        <table>
+          <caption>{caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Role</th>
+              {showDistrict && <th scope="col">District</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {publishable.map((r) => (
+              <tr>
+                <th scope="row">{r.name}</th>
+                <td>{r.role}</td>
+                {showDistrict && <td>{r.district ?? '—'}</td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p class="roster__empty">
+        <strong>{caption}</strong> — this roster is not yet published. Names appear once WUFPA
+        has confirmed their spelling and each person has consented.
+      </p>
+    )
+  }
+
+  {
+    withheld > 0 && publishable.length > 0 && (
+      <p class="roster__note">
+        {withheld} further {withheld === 1 ? 'member' : 'members'} of this body are not listed
+        pending confirmation and consent.
+      </p>
+    )
+  }
+</div>
+
+<style>
+  table {
+    inline-size: 100%;
+    font-size: var(--text-sm);
+  }
+
+  caption {
+    text-align: start;
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+    padding-block-end: var(--space-3);
+  }
+
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  thead th {
+    background-color: var(--surface-muted);
+    font-family: var(--font-ui);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
+  tbody th {
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  tbody td {
+    color: var(--text-body);
+  }
+
+  .roster__empty,
+  .roster__note {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .roster__note {
+    margin-block-start: var(--space-3);
+  }
+
+  .u-scroll-x {
+    border: 1px solid var(--line-subtle);
+    border-radius: var(--radius-card);
+  }
+</style>

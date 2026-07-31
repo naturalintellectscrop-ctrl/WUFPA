@@ -1,0 +1,199 @@
+/**
+ * LAYER 2 — SEMANTIC
+ *
+ * Decisions about meaning. Components reference ONLY these tokens, never the
+ * primitives. When a decision changes ("links need more contrast"), one value
+ * changes here and every component follows.
+ *
+ * Dark mode is deferred (docs/07 section 11) but the structure permits it: a
+ * second value set under [data-theme='dark'] would override the whole layer
+ * without touching a single component.
+ *
+ * Source: docs/07_DESIGN_SYSTEM.md section 2
+ */
+
+:root {
+  /* ── SURFACE ────────────────────────────────────────────────────────────
+     White is the default ground. The logo is 83% white and is designed for it;
+     the dark treatment in the original prototype fought the mark and made real
+     documentary photography look like stock.                                  */
+  --surface-page: var(--white);
+  --surface-subtle: var(--ink-050);
+  --surface-muted: var(--ink-100);
+  --surface-inverse: var(--ink-900);
+  --surface-accent-subtle: var(--red-tint);
+  --surface-sacco: var(--sacco-blue-tint);
+
+  /* ── TEXT ───────────────────────────────────────────────────────────────
+     --text-muted is a FLOOR, not a default. If a design calls for something
+     paler than #6B6163, the answer is a smaller size or more space, not a
+     paler grey.                                                               */
+  --text-heading: var(--ink-900);
+  --text-body: var(--ink-800);
+  --text-secondary: var(--ink-700);
+  --text-muted: var(--ink-600);
+  --text-accent: var(--red-700);
+  --text-on-inverse: var(--white);
+  --text-muted-on-inverse: var(--ink-300);
+  --text-accent-on-inverse: var(--red-300);
+  --text-sacco: var(--sacco-blue); /* 10.66:1 on white; 8.94:1 on --surface-sacco */
+
+  /* Decorative glyphs that are NOT read and carry no information — the "/" in
+     Breadcrumb is the only current use. Deliberately separate from --text-*:
+     naming it this way is what stops a real text colour ever being set this
+     pale. At 2.50:1 on white it sits below the 1.4.3 text threshold, which is
+     permissible only BECAUSE it is decorative (the separator is a CSS
+     pseudo-element, never announced, and the list structure conveys the
+     hierarchy on its own). ⚠ If a legibility review disagrees, this is now a
+     one-value change rather than a hunt through component files. */
+  --text-decorative: var(--ink-400);
+
+  /* ── LINE & BORDER ──────────────────────────────────────────────────── */
+  --line-subtle: var(--ink-200);
+  --line-default: var(--ink-300);
+  --line-strong: var(--ink-500); /* 3.82:1 — meets 1.4.11 for stateful borders */
+  --line-accent: var(--red-500);
+  --line-inverse: rgb(255 255 255 / 18%);
+
+  /* ── INTERACTIVE ────────────────────────────────────────────────────────
+     White on --action-primary-bg is 4.39:1. That qualifies as large text only
+     at >=19px bold / >=24px regular, so primary button labels are set at 17px
+     weight 600 and MUST be verified in audit; escalate to 18px/700 if in doubt.
+     This is the one place the brand red works near its contrast limit.        */
+  --action-primary-bg: var(--red-500);
+  --action-primary-bg-hover: var(--red-600);
+  --action-primary-bg-active: var(--red-700);
+  --action-primary-text: var(--white);
+
+  --action-secondary-border: var(--ink-900);
+  --action-secondary-text: var(--ink-900);
+  --action-secondary-bg-hover: var(--ink-100);
+
+  /* On --surface-inverse. This vocabulary is why WUFPA-082 exists: without it
+     a component rendering on a dark ground has nowhere legitimate to look, so
+     it reaches into the primitives — and every future inverse band repeats the
+     mistake. White on --surface-inverse is 15.99:1. */
+  --action-inverse-bg: var(--white);
+  --action-inverse-bg-hover: var(--ink-100);
+  --action-inverse-text: var(--ink-900);
+
+  /* A component's own light ground when it sits on an inverse surface — e.g.
+     the footer's logo card, where the supplied JPEG has white baked in and
+     docs/03 section 5.2 makes white the brand's ground. */
+  --surface-on-inverse: var(--white);
+
+  --link: var(--red-700);
+  --link-hover: var(--red-800);
+  --link-visited: #7a2a6b; /* distinguishable, still >=4.5:1 on white */
+
+  --focus-ring: var(--red-500);
+  --focus-ring-inverse: var(--white);
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* ── FEEDBACK ───────────────────────────────────────────────────────────
+     Feedback is NEVER conveyed by colour alone (WCAG 1.4.1). Every state
+     carries an icon and a text label.                                         */
+  --feedback-success: var(--green-600);
+  --feedback-success-bg: var(--green-050);
+  --feedback-warning: var(--amber-700);
+  --feedback-warning-bg: var(--amber-050);
+  --feedback-error: var(--red-700);
+  --feedback-error-bg: var(--red-tint);
+
+  /* ── LAYOUT RHYTHM ──────────────────────────────────────────────────────
+     The original prototype used a flat 120px section padding at every viewport,
+     which consumes roughly a third of a 360px screen per section.             */
+  --section-spacing: var(--space-8);
+  --section-spacing-compact: var(--space-7);
+  --section-spacing-loose: var(--space-9);
+  --gutter: var(--space-4);
+  --stack-gap: var(--space-4);
+  --card-padding: var(--space-5);
+
+  /* ── COMPONENT DEFAULTS ─────────────────────────────────────────────── */
+  --control-height: 3rem; /* 48px */
+  --control-height-sm: 2.5rem; /* 40px, needs padding to reach a 44px hit area */
+  --control-height-lg: 3.5rem; /* 56px */
+  --target-min: 44px; /* WCAG 2.5.8, and a real requirement on a phone */
+  --radius-control: var(--radius-md);
+  --radius-card: var(--radius-md);
+  --radius-input: var(--radius-sm);
+}
+
+/**
+ * THE TABLET BAND — --bp-md, 768px.
+ *
+ * docs/07 section 5.2 has always specified the inline padding as three steps:
+ * "--space-4 at base, --space-6 from --bp-md, --space-8 from --bp-lg". The
+ * middle step was never implemented, so --gutter stepped ONCE, at 64rem, from
+ * 16px straight to 64px — a 4x jump — and every viewport from 768 to 1023px
+ * inherited a phone's 16px gutter on a tablet-width screen. That was the
+ * weakest point in the site's rhythm and the one place the spacing scale
+ * contradicted docs/21 section 11.
+ *
+ * Restored by WUFPA-080. Progression is now 16 -> 32 -> 64.
+ */
+@media (min-width: 48rem) {
+  :root {
+    --gutter: var(--space-6);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --section-spacing: var(--space-9);
+    --section-spacing-compact: var(--space-8);
+    --section-spacing-loose: var(--space-10);
+    --gutter: var(--space-8);
+    --card-padding: var(--space-6);
+  }
+}
+
+/**
+ * DARK THEME — scaffolded, not shipped.
+ *
+ * Deliberately NOT activated via prefers-color-scheme. Enabling it would need:
+ * the reverse logo (WUFPA-013), per-image checking of ~72 daylight photographs
+ * against a dark ground, and a QA pass over every contrast pair. Reasoning in
+ * docs/07 section 11.
+ *
+ * The block below exists to prove the architecture supports it — a theme is a
+ * value swap, not a new stylesheet.
+ */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-page: var(--ink-900);
+  --surface-subtle: #2b2627;
+  --surface-muted: #332d2f;
+  --surface-inverse: var(--white);
+
+  --text-heading: var(--white);
+  --text-body: var(--ink-100);
+  --text-secondary: var(--ink-200);
+  --text-muted: var(--ink-300);
+  --text-accent: var(--red-300);
+  --text-on-inverse: var(--ink-900);
+  --text-muted-on-inverse: var(--ink-700);
+  --text-sacco: var(--sacco-blue-tint); /* #2e3192 on a dark ground is ~1.6:1 — unusable */
+  --text-decorative: var(--ink-500);
+
+  /* --surface-inverse is white here, so an inverse action inverts with it. */
+  --action-inverse-bg: var(--ink-900);
+  --action-inverse-bg-hover: var(--ink-800);
+  --action-inverse-text: var(--white);
+
+  /* Stays white in both themes, deliberately: the supplied logo JPEG has a
+     white background baked in and has no transparent variant, so its safe
+     ground does not follow the theme. */
+  --surface-on-inverse: var(--white);
+
+  --line-subtle: rgb(255 255 255 / 12%);
+  --line-default: rgb(255 255 255 / 22%);
+  --line-strong: var(--ink-500);
+
+  --link: var(--red-300);
+  --link-hover: #ff7a80;
+  --focus-ring: var(--white);
+}

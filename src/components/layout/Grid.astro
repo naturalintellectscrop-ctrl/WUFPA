@@ -1,0 +1,50 @@
+---
+/**
+ * Grid — intrinsic card grid. NO MEDIA QUERIES, EVER.
+ *
+ * `repeat(auto-fit, minmax(min(--grid-min, 100%), 1fr))` fits as many columns
+ * as the AVAILABLE SPACE allows. That is the whole point, and it is the
+ * difference docs/21 section 12 draws between "recompose" and "resize": the same
+ * grid is correct in a sidebar, in a full-width band and inside another grid,
+ * without a single breakpoint being written.
+ *
+ * The `min(..., 100%)` is not decoration — without it, a --grid-min wider than
+ * the container overflows on narrow screens instead of collapsing to one
+ * column. That is the classic auto-fit bug and it fails at exactly 320px, the
+ * narrowest viewport this project supports.
+ *
+ * BEFORE THIS COMPONENT, three files hand-rolled their own card grid with a
+ * 40rem media query (RelatedLinks, /events/, /news/) while this CSS sat unused.
+ * Adding a page-local `*-grid` class is now a WUFPA-084 warning.
+ *
+ * CSS contract lives in global.css @layer layout (.grid, --grid-min).
+ *
+ * Source: docs/07 section 5.3 - WUFPA-015
+ */
+import type { SpaceToken } from '../../lib/types';
+
+interface Props {
+  /**
+   * Minimum column width before wrapping. This is the ONLY column control —
+   * there is deliberately no `columns` prop, because a fixed column count is a
+   * viewport assumption wearing a different hat.
+   */
+  min?: string;
+  gap?: SpaceToken;
+  as?: 'div' | 'ul' | 'ol';
+  class?: string;
+}
+
+const { min, gap, as: Tag = 'div', class: className } = Astro.props;
+
+const styles = [
+  min ? `--grid-min: ${min}` : null,
+  gap !== undefined ? `gap: var(--space-${gap})` : null,
+]
+  .filter(Boolean)
+  .join('; ');
+---
+
+<Tag class:list={['grid', className]} style={styles || undefined}>
+  <slot />
+</Tag>

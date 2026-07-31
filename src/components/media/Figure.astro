@@ -1,0 +1,161 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Figure — a processed photograph with its caption and credit.
+ *
+ * THE MOST IMPORTANT CONTENT COMPONENT ON THIS SITE. WUFPA's argument is
+ * carried by captioned photographs: "WUFPA sensitisation film workshop in the
+ * Bunyoro region, 2022" has more persuasive weight than the paragraph beside
+ * it (docs/06 section 7).
+ *
+ * `alt` describes the image; the caption adds context. They are NEVER the same
+ * string — the prototype's alt="Workshop" beside a caption reading "UCC Film
+ * Training Masterclass" is exactly backwards.
+ *
+ * Where the date is unknown the caption says so rather than omitting the field
+ * silently or inventing one.
+ *
+ * Derivative widths are the purpose ladders from docs/12 section 5.4, each
+ * clamped to the source's intrinsic width — Astro's <Picture> will happily
+ * upscale if asked to, so the clamp here is what makes the no-upscale rule
+ * hold even before scripts/check-no-upscale.mjs re-checks the built output.
+ */
+
+const WIDTH_LADDERS = {
+  hero: [640, 960, 1280, 1920, 2400],
+  card: [320, 480, 640, 960],
+  portrait: [240, 400, 600, 900],
+  thumbnail: [320, 480, 640],
+} as const;
+
+type Purpose = keyof typeof WIDTH_LADDERS;
+
+interface Props {
+  /** An ImageMetadata from src/lib/photos.ts — never a raw path string. */
+  image: ImageMetadata;
+  alt: string;
+  caption?: string;
+  /** Rendered verbatim, e.g. "Date not recorded". */
+  dateNote?: string;
+  date?: Date;
+  credit?: string;
+  location?: string;
+  ratio?: 'wide' | 'landscape' | 'portrait' | 'square' | 'auto';
+  objectPosition?: string;
+  /** Selects the derivative width ladder (docs/12 section 5.4). */
+  purpose?: Purpose;
+  /** True only for the LCP image. */
+  priority?: boolean;
+  sizes?: string;
+  variant?: 'inline' | 'wide' | 'bleed' | 'grid-item';
+  class?: string;
+}
+
+const {
+  image,
+  alt,
+  caption,
+  dateNote,
+  date,
+  credit,
+  location,
+  ratio = 'landscape',
+  objectPosition = 'center',
+  purpose = 'card',
+  priority = false,
+  sizes = '(min-width: 64rem) 60rem, 100vw',
+  variant = 'inline',
+  class: className,
+} = Astro.props;
+
+// The hard clamp: no width in the ladder may exceed the source's intrinsic
+// width, however wide the purpose ladder normally goes.
+const ladder = WIDTH_LADDERS[purpose];
+const clamped = ladder.filter((w) => w <= image.width);
+const widths: number[] = clamped.length > 0 ? clamped : [image.width];
+
+const dateLabel = date
+  ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
+  : dateNote;
+
+const metaParts = [location, dateLabel].filter(Boolean);
+const hasCaption = Boolean(caption || metaParts.length || credit);
+---
+
+<figure class:list={['figure', `figure--${variant}`, className]}>
+  <div
+    class="frame"
+    style={`--frame-ratio: var(--ratio-${ratio === 'auto' ? 'landscape' : ratio}); --frame-position: ${objectPosition};`}
+    data-ratio={ratio}
+  >
+    <Picture
+      src={image}
+      alt={alt}
+      formats={['avif', 'webp', 'jpeg']}
+      widths={widths}
+      sizes={sizes}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      fetchpriority={priority ? 'high' : undefined}
+    />
+  </div>
+
+  {
+    hasCaption && (
+      <figcaption>
+        {caption && <span class="figure__caption">{caption}</span>}
+        {metaParts.length > 0 && <span class="figure__meta">{metaParts.join(' · ')}</span>}
+        {credit && <span class="figure__credit">Photograph: {credit}</span>}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .figure {
+    margin: 0;
+  }
+
+  .frame {
+    background-color: var(--surface-muted);
+  }
+
+  .figure--bleed .frame {
+    border-radius: 0;
+  }
+
+  .figure--inline .frame,
+  .figure--grid-item .frame {
+    border-radius: var(--radius-md);
+  }
+
+  /* auto ratio lets tall or unusual images keep their own shape rather than
+     being cropped. Group photographs are never forced square — the archive is
+     dominated by 20-100 person shots and the scale IS the message. */
+  .frame[data-ratio='auto'] {
+    aspect-ratio: auto;
+  }
+  .frame[data-ratio='auto'] :global(img) {
+    block-size: auto;
+    object-fit: contain;
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-block-start: var(--space-3);
+  }
+
+  .figure__caption {
+    color: var(--text-secondary);
+  }
+
+  .figure__meta,
+  .figure__credit {
+    color: var(--text-muted);
+    font-size: var(--text-2xs);
+  }
+</style>

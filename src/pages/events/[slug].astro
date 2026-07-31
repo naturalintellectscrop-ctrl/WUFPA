@@ -1,0 +1,177 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import Tag from '../../components/primitives/Tag.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import type { RelatedLink } from '../../components/content/RelatedLinks.astro';
+import { fromEntry } from '../../lib/page-meta';
+import { eventSchema } from '../../lib/structured-data';
+import { derive, formatDates, machineDate } from '../../lib/events';
+
+/**
+ * Event detail — a shareable URL per event, with Event structured data.
+ *
+ * A cancelled event KEEPS this page. Deleting it breaks inbound links, and the
+ * record of what was planned is itself worth publishing (docs/09 § 9.2).
+ *
+ * The badge a reader sees and the `eventStatus` a crawler reads both come from
+ * one call to `derive()`, so they cannot drift apart.
+ *
+ * Source: docs/09 § 9.2 · WUFPA-052
+ */
+
+export const getStaticPaths = (async () => {
+  const events = await getCollection('events');
+  return events.map((event) => ({
+    params: { slug: event.id },
+    props: { event },
+  }));
+}) satisfies GetStaticPaths;
+
+type EventEntry = Awaited<ReturnType<typeof getCollection<'events'>>>[number];
+
+interface Props {
+  event: EventEntry;
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+
+const base = Astro.site ?? new URL('https://wufpa.example.org');
+const url = new URL(`/events/${event.id}/`, base).href;
+
+const status = derive(event.data);
+const dateLabel = formatDates(event.data);
+
+/* The description states what and when, which is what a result snippet needs
+   to be useful for an event. Built from real fields only — an event with no
+   date says so rather than implying one. */
+const summary = `${event.data.title}${event.data.venue ? ` at ${event.data.venue}` : ''}. ${dateLabel}.`;
+const { title, description } = fromEntry(event.data.title, summary);
+
+const schema = eventSchema({
+  url,
+  base,
+  name: event.data.title,
+  description: summary,
+  status: status.schemaStatus,
+  ...(event.data.startDate ? { startDate: event.data.startDate } : {}),
+  ...(event.data.endDate ? { endDate: event.data.endDate } : {}),
+  ...(event.data.venue ? { venue: event.data.venue } : {}),
+  ...(event.data.district ? { district: event.data.district } : {}),
+  ...(event.data.registrationUrl ? { registrationUrl: event.data.registrationUrl } : {}),
+});
+
+/* Related by relationship: the programme this event belongs to, then the two
+   section indexes. Never "latest three". */
+const related: RelatedLink[] = [
+  ...(event.data.programme
+    ? [
+        {
+          label: `About our ${String(event.data.programme.id).replace(/-/g, ' ')} work`,
+          href: `/programmes/${event.data.programme.id}/`,
+          reason: 'The programme this event belongs to.',
+        },
+      ]
+    : []),
+  { label: 'All WUFPA events', href: '/events/', reason: 'Upcoming and past, in one place.' },
+  { label: 'WUFPA news', href: '/news/', reason: 'New events are announced here first.' },
+].slice(0, 4);
+
+const startMachine = machineDate(event.data.startDate);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  crumbs={[{ label: 'Events', href: '/events/' }, { label: event.data.title }]}
+  schemas={[schema]}
+>
+  <PageHeader
+    title={event.data.title}
+    crumbs={[{ label: 'Events', href: '/events/' }, { label: event.data.title }]}
+  />
+
+  <Section container="prose">
+    {/* Status is never colour alone — the badge carries text (docs/16 § 8.1,
+        criterion 1.4.1). */}
+    {
+      /* `outline` for cancelled/postponed rather than an alert colour: the
+         Tag palette has no alert variant, and the badge text already carries
+         the meaning without relying on colour. */
+      status.badge && (
+        <Tag variant={status.phase === 'upcoming' ? 'accent' : 'outline'}>{status.badge}</Tag>
+      )
+    }
+
+    <dl class="event-facts">
+      <div>
+        <dt>Date</dt>
+        <dd>
+          {
+            startMachine ? (
+              <time datetime={startMachine}>{dateLabel}</time>
+            ) : (
+              dateLabel
+            )
+          }
+        </dd>
+      </div>
+
+      {
+        event.data.venue && (
+          <div>
+            <dt>Venue</dt>
+            <dd>{event.data.venue}</dd>
+          </div>
+        )
+      }
+
+      {
+        event.data.district && (
+          <div>
+            <dt>District</dt>
+            <dd>{event.data.district}</dd>
+          </div>
+        )
+      }
+    </dl>
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <RelatedLinks links={related} />
+  </Section>
+</BaseLayout>
+
+<style>
+  .event-facts {
+    display: grid;
+    gap: var(--space-3);
+    margin-block: var(--space-6);
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--line-subtle);
+  }
+
+  .event-facts > div {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .event-facts dt {
+    min-inline-size: 6rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .event-facts dd {
+    margin: 0;
+    font-weight: var(--weight-medium);
+  }
+</style>

@@ -1,0 +1,57 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# WUFPA website
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── PERSONAL DATA — NEVER COMMIT ─────────────────────────────────────────────
+# Pages 6-7 of the association profile are raster scans of the governance roster
+# and carry the personal mobile telephone numbers of ~60 office-holders.
+# Uganda Data Protection and Privacy Act, 2019 applies. A file committed once
+# lives in git history permanently, so these are blocked at the repository level
+# rather than left to reviewer vigilance.
+#   See: docs/12_MEDIA_LIBRARY.md section 7
+#        docs/11_TEAM_AND_LEADERSHIP.md section 6
+src/assets/photos/_quarantine/
+**/roster-scan-*
+**/*roster*.png
+**/*roster*.jpg
+
+# The unredacted profile must never be served. public/originals/ is the client
+# archive and IS committed; public/downloads/ serves the redacted edition only.
+public/downloads/*unredacted*
+public/downloads/WUFPA PROFILE 2026.pdf
+
+# ── BUILD OUTPUT ─────────────────────────────────────────────────────────────
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+
+# ── DEPENDENCIES ─────────────────────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+
+# ── ENVIRONMENT & SECRETS ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── TOOLING ──────────────────────────────────────────────────────────────────
+.lighthouseci/
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# ── OS & EDITOR ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ── LOGS ─────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*

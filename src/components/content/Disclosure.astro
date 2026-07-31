@@ -1,0 +1,104 @@
+---
+import Icon from '../primitives/Icon.astro';
+
+/**
+ * Disclosure — progressive disclosure for leadership biographies, the
+ * constitutional objects, and FAQ.
+ *
+ * Preserves the prototype's genuinely good instinct with a correct
+ * implementation. The prototype's version had no aria-expanded, no
+ * aria-controls, signalled state by a glyph swap alone, force-closed siblings,
+ * and used max-height:0 — which leaves collapsed content FOCUSABLE and in the
+ * accessibility tree.
+ *
+ * Built on native <details>/<summary>: keyboard support, the open/closed state
+ * and screen-reader semantics all come for free, it works with JavaScript
+ * disabled, and print styles can force it open.
+ */
+interface Props {
+  summary: string;
+  /** Multiple items may be open at once. Force-closing siblings loses the
+   *  user's place and is rarely what they want. */
+  open?: boolean;
+  class?: string;
+}
+
+const { summary, open = false, class: className } = Astro.props;
+---
+
+<details class:list={['disclosure', className]} open={open} data-disclosure>
+  <summary>
+    <span class="disclosure__label">{summary}</span>
+    <Icon name="chevron-down" class="disclosure__icon" />
+  </summary>
+  <div class="disclosure__panel" data-disclosure-panel>
+    <slot />
+  </div>
+</details>
+
+<style>
+  .disclosure {
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    min-block-size: var(--target-min);
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  /* Remove the default marker in both engines; the icon replaces it. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    content: '';
+  }
+
+  summary:hover {
+    color: var(--text-accent);
+  }
+
+  .disclosure__icon {
+    flex: none;
+    color: var(--text-muted);
+    transition: rotate var(--duration-fast) var(--ease-out);
+  }
+
+  .disclosure[open] .disclosure__icon {
+    rotate: 180deg;
+  }
+
+  .disclosure__panel {
+    padding-block-end: var(--space-5);
+    color: var(--text-body);
+  }
+
+  /* Animating max-height forces layout on every frame. Only opacity and
+     transform are animated here, and only when motion is welcome. */
+  @media (prefers-reduced-motion: no-preference) {
+    .disclosure[open] .disclosure__panel {
+      animation: disclosure-in var(--duration-base) var(--ease-out);
+    }
+  }
+
+  @keyframes disclosure-in {
+    from {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>

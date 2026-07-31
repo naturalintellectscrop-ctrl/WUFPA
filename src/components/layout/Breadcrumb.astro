@@ -1,0 +1,101 @@
+---
+/**
+ * Breadcrumb — location in the hierarchy and a one-click route up.
+ *
+ * Matters more than usual here: many visitors arrive on a deep page directly
+ * from search or a shared WhatsApp link, with no sense of where they are.
+ *
+ * STRUCTURED DATA IS DELIBERATELY NOT EMITTED HERE.
+ *
+ * This component previously wrote its own BreadcrumbList <script>. Since
+ * WUFPA-066 the trail is emitted by <Seo> inside the page's single @graph, so
+ * doing it here too would publish the list twice — and the two copies could
+ * disagree, which is worse than either alone.
+ *
+ * Pass the SAME array to both: `crumbs` here for the visible trail, and
+ * `crumbs` on BaseLayout for the markup. One source, two renderings.
+ *
+ * Source: docs/16 section 4.2
+ */
+import type { Crumb } from '../../lib/types';
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+const all: Crumb[] = [{ label: 'Home', href: '/' }, ...crumbs];
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    {
+      all.map((crumb, i) => (
+        <li>
+          {/* The last item is plain text with aria-current, not a link to
+              the page you are already on. */}
+          {i === all.length - 1 || !crumb.href ? (
+            <span aria-current="page">{crumb.label}</span>
+          ) : (
+            <a href={crumb.href}>{crumb.label}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb {
+    margin-block-end: var(--space-4);
+  }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  /* Separators are pseudo-elements so screen readers do not announce them. */
+  li + li::before {
+    content: '/';
+    margin-inline-end: var(--space-2);
+    color: var(--text-decorative);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--text-accent);
+    text-decoration: underline;
+  }
+
+  [aria-current='page'] {
+    color: var(--text-muted);
+  }
+
+  /* Truncate from the left on small screens, always keeping Home and parent. */
+  @media (max-width: 48rem) {
+    li:not(:first-child):not(:nth-last-child(-n + 2)) {
+      display: none;
+    }
+    li:nth-last-child(2)::before {
+      content: '… /';
+    }
+  }
+</style>

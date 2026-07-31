@@ -1,0 +1,195 @@
+---
+/**
+ * Field — one form input with its label, hint and error.
+ *
+ * NO <form>, <label> or <input> existed anywhere on the prototype. The primary
+ * business goal had no mechanism at all.
+ *
+ * CONTRACT (docs/07 section 7.2):
+ *   - Persistent visible <label>, programmatically associated. NEVER a
+ *     placeholder as a label: placeholders vanish on input, fail for screen
+ *     readers, and defeat memory.
+ *   - "Required" is a WORD in the label, not a bare red asterisk — colour is
+ *     never the only carrier of meaning (WCAG 1.4.1).
+ *   - Correct autocomplete / type / inputmode so mobile keyboards are right.
+ *   - Font size >=16px or iOS zooms the page on focus.
+ *   - Errors associated via aria-describedby + aria-invalid, with icon AND text.
+ */
+import type { FieldType, SelectOption } from '../../lib/types';
+
+interface Props {
+  name: string;
+  label: string;
+  type?: FieldType;
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  autocomplete?: string;
+  inputmode?: 'text' | 'email' | 'tel' | 'numeric';
+  options?: SelectOption[];
+  rows?: number;
+  value?: string;
+  class?: string;
+}
+
+const {
+  name,
+  label,
+  type = 'text',
+  required = false,
+  hint,
+  error,
+  autocomplete,
+  inputmode,
+  options = [],
+  rows = 5,
+  value,
+  class: className,
+} = Astro.props;
+
+const id = `field-${name}`;
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<div class:list={['field', error && 'field--error', className]}>
+  <label for={id} class="field__label">
+    {label}
+    {required && <span class="field__required">(Required)</span>}
+  </label>
+
+  {hint && <p id={hintId} class="field__hint">{hint}</p>}
+
+  {
+    type === 'textarea' ? (
+      <textarea
+        id={id}
+        name={name}
+        rows={rows}
+        required={required}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
+        autocomplete={autocomplete}
+      >{value}</textarea>
+    ) : type === 'select' ? (
+      <select
+        id={id}
+        name={name}
+        required={required}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
+      >
+        <option value="">Please choose…</option>
+        {options.map((o) => (
+          <option value={o.value} selected={o.value === value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        required={required}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
+      />
+    )
+  }
+
+  {
+    error && (
+      <p id={errorId} class="field__error">
+        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4" />
+          <path d="M12 16h.01" />
+        </svg>
+        <span>{error}</span>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .field__label {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  /* The word, not an asterisk. */
+  .field__required {
+    margin-inline-start: var(--space-1);
+    font-weight: var(--weight-regular);
+    color: var(--text-muted);
+  }
+
+  .field__hint {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  input,
+  textarea,
+  select {
+    inline-size: 100%;
+    min-block-size: var(--control-height);
+    padding: var(--space-3) var(--space-4);
+    /* >=16px prevents iOS zooming the page on focus. */
+    font-size: max(1rem, var(--text-base));
+    font-family: var(--font-ui);
+    color: var(--text-body);
+    background-color: var(--surface-page);
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-input);
+  }
+
+  textarea {
+    min-block-size: 8rem;
+    resize: vertical;
+    line-height: var(--leading-normal);
+  }
+
+  input:hover,
+  textarea:hover,
+  select:hover {
+    border-color: var(--line-strong);
+  }
+
+  .field--error input,
+  .field--error textarea,
+  .field--error select {
+    border-color: var(--feedback-error);
+    border-width: 2px;
+  }
+
+  /* Icon AND text, never colour alone. */
+  .field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--feedback-error);
+  }
+
+  .field__error svg {
+    flex: none;
+    margin-block-start: 0.15em;
+  }
+</style>

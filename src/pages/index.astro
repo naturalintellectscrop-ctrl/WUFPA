@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/**
+ * TEMPORARY BUILD-VERIFICATION ROUTE.
+ *
+ * This is NOT the homepage. It exists so the foundation (WUFPA-007 to
+ * WUFPA-010) can be compiled and verified, and it renders live design tokens
+ * so the token layer can be checked visually rather than only by reading CSS.
+ *
+ * REPLACED BY: WUFPA-023 to WUFPA-029 (the ten-band homepage specified in
+ * docs/05 section 5.1 and docs/04 section 3).
+ *
+ * It contains no claims about WUFPA and no photography, deliberately — nothing
+ * ships that is not sourced.
+ */
+
+const redRamp = [
+  { token: '--red-300', hex: '#FF4B52', use: 'Links and accents on dark surfaces only', ratio: '4.95:1 on ink-900' },
+  { token: '--red-500', hex: '#ED1B24', use: 'The logo. Large display type. UI accents.', ratio: '4.39:1 on white — large text only' },
+  { token: '--red-700', hex: '#B31419', use: 'Inline links and any red text below 24px', ratio: '6.93:1 on white' },
+];
+
+const inkRamp = [
+  { token: '--ink-900', hex: '#231F20', ratio: '16.30:1', use: 'Headings, dark surfaces' },
+  { token: '--ink-800', hex: '#3A3436', ratio: '11.40:1', use: 'Body text' },
+  { token: '--ink-700', hex: '#524A4C', ratio: '8.00:1', use: 'Secondary text' },
+  { token: '--ink-600', hex: '#6B6163', ratio: '5.98:1', use: 'Muted — lightest permitted text' },
+  { token: '--ink-500', hex: '#8A8083', ratio: '3.82:1', use: 'Large text, borders. Never body.' },
+  { token: '--ink-400', hex: '#A9A1A3', ratio: '2.50:1', use: 'Borders only. Never text.' },
+];
+
+const typeScale = [
+  { token: '--text-hero', label: 'Hero' },
+  { token: '--text-4xl', label: 'H1' },
+  { token: '--text-3xl', label: 'H2' },
+  { token: '--text-2xl', label: 'H3' },
+  { token: '--text-xl', label: 'H4' },
+  { token: '--text-lg', label: 'Standfirst' },
+  { token: '--text-base', label: 'Body' },
+];
+---
+
+<BaseLayout
+  title="Foundation build check"
+  description="Temporary build-verification route for the WUFPA website foundation. Not the homepage."
+  noindex={true}
+>
+  <section class="section" data-spacing="compact">
+    <div class="container" data-width="narrow">
+      <p class="eyebrow">Internal · not for publication</p>
+      <h1>Foundation build check</h1>
+      <p class="standfirst">
+        This route verifies the design tokens, base stylesheets and content schemas compile and
+        render. It is replaced by the real homepage in WUFPA-023 to WUFPA-029.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" data-variant="subtle">
+    <div class="container" data-width="narrow" style="display:grid; gap:var(--space-7);">
+      <div>
+        <h2>Red ramp</h2>
+        <p>
+          Sampled from the official logo. The brand red is
+          <strong>4.39:1</strong> on white, which fails AA for normal text — so any red word
+          below 24px uses <code>--red-700</code>.
+        </p>
+        <ul role="list" class="stack" style="margin-block-start:var(--space-5);">
+          {redRamp.map((c) => (
+            <li class="cluster" style="gap:var(--space-4);">
+              <span
+                aria-hidden="true"
+                style={`background:${c.hex}; inline-size:3.5rem; block-size:3.5rem; border-radius:var(--radius-md); flex:none; border:1px solid var(--line-subtle);`}
+              ></span>
+              <span>
+                <code>{c.token}</code> <strong>{c.hex}</strong><br />
+                <small>{c.use} — {c.ratio}</small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2>Ink ramp</h2>
+        <p>Warm neutrals derived from <code>#231F20</code>, with measured contrast on white.</p>
+        <div class="u-scroll-x" tabindex="0" role="region" aria-label="Ink ramp contrast table">
+          <table style="inline-size:100%; margin-block-start:var(--space-4);">
+            <caption class="u-visually-hidden">Ink ramp tokens and their contrast on white</caption>
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:start; padding:var(--space-3);">Token</th>
+                <th scope="col" style="text-align:start; padding:var(--space-3);">Hex</th>
+                <th scope="col" style="text-align:start; padding:var(--space-3);">On white</th>
+                <th scope="col" style="text-align:start; padding:var(--space-3);">Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inkRamp.map((c) => (
+                <tr style="border-top:1px solid var(--line-subtle);">
+                  <td style="padding:var(--space-3);"><code>{c.token}</code></td>
+                  <td style={`padding:var(--space-3); color:${c.hex}; font-weight:var(--weight-semibold);`}>{c.hex}</td>
+                  <td style="padding:var(--space-3);">{c.ratio}</td>
+                  <td style="padding:var(--space-3);"><small>{c.use}</small></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h2>Type scale</h2>
+        <p>Fluid between 360px and 1280px. Resize the window to check the clamps.</p>
+        <div class="stack" style="margin-block-start:var(--space-5);">
+          {typeScale.map((t) => (
+            <p style={`font-family:var(--font-display); font-size:var(${t.token}); line-height:var(--leading-snug); margin:0;`}>
+              {t.label} <small style="font-family:var(--font-ui); font-size:var(--text-xs); color:var(--text-muted);">{t.token}</small>
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2>Long-form body</h2>
+        <div class="prose">
+          <p>
+            This paragraph is set in the body serif at the prose measure of 68 characters. A serif
+            signals record rather than marketing, which is the register the association's advocacy
+            and activity reporting needs.
+          </p>
+          <p>
+            Interface text uses the display family. The two are separated because the site has two
+            different reading modes: scanning an interface, and reading long-form content.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-variant="inverse" data-spacing="compact">
+    <div class="container" data-width="narrow">
+      <h2>Inverse surface</h2>
+      <p>
+        Dark bands are used sparingly — at most two per page. Red on this ground is only 3.71:1,
+        so accents here use <code>--red-300</code>. <a href="#main-content">This link</a> proves
+        the inverse focus ring switches to white.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

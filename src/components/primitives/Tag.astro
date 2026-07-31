@@ -1,0 +1,67 @@
+---
+/**
+ * Tag — small metadata label: sub-region, guild, programme, year.
+ *
+ * Non-interactive tags are <span>, not <button>. Interactive tags are <a> with
+ * a FULL accessible name ("Filter by Kigezi", not "Kigezi") — a screen-reader
+ * user tabbing through a row of tags otherwise hears a list of bare nouns.
+ */
+interface Props {
+  variant?: 'neutral' | 'accent' | 'sacco' | 'outline';
+  href?: string;
+  /** Overrides the accessible name when the visible text is not self-describing. */
+  label?: string;
+  class?: string;
+}
+
+const { variant = 'neutral', href, label, class: className } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class:list={['tag', `tag--${variant}`, className]} href={href} aria-label={label}>
+  <slot />
+</Tag>
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    line-height: 1.4;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .tag--neutral {
+    background-color: var(--surface-muted);
+    color: var(--text-secondary);
+  }
+  .tag--accent {
+    background-color: var(--surface-accent-subtle);
+    color: var(--text-accent);
+  }
+  .tag--sacco {
+    background-color: var(--surface-sacco);
+    color: var(--text-sacco);
+  }
+  .tag--outline {
+    background-color: transparent;
+    color: var(--text-secondary);
+    box-shadow: inset 0 0 0 1px var(--line-default);
+  }
+
+  /* Interactive tags need a 44px hit area and a non-colour hover signal. */
+  a.tag {
+    min-block-size: var(--target-min);
+    padding-block: var(--space-2);
+  }
+  a.tag:hover {
+    background-color: var(--surface-accent-subtle);
+    color: var(--text-accent);
+    text-decoration: underline;
+  }
+</style>

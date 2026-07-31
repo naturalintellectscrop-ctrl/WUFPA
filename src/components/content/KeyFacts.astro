@@ -1,0 +1,73 @@
+---
+/**
+ * KeyFacts — a compact definition list for hard data: legal status, region
+ * details, event details, SACCO facts.
+ *
+ * A real <dl>, not a table: these are name/value pairs, not a grid.
+ *
+ * Where a value is pending, the row renders with an explicit "Not recorded"
+ * rather than being dropped — the absence is itself informative. WUFPA's URSB
+ * registration number (Q21) is the live example: silently omitting the row
+ * would hide that we asked.
+ */
+import type { Fact } from '../../lib/types';
+
+interface Props {
+  facts: Fact[];
+  class?: string;
+}
+
+const { facts, class: className } = Astro.props;
+---
+
+<dl class:list={['key-facts', className]}>
+  {
+    facts.map((f) => (
+      <div class="key-facts__row">
+        <dt>{f.label}</dt>
+        <dd class:list={[!f.value && 'key-facts__pending']}>
+          {f.value ?? f.pending ?? 'Not recorded'}
+        </dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .key-facts {
+    margin: 0;
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
+  .key-facts__row {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  dt {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--text-base);
+    color: var(--text-body);
+  }
+
+  .key-facts__pending {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  @media (min-width: 48rem) {
+    .key-facts__row {
+      grid-template-columns: 16rem 1fr;
+      gap: var(--space-5);
+      align-items: baseline;
+    }
+  }
+</style>

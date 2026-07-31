@@ -1,0 +1,47 @@
+---
+import { ICON_PATHS, type IconName } from '../../lib/icons';
+
+/**
+ * Icon — inline SVG, no runtime dependency.
+ *
+ * Decorative icons are aria-hidden. An icon with a `label` becomes an image
+ * with an accessible name. Icons NEVER replace text labels (docs/03 section 9),
+ * and no emoji is ever used as an interface element — the prototype used
+ * 🎬 as the logo, ❤ on buttons and ▶ on a link, all of which render
+ * inconsistently and are announced verbosely by screen readers.
+ */
+interface Props {
+  name: IconName;
+  /** Accessible name. Omit for decorative icons. */
+  label?: string;
+  /** Sized in em so icons scale with their text. */
+  size?: string;
+  class?: string;
+}
+
+const { name, label, size = '1em', class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden={label ? undefined : 'true'}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  focusable="false"
+  set:html={ICON_PATHS[name]}
+/>
+
+<style>
+  svg {
+    flex: none;
+    vertical-align: -0.125em;
+  }
+</style>

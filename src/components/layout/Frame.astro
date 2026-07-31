@@ -1,0 +1,51 @@
+---
+/**
+ * Frame — reserves an aspect ratio before anything loads.
+ *
+ * The point is layout stability: the box's height is known from the ratio
+ * alone, so an image arriving later cannot push the page down. Zero CLS is a
+ * WUFPA-015 acceptance criterion and a WUFPA-072 budget line, and on a metered
+ * 3G connection the gap between "box reserved" and "image arrives" is where a
+ * reader loses their place.
+ *
+ * `ratio="auto"` OPTS OUT OF CROPPING, and is the right choice more often than
+ * it looks. Most of the 76 supplied photographs are group shots — workshop
+ * cohorts, roster line-ups, a brass band on a street — and a square or 16:9
+ * crop cuts people out of their own photograph. When in doubt on a group photo,
+ * use auto (docs/07 section 10.3).
+ *
+ * `position` sets object-position so faces survive the crops that DO happen.
+ * The default `center` is wrong for a photograph where the subject is high in
+ * the frame, which is most portraits.
+ *
+ * CSS contract lives in global.css @layer layout
+ * (.frame, --frame-ratio, --frame-position).
+ *
+ * Source: docs/07 section 5.3, section 10.3 - WUFPA-015
+ */
+import type { FrameRatio } from '../../lib/types';
+
+interface Props {
+  ratio?: FrameRatio;
+  /** object-position for the cropped child, e.g. "center top", "50% 20%". */
+  position?: string;
+  class?: string;
+}
+
+const { ratio = 'landscape', position, class: className } = Astro.props;
+
+/* `auto` maps to the CSS keyword, which disables the reservation deliberately —
+   an uncropped image sizes itself and there is no ratio to hold. */
+const ratioValue = ratio === 'auto' ? 'auto' : `var(--ratio-${ratio})`;
+
+const styles = [
+  `--frame-ratio: ${ratioValue}`,
+  position ? `--frame-position: ${position}` : null,
+]
+  .filter(Boolean)
+  .join('; ');
+---
+
+<div class:list={['frame', className]} style={styles}>
+  <slot />
+</div>

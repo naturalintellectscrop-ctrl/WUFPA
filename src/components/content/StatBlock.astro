@@ -1,0 +1,102 @@
+---
+/**
+ * StatBlock — the homepage proof band and any grouped figures.
+ *
+ * Answers audience A2's first question ("is this real and how big?")
+ * immediately after the claim and before any prose. This is the band that
+ * keeps a sceptical programme officer scrolling.
+ *
+ * TWO RULES THIS COMPONENT ENFORCES:
+ *
+ *   1. Every stat carries its as-of date, via the shared `note`. An undated
+ *      statistic ages into a lie.
+ *   2. Figure and label are programmatically ASSOCIATED. The prototype used
+ *      unassociated spans, so a screen reader read "300 plus" and "Production
+ *      Houses" as unrelated fragments.
+ *
+ * No count-up animation: it delays the number, breaks under reduced motion,
+ * and reads as marketing.
+ */
+import type { Stat } from '../../lib/types';
+
+interface Props {
+  stats: Stat[];
+  /** Shared as-of note, e.g. "Figures as recorded in the 2025 profile." */
+  note?: string;
+  class?: string;
+}
+
+const { stats, note, class: className } = Astro.props;
+---
+
+<div class:list={['stats', className]}>
+  <ul class="stats__list" role="list">
+    {
+      stats.map((s) => (
+        <li class="stat">
+          {/* The visually-hidden text joins figure and label into one
+              announcement without altering the visual design. */}
+          <span class="stat__figure u-tabular" aria-hidden="true">
+            {s.figure}
+          </span>
+          <span class="stat__label" aria-hidden="true">
+            {s.label}
+          </span>
+          <span class="u-visually-hidden">
+            {s.figure} {s.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  {note && <p class="stats__note">{note}</p>}
+</div>
+
+<style>
+  .stats__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5) var(--space-4);
+    background-color: var(--surface-page);
+    border: 1px solid var(--line-subtle);
+    border-radius: var(--radius-card);
+  }
+
+  .stat__figure {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-heading);
+  }
+
+  .stat__label {
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
+  }
+
+  .stats__note {
+    margin-block-start: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .stats__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

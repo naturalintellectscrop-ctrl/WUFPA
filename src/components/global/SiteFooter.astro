@@ -1,0 +1,286 @@
+---
+import Icon from '../primitives/Icon.astro';
+import { footerColumns, legalLinks } from '../../lib/nav-config';
+import { site } from '../../lib/site-config';
+
+/**
+ * SiteFooter — secondary navigation, legal identity, contact, social
+ * (docs/08 section 5).
+ *
+ * FOR MANY VISITORS ON A LONG PAGE THE FOOTER IS CLOSER THAN THE HEADER, so
+ * it is a real navigation surface, not a formality — docs/05 section 3.4.
+ * Carries the legal line on every page: "Registered in Uganda on
+ * {foundingDate} as a company limited by guarantee" is one of WUFPA's
+ * strongest trust signals and costs nothing to repeat.
+ *
+ * The prototype's footer used inline onmouseover/onmouseout colour changes
+ * with no keyboard equivalent, and skipped from <h2> to <h4>. Neither
+ * happens here: column headings are real <h2> elements (styled small, but
+ * semantically real — Breadcrumb and PageHeader follow the same rule), and
+ * every hover state is a plain CSS :hover rule.
+ *
+ * NO EMAIL, NO TELEPHONE. `⟦Q3⟧` is unanswered — src/lib/site-config.ts
+ * holds both as `null` — so Column 4 has an address and a map link (built
+ * from the approved address text, not the unconfirmed `⟦Q14⟧` coordinates)
+ * and nothing else. Social links are omitted for the same reason (`⟦Q9⟧`,
+ * `site.sameAs` is empty) rather than rendering dead icons; a full
+ * SocialLinks component is WUFPA-070's to build.
+ *
+ * LOGO ON A DARK GROUND. `wufpa_oficial_logo.jpeg` is a real supplied file
+ * with a white background baked into the JPEG itself (docs/03 section 5.2:
+ * "white is the brand's ground") — there is no transparent version. Framed
+ * here in a small white card rather than placed directly on
+ * `--surface-inverse`, which is a deliberate, ordinary treatment (a logo on
+ * its own safe ground within a dark section), not a visual accident.
+ *
+ * Source: docs/08 section 5 · docs/05 section 3.4 · WUFPA-020
+ */
+
+const year = new Date().getFullYear();
+
+const legalLine = `Registered in Uganda on 4 September ${new Date(site.foundingDate).getFullYear()} as a company limited by guarantee.`;
+
+const mapQuery = encodeURIComponent(
+  `${site.address.street}, ${site.address.locality}, ${site.address.country}`,
+);
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__columns">
+      {
+        footerColumns.map((column) => {
+          const headingId = `footer-heading-${column.heading.toLowerCase().replace(/\s+/g, '-')}`;
+          return (
+            <nav aria-labelledby={headingId} class="site-footer__column">
+              <h2 id={headingId} class="site-footer__heading">
+                {column.heading}
+              </h2>
+              <ul role="list" class="site-footer__list">
+                {column.links.map((link) => (
+                  <li>
+                    <a class="site-footer__link" href={link.href}>
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          );
+        })
+      }
+
+      <nav aria-labelledby="footer-heading-contact" class="site-footer__column">
+        <h2 id="footer-heading-contact" class="site-footer__heading">
+          Contact
+        </h2>
+        <address class="site-footer__address">
+          {site.address.street}
+          <br />
+          {site.address.locality}, {site.address.country}
+        </address>
+        <ul role="list" class="site-footer__list">
+          <li>
+            <a class="site-footer__link" href="/contact/">Contact us</a>
+          </li>
+          <li>
+            <a class="site-footer__link" href={mapHref} target="_blank" rel="noopener noreferrer">
+              Find us on the map
+              <Icon name="external" label="Opens in a new tab" />
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__identity">
+      <div class="site-footer__logo-card">
+        <img
+          src="/wufpa_oficial_logo.jpeg"
+          alt=""
+          width="80"
+          height="77"
+          class="site-footer__logo"
+        />
+      </div>
+      <div class="site-footer__identity-text">
+        <p class="site-footer__strapline">{site.strapline}</p>
+        <p class="site-footer__legal-line">{legalLine}</p>
+      </div>
+    </div>
+
+    <div class="site-footer__base">
+      <p class="site-footer__copyright">
+        © {year} {site.legalName}
+      </p>
+      <nav aria-label="Legal" class="site-footer__legal-nav">
+        <ul role="list" class="site-footer__legal-list">
+          {
+            legalLinks.map((link) => (
+              <li>
+                <a class="site-footer__legal-link" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--surface-inverse);
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .site-footer__columns {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 48rem) {
+    .site-footer__columns {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6) var(--space-8);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .site-footer__columns {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .site-footer__heading {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted-on-inverse);
+  }
+
+  .site-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding-block: var(--space-2);
+    min-block-size: var(--target-min);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-on-inverse);
+    text-decoration: none;
+  }
+
+  .site-footer__link:hover {
+    color: var(--text-accent-on-inverse);
+    text-decoration: underline;
+  }
+
+  .site-footer__address {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-on-inverse);
+  }
+
+  .site-footer__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--line-inverse);
+  }
+
+  .site-footer__logo-card {
+    flex: none;
+    display: inline-flex;
+    padding: var(--space-2);
+    background-color: var(--surface-on-inverse);
+    border-radius: var(--radius-md);
+  }
+
+  .site-footer__logo {
+    display: block;
+    block-size: 48px;
+    inline-size: auto;
+  }
+
+  .site-footer__identity-text {
+    flex: 1;
+    min-inline-size: 16rem;
+  }
+
+  .site-footer__strapline {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-on-inverse);
+  }
+
+  .site-footer__legal-line {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted-on-inverse);
+  }
+
+  .site-footer__base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--line-inverse);
+  }
+
+  .site-footer__copyright {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted-on-inverse);
+  }
+
+  .site-footer__legal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__legal-link {
+    display: inline-block;
+    padding-block: var(--space-2);
+    min-block-size: var(--target-min);
+    font-size: var(--text-xs);
+    color: var(--text-muted-on-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .site-footer__legal-link:hover {
+    color: var(--text-on-inverse);
+  }
+</style>

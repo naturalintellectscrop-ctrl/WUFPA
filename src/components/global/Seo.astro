@@ -1,0 +1,224 @@
+---
+/**
+ * Seo — every tag that belongs in <head> for discovery and sharing.
+ *
+ * Rendered by BaseLayout, so no page assembles its own metadata. Pages supply
+ * frontmatter values; this component decides the tag shape. That split is the
+ * point of WUFPA-064: metadata is GENERATED, not hand-written per page, so a
+ * new page cannot ship with a missing canonical or a duplicated description.
+ *
+ * WHY SO MANY TAGS ARE CONDITIONAL
+ *
+ * WUFPA's stated channels are Facebook and WhatsApp [P3], so Open Graph is the
+ * first impression for most of the audience (docs/04 section 2.1). But both
+ * platforms aggressively cache what they scrape — including failures. Emitting
+ * `og:image` before the 1200×630 asset exists (WUFPA-065) teaches WhatsApp
+ * that this site has a broken image, and that cache outlives the fix. So
+ * asset-dependent tags are gated on `site.hasIcons` / `site.hasOgImage`
+ * rather than emitted hopefully — two separate flags because the icon set
+ * and the sharing image are supplied by different tasks on different
+ * schedules, and shipping one should not silently ship the other.
+ *
+ * Source: docs/04 section 2 · docs/16 sections 3–4 · WUFPA-064, 065, 066.
+ */
+import { site, absoluteUrl } from '../../lib/site-config';
+import {
+  organizationSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  graph,
+  type JsonLd,
+  type CrumbInput,
+  type PageType,
+} from '../../lib/structured-data';
+
+/* `| undefined` is explicit throughout: tsconfig sets
+   `exactOptionalPropertyTypes`, under which `image?: string` REFUSES an
+   explicitly-passed `undefined`. BaseLayout forwards every prop unconditionally,
+   so each one must accept the undefined it will sometimes receive. */
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean | undefined;
+  /** Page-specific sharing image (news hero, event photo). Falls back to the
+   *  site default. Site-relative; resolved to absolute here. */
+  image?: string | undefined;
+  imageAlt?: string | undefined;
+  /** `article` on news items, `website` elsewhere (docs/04 section 2.1). */
+  ogType?: 'website' | 'article' | 'profile' | undefined;
+  publishedTime?: Date | string | undefined;
+  modifiedTime?: Date | string | undefined;
+  /** Breadcrumb trail WITHOUT Home — prepended here so every trail is
+   *  rooted identically in the markup and the JSON-LD. */
+  crumbs?: CrumbInput[] | undefined;
+  /** Page-type JSON-LD (Event, Person, Service…) merged into the @graph. */
+  schemas?: (JsonLd | null | undefined)[] | undefined;
+  /** Overrides the default WebPage @type for this route. */
+  pageType?: PageType | undefined;
+}
+
+const {
+  title,
+  description,
+  noindex = false,
+  image,
+  imageAlt,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  crumbs,
+  schemas = [],
+  pageType,
+} = Astro.props;
+
+// `Astro.site` is guaranteed by astro.config.mjs. The fallback keeps the type
+// honest rather than asserting non-null.
+const base = Astro.site ?? new URL('https://wufpa.example.org');
+
+const canonical = absoluteUrl(Astro.url.pathname, base);
+
+// `title` is rendered VERBATIM — the " — WUFPA" suffix is applied in
+// src/lib/page-meta.ts, alongside the copy it belongs to.
+//
+// No rule applied here could be right in every case: docs/04 section 2 gives
+// `/about/` a title that spells the association name out instead of using the
+// suffix, and `/sacco/` one that ends on "filmmakers" because the page is
+// about WUFM. A heuristic would corrupt both. Pages get their title from
+// `meta()`, `templates.*` or `fromEntry()`, all of which return a final string.
+const fullTitle = title;
+
+// A page-supplied image (e.g. a news article's hero) is always used when
+// present — it is not gated on `site.hasOgImage`, which only covers the
+// fallback to the site-wide default sharing image.
+const shareImage = image
+  ? absoluteUrl(image, base)
+  : site.hasOgImage
+    ? absoluteUrl(site.ogImage, base)
+    : null;
+const shareImageAlt = imageAlt ?? site.ogImageAlt;
+
+/* ── Structured data ───────────────────────────────────────────────────────
+   One @graph per page. Organization and WebSite appear on every page as
+   @id-addressable nodes; page-type schemas reference them rather than
+   restating them (docs/16 section 4.1). */
+
+const trail: CrumbInput[] | null =
+  crumbs && crumbs.length ? [{ label: 'Home', href: '/' }, ...crumbs] : null;
+
+const breadcrumb = trail ? breadcrumbSchema(trail, base, canonical) : null;
+
+const jsonLd = graph([
+  organizationSchema(base),
+  // `hasSearch` stays false until /search/ exists (WUFPA-053).
+  websiteSchema(base, false),
+  webPageSchema({
+    url: canonical,
+    title: fullTitle,
+    description,
+    base,
+    type: pageType,
+    datePublished: publishedTime,
+    dateModified: modifiedTime,
+    breadcrumbId: breadcrumb ? `${canonical}#breadcrumb` : undefined,
+  }),
+  breadcrumb,
+  ...schemas,
+]);
+
+// Utility routes are excluded from the sitemap AND carry noindex, so the two
+// signals cannot disagree. `max-image-preview:large` opts the site into rich
+// image results, which matter for a photograph-led archive.
+const robots = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+---
+
+{/* ── Core ─────────────────────────────────────────────────────────────── */}
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+
+{/* ── Browser chrome ───────────────────────────────────────────────────── */}
+<meta name="theme-color" content={site.themeColor} />
+<meta name="color-scheme" content="light" />
+
+{
+  /* Icons and manifest ship only once WUFPA-013 produces them. A <link> to a
+     missing icon costs a request and a 404 on every page load.
+
+     No SVG favicon: every icon here is generated from WUFPA's own supplied
+     logo file (public/wufpa_oficial_logo.jpeg), not a hand-redrawn vector,
+     so there is no true vector source to link as image/svg+xml without
+     re-introducing the trace-fidelity problem that file exists to avoid. */
+  site.hasIcons && (
+    <>
+      <link rel="icon" href="/favicon.ico" sizes="32x32" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      <link rel="manifest" href="/site.webmanifest" />
+    </>
+  )
+}
+
+{/* ── Feed discovery ───────────────────────────────────────────────────────
+     Site-wide, not just on /news/: this is how a reader's browser or an
+     aggregator finds the feed from whatever page they happened to land on. */}
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${site.name} — News`}
+  href={absoluteUrl('/feed.xml', base)}
+/>
+
+{/* ── Open Graph ───────────────────────────────────────────────────────────
+     The first impression on Facebook and WhatsApp (docs/04 section 2.1). */}
+<meta property="og:site_name" content={site.name} />
+<meta property="og:type" content={ogType} />
+<meta property="og:locale" content={site.ogLocale} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+
+{
+  shareImage && (
+    <>
+      <meta property="og:image" content={shareImage} />
+      <meta property="og:image:alt" content={shareImageAlt} />
+      <meta property="og:image:width" content={String(site.ogImageWidth)} />
+      <meta property="og:image:height" content={String(site.ogImageHeight)} />
+    </>
+  )
+}
+
+{
+  ogType === 'article' && (
+    <>
+      {publishedTime && (
+        <meta
+          property="article:published_time"
+          content={new Date(publishedTime).toISOString()}
+        />
+      )}
+      {modifiedTime && (
+        <meta
+          property="article:modified_time"
+          content={new Date(modifiedTime).toISOString()}
+        />
+      )}
+      <meta property="article:publisher" content={site.name} />
+    </>
+  )
+}
+
+{/* ── Twitter/X ────────────────────────────────────────────────────────────
+     No `twitter:site` handle: ⟦Q9⟧ is unanswered, and a wrong handle
+     attributes the card to whoever owns it. */}
+<meta name="twitter:card" content={shareImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{shareImage && <meta name="twitter:image" content={shareImage} />}
+{shareImage && <meta name="twitter:image:alt" content={shareImageAlt} />}
+
+{/* ── Structured data ──────────────────────────────────────────────────── */}
+<script type="application/ld+json" set:html={jsonLd} is:inline />

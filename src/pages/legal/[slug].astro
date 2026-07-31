@@ -1,0 +1,115 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Prose from '../../components/layout/Prose.astro';
+import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import type { RelatedLink } from '../../components/content/RelatedLinks.astro';
+
+/**
+ * Legal pages — /legal/privacy/, /legal/terms/, /legal/accessibility/.
+ *
+ * Content lives in `src/content/pages/legal/*.md` rather than in .astro files,
+ * per docs/14 § 4: these are editorial documents that WUFPA must be able to
+ * revise without touching a template. The privacy notice in particular will
+ * change whenever what is collected changes, and that change must not require
+ * a developer.
+ *
+ * Scoped by the `legal/` id prefix so `/about/` (also in the `pages`
+ * collection) does not acquire a second URL at `/legal/about/`.
+ *
+ * `updated` is surfaced visibly AND as `dateModified` — for a legal notice the
+ * date is part of the content, since it tells a reader which version they
+ * agreed to.
+ *
+ * Source: docs/13 FR-100 · docs/10 § 7 · docs/16 § 11 · WUFPA-054
+ */
+
+export const getStaticPaths = (async () => {
+  const all = await getCollection('pages');
+  const legal = all.filter((page) => page.id.startsWith('legal/'));
+
+  return legal.map((page) => ({
+    params: { slug: page.id.replace(/^legal\//, '') },
+    props: { page },
+  }));
+}) satisfies GetStaticPaths;
+
+type PageEntry = Awaited<ReturnType<typeof getCollection<'pages'>>>[number];
+
+interface Props {
+  page: PageEntry;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const crumbs = [{ label: 'Legal', href: '/legal/privacy/' }, { label: page.data.title }];
+
+/* The three legal documents point at each other: a reader who wants one
+   usually wants to know the others exist. Relationship-chosen, and the current
+   page is filtered out so no page lists itself. */
+const siblings: RelatedLink[] = [
+  {
+    label: 'Privacy notice',
+    href: '/legal/privacy/',
+    reason: 'What we collect, why, and how to ask us to delete it.',
+  },
+  { label: 'Terms of use', href: '/legal/terms/', reason: 'The terms this website is offered on.' },
+  {
+    label: 'Accessibility statement',
+    href: '/legal/accessibility/',
+    reason: 'How accessible this site is, and how to report a problem.',
+  },
+].filter((link) => link.href !== `/legal/${page.id.replace(/^legal\//, '')}/`);
+---
+
+<BaseLayout
+  title={`${page.data.title} — WUFPA`}
+  description={page.data.description}
+  noindex={page.data.noindex}
+  crumbs={crumbs}
+  {...page.data.updated ? { modifiedTime: page.data.updated } : {}}
+>
+  <PageHeader
+    title={page.data.title}
+    {...page.data.standfirst ? { standfirst: page.data.standfirst } : {}}
+    crumbs={crumbs}
+  />
+
+  <Section container="prose">
+    {
+      page.data.updated && (
+        <p class="updated">
+          Last updated{' '}
+          <time datetime={page.data.updated.toISOString().slice(0, 10)}>
+            {dateFormat.format(page.data.updated)}
+          </time>
+        </p>
+      )
+    }
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <RelatedLinks links={siblings} heading="Other legal pages" />
+  </Section>
+</BaseLayout>
+
+<style>
+  .updated {
+    margin-block-end: var(--space-6);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+</style>
