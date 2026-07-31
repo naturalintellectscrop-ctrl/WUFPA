@@ -1,6 +1,7 @@
 ---
 title: Functional requirements
 standfirst: What the site must do — behaviour and integrations.
+description: What the site must do — behaviour and integrations.
 updated: 2026-07-31
 ---
 

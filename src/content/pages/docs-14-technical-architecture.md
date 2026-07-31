@@ -1,6 +1,7 @@
 ---
 title: Technical architecture
 standfirst: Stack, structure and standards for the site implementation.
+description: Stack, structure and standards for the site implementation.
 updated: 2026-07-31
 ---
 

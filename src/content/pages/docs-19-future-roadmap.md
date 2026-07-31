@@ -1,6 +1,7 @@
 ---
 title: Future roadmap
 standfirst: Ideas and longer-term phases for the site's evolution.
+description: Ideas and longer-term phases for the site's evolution.
 updated: 2026-07-31
 ---
 

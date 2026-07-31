@@ -1,6 +1,7 @@
 ---
 title: Website strategy
 standfirst: Why the site is shaped the way it is.
+description: Why the site is shaped the way it is.
 updated: 2026-07-31
 ---
 

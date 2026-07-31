@@ -1,6 +1,7 @@
 ---
 title: Project foundation
 standfirst: What we are building, for whom, why, and what we are not building.
+description: What we are building, for whom, why, and what we are not building.
 updated: 2026-07-31
 ---
 

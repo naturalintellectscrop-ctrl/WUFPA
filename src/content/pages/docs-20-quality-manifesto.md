@@ -1,6 +1,7 @@
 ---
 title: WUFPA quality manifesto
 standfirst: What is true, and what is never invented.
+description: What is true, and what is never invented.
 updated: 2026-07-31
 ---
 

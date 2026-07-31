@@ -1,6 +1,7 @@
 ---
 title: Programmes and events
 standfirst: Programmes, events and how they are represented on the site.
+description: Programmes, events and how they are represented on the site.
 updated: 2026-07-31
 ---
 

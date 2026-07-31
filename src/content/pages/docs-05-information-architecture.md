@@ -1,6 +1,7 @@
 ---
 title: Information architecture
 standfirst: Sitemap, navigation, journeys.
+description: Sitemap, navigation, journeys.
 updated: 2026-07-31
 ---
 

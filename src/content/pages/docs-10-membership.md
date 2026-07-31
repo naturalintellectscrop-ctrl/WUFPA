@@ -1,6 +1,7 @@
 ---
 title: Membership
 standfirst: Membership — what it is, how to apply, fees and benefits.
+description: Membership — what it is, how to apply, fees and benefits.
 updated: 2026-07-31
 ---
 

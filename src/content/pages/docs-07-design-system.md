@@ -1,6 +1,7 @@
 ---
 title: Design system
 standfirst: Tokens, grid, type scale, states.
+description: Tokens, grid, type scale, states.
 updated: 2026-07-31
 ---
 

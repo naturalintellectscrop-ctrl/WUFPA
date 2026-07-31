@@ -1,6 +1,7 @@
 ---
 title: Content bible
 standfirst: Every word of web copy, ready to paste.
+description: Every word of web copy, ready to paste.
 updated: 2026-07-31
 ---
 

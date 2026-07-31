@@ -1,6 +1,7 @@
 ---
 title: Team and leadership
 standfirst: Meet the people who lead WUFPA and how governance works.
+description: Meet the people who lead WUFPA and how governance works.
 updated: 2026-07-31
 ---
 

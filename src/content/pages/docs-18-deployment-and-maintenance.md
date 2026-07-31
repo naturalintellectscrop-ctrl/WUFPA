@@ -1,6 +1,7 @@
 ---
 title: Deployment and maintenance
 standfirst: How to deploy and maintain the site, backups and hosting notes.
+description: How to deploy and maintain the site, backups and hosting notes.
 updated: 2026-07-31
 ---
 

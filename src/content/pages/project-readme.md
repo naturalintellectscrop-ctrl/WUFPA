@@ -1,6 +1,7 @@
 ---
 title: Documentation README
 standfirst: Repository documentation and reading order.
+description: Repository documentation and reading order.
 updated: 2026-07-31
 ---
 

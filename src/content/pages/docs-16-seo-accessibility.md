@@ -1,6 +1,7 @@
 ---
 title: SEO and accessibility
 standfirst: Search engine best practice and WCAG accessibility requirements.
+description: Search engine best practice and WCAG accessibility requirements.
 updated: 2026-07-31
 ---
 

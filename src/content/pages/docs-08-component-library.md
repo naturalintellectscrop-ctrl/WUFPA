@@ -1,6 +1,7 @@
 ---
 title: Component library
 standfirst: Every reusable component spec.
+description: Every reusable component spec.
 updated: 2026-07-31
 ---
 

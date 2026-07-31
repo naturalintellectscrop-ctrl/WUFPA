@@ -1,6 +1,7 @@
 ---
 title: Brand guidelines
 standfirst: Voice, colour, type, photography, logo rules.
+description: Voice, colour, type, photography, logo rules.
 updated: 2026-07-31
 ---
 

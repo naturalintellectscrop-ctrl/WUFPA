@@ -1,6 +1,7 @@
 ---
 title: Digital experience framework
 standfirst: Craft standard, experience intent, guardrails for pages.
+description: Craft standard, experience intent, guardrails for pages.
 updated: 2026-07-31
 ---
 

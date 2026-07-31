@@ -1,6 +1,7 @@
 ---
 title: QA checklist
 standfirst: Quality assurance steps and acceptance criteria before launch.
+description: Quality assurance steps and acceptance criteria before launch.
 updated: 2026-07-31
 ---
 
