@@ -1,42 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
-import Prose from '../components/layout/Prose.astro';
-import Grid from '../components/layout/Grid.astro';
 import Hero from '../components/content/Hero.astro';
-import StatBlock from '../components/content/StatBlock.astro';
-import EntityCard from '../components/content/EntityCard.astro';
-import Figure from '../components/media/Figure.astro';
+import Ledger from '../components/content/Ledger.astro';
+import IndexList from '../components/content/IndexList.astro';
+import FrameSequence from '../components/content/FrameSequence.astro';
+import EstablishingShot from '../components/content/EstablishingShot.astro';
 import Button from '../components/primitives/Button.astro';
 import { getPhoto } from '../lib/photos';
 import { meta } from '../lib/page-meta';
 import type { Stat } from '../lib/types';
 
 /**
- * Homepage — docs/04 section 3. Built in stages (WUFPA-023 onward); this
- * pass covers the Hero, Proof band and "Who we are" — the top of the page,
- * which is what establishes rungs 1 and 2 of the trust ladder before a
- * visitor decides whether to keep reading (docs/06 section 3).
+ * Homepage — docs/04 § 3.
  *
- * Later bands (What we do, Where we work, Evidence, Partners, Membership,
- * News/Events, Support — docs/04 section 3.4 onward) land in the same file
- * as their own components are built (RegionMap, EvidenceStrip, PartnerList,
- * CTABanner), each a genuine follow-on task rather than a rewrite of this
- * one — WUFPA-026 to WUFPA-029.
+ * ART DIRECTION NOTE, because the composition here is deliberate and a future
+ * editor should know what it is protecting.
  *
- * Every fact below traces to docs/02 section 13 and is quoted from
- * docs/04 section 3 verbatim, not paraphrased — the H1 in particular is
- * documented as deliberately literal (docs/04 section 3.1).
+ * An earlier pass rendered all seven bands identically: heading, standfirst,
+ * grid of cards, tertiary button, on an alternating light/tinted background.
+ * That is the arrangement every site template produces, and it failed WUFPA
+ * on two specific counts. It made the group photographs — twenty to a hundred
+ * real people, the most persuasive asset the association owns — into 30rem
+ * thumbnails. And it gave the six programmes, six sub-regions and six
+ * activity records the same visual weight and the same shape, so the page
+ * read as three interchangeable card grids rather than as an argument.
+ *
+ * THE RHYTHM NOW RUNS: split hero → typographic ledger → editorial statement
+ * → numbered index → full-bleed establishing shot → film strip → dark ask.
+ * No two consecutive sections share a layout, a background treatment or a
+ * height. Consistency comes from the type scale, the spacing scale and the
+ * single accent — not from repeating one section shape (docs/21 § 12).
+ *
+ * The three compositions that carry it are drawn from WUFPA's own material
+ * rather than applied to it: the strip of dated frames is the film strip in
+ * the association's mark, the numbered index is how a festival programme sets
+ * its contents, and the establishing shot is the documentary convention for
+ * showing where a scene takes place.
+ *
+ * Every fact and every line of copy is verbatim from docs/04 § 3. The H1 is
+ * documented as deliberately literal (docs/04 § 3.1) and is not to be made
+ * poetic.
  */
 
 const { title, description } = meta('/');
 
 const hero = getPhoto('regions/tooro/sensitisation-workshop-tooro-obukama-bwa-tooro.jpeg');
 
-// docs/04 section 3.2. Every figure dated; the "10,500 creatives" figure is
-// deliberately excluded here — it is 300 × 35, an estimate, not a count
-// (audit finding X13), and belongs in body copy phrased as such, not in a
-// proof band that reads as a hard number.
+/* The establishing shot for "where we work". The Bunyoro banner photograph is
+   chosen over the Tooro one already used by the hero: it is a forty-person
+   group in front of the WUFPA Bunyoro Region sign, so the image states the
+   sub-region structure the section is about. */
+const regionsShot = getPhoto('regions/bunyoro/sensitisation-workshop-bunyoro-2022-banner.jpeg');
+
+/* The membership ask sits over the AGM photograph — the whole association in
+   one frame, which is the argument the section is making. */
+const membershipShot = getPhoto('governance/wufpa-agm-2023.jpeg');
+
+// docs/04 § 3.2. The "10,500 creatives" figure is deliberately excluded: it is
+// 300 × 35, an estimate rather than a count (audit finding X13), and belongs
+// in body copy phrased as such, never in a ledger that reads as hard numbers.
 const stats: Stat[] = [
   { figure: '300+', label: 'film production houses', source: '[P1]' },
   { figure: '6', label: 'sub-regions of Western Uganda', source: '[P1]' },
@@ -44,7 +67,7 @@ const stats: Stat[] = [
   { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
 ];
 
-// docs/04 section 6.1 — the six programme cards, copy verbatim.
+// docs/04 § 6.1 — the six programme cards, copy verbatim.
 const programmes = [
   {
     title: 'Training & Capacity Building',
@@ -84,20 +107,9 @@ const programmes = [
   },
 ];
 
-/* docs/04 section 7.1 — the per-region opening lines are the only
-   region-specific prose in the whole site; everything else on a region page is
-   data. Reused here as the card descriptions rather than writing a second set,
-   so the homepage and the region pages cannot drift apart.
-
-   These link to /regions/ (the index), NOT to /regions/{key}/ — the six
-   individual region routes are collection-driven pages WUFPA-041 has not
-   built yet, and are not in page-meta.ts's registry, so linking to them now
-   would fail the build's internal-link check. Same reasoning as the Regions
-   nav item in nav-config.ts. */
-/* docs/04 section 3.6 — "Not a summary — the work itself." Six dated items,
-   each with the real photograph of that specific event, drawn from
-   docs/02 section 3's history. The undated march is last and says so rather
-   than being given a guessed date. */
+/* docs/04 § 3.6 — "Not a summary — the work itself." Six dated items, each
+   with the photograph of that specific event. The undated march is last and
+   says so rather than being given a guessed date. */
 const evidence = [
   {
     date: '2022',
@@ -129,27 +141,21 @@ const evidence = [
     copy: 'Marched through Mbarara for filmmakers’ copyright, with UCC, URSB and the Media Council.',
     photo: 'programmes/advocacy/together-against-piracy-banner-mbarara.jpeg',
   },
-].map((item) => ({ ...item, image: getPhoto(item.photo) }));
+].map((item) => {
+  const photo = getPhoto(item.photo);
+  return { date: item.date, copy: item.copy, image: photo.image, alt: photo.alt };
+});
 
+/* docs/04 § 7.1 — the per-region opening lines are the only region-specific
+   prose on the site. Reused as the establishing shot's list so the homepage
+   and the region pages cannot drift apart. */
 const regions = [
-  {
-    name: 'Ankole (Rwizi)',
-    line: 'Ankole is where WUFPA began, and where its head office stands today.',
-  },
-  { name: 'Kigezi', line: 'Kigezi is one of the two sub-regions that founded WUFPA in 2017.' },
-  { name: 'Rwenzori', line: 'The Rwenzori sub-region is home to WUFPA’s current Vice President.' },
-  {
-    name: 'Tooro',
-    line: 'WUFPA’s Tooro sensitisation workshop was hosted at Obukama bwa Tooro.',
-  },
-  {
-    name: 'Bunyoro',
-    line: 'WUFPA held a sensitisation film workshop across the Bunyoro region in 2022.',
-  },
-  {
-    name: 'Greater Bushenyi',
-    line: 'WUFPA met film producers and actors across Greater Bushenyi in 2022.',
-  },
+  { label: 'Ankole (Rwizi)', note: 'Where WUFPA began, and where its head office stands' },
+  { label: 'Kigezi', note: 'One of the two sub-regions that founded WUFPA in 2017' },
+  { label: 'Rwenzori', note: 'Home to WUFPA’s current Vice President' },
+  { label: 'Tooro', note: 'Sensitisation workshop hosted at Obukama bwa Tooro' },
+  { label: 'Bunyoro', note: 'Sensitisation film workshop across the region, 2022' },
+  { label: 'Greater Bushenyi', note: 'Met film producers and actors across the sub-region, 2022' },
 ];
 ---
 
@@ -163,171 +169,277 @@ const regions = [
     alt={hero.alt}
   />
 
+  {/* The ledger sits tight under the hero with no background change — it reads
+      as the hero's own footing rather than as a separate band. */}
   <Section labelledBy="proof-heading" spacing="compact">
     <h2 id="proof-heading" class="u-visually-hidden">WUFPA in figures</h2>
-    <StatBlock stats={stats} note="Figures as recorded in the WUFPA association profile, 2025." />
+    <Ledger stats={stats} note="Figures as recorded in the WUFPA association profile, 2025." />
   </Section>
 
-  <Section labelledBy="who-we-are-heading" variant="subtle" container="narrow" reveal>
-    <h2 id="who-we-are-heading">We are the association Western Uganda's filmmakers built for themselves</h2>
-    <Prose>
-      <p>
-        In 2017, fourteen production companies from Ankole and Kigezi registered an
-        association. They were tired of an industry whose training, funding, buyers and policy
-        conversations all happened in Kampala — and of watching their films copied and sold
-        without permission.
-      </p>
-      <p>
-        Eight years later WUFPA is more than 300 production houses, organised into ten craft
-        guilds, with coordinators in six sub-regions and districts from Kabale to Kagadi.
-      </p>
-      <p>
-        We are a non-profit company limited by guarantee. We do not make films ourselves. We
-        make it possible for our members to.
-      </p>
-    </Prose>
-    <Button href="/about/" variant="tertiary">About WUFPA</Button>
+  {/* WHO WE ARE — an editorial statement, not a prose block in a tinted box.
+      The founding year is set as a graphic date marker at display scale and
+      the narrative runs beside it, so the section has a composition of its own
+      rather than the site's default centred column. */}
+  <Section labelledBy="who-we-are-heading" spacing="loose" reveal>
+    <div class="statement">
+      <p class="statement__marker" aria-hidden="true">2017</p>
+
+      <div class="statement__body">
+        <h2 id="who-we-are-heading" class="statement__heading">
+          We are the association Western Uganda’s filmmakers built for themselves
+        </h2>
+
+        <p class="statement__lead">
+          In 2017, fourteen production companies from Ankole and Kigezi registered an
+          association. They were tired of an industry whose training, funding, buyers and
+          policy conversations all happened in Kampala — and of watching their films copied
+          and sold without permission.
+        </p>
+
+        <div class="statement__rest">
+          <p>
+            Eight years later WUFPA is more than 300 production houses, organised into ten
+            craft guilds, with coordinators in six sub-regions and districts from Kabale to
+            Kagadi.
+          </p>
+          <p>
+            We are a non-profit company limited by guarantee. We do not make films ourselves.
+            We make it possible for our members to.
+          </p>
+          <p class="statement__action">
+            <Button href="/about/" variant="tertiary">About WUFPA</Button>
+          </p>
+        </div>
+      </div>
+    </div>
   </Section>
 
-  <Section labelledBy="what-we-do-heading" reveal>
-    <h2 id="what-we-do-heading">Six ways we work for our members</h2>
-    <p class="standfirst">Training, rights, audiences, markets, money and recognition.</p>
-    <Grid min="17rem" gap={5} class="band-grid">
-      {
-        programmes.map((programme) => (
-          <EntityCard
-            variant="programme"
-            title={programme.title}
-            href={programme.href}
-            description={programme.description}
-          />
-        ))
-      }
-    </Grid>
-    <Button href="/programmes/" variant="tertiary">All our programmes</Button>
-  </Section>
-
-  <Section labelledBy="where-we-work-heading" variant="subtle" reveal>
-    <h2 id="where-we-work-heading">From Kabale to Kagadi</h2>
-    <p class="standfirst">
-      WUFPA covers the six sub-regions of Western Uganda. Each has its own coordinator,
-      secretary and treasurer, and district coordinators working alongside them. Find yours.
+  {/* WHAT WE DO — a numbered index, not six cards. */}
+  <Section labelledBy="what-we-do-heading" variant="subtle" reveal>
+    <div class="band-head">
+      <h2 id="what-we-do-heading">Six ways we work for our members</h2>
+      <p class="band-head__note">Training, rights, audiences, markets, money and recognition.</p>
+    </div>
+    <IndexList items={programmes} class="programmes-index" />
+    <p class="band-action">
+      <Button href="/programmes/" variant="tertiary">All our programmes</Button>
     </p>
-    <Grid min="17rem" gap={5} class="band-grid">
-      {
-        regions.map((region) => (
-          <EntityCard
-            variant="region"
-            title={region.name}
-            href="/regions/"
-            description={region.line}
-          />
-        ))
-      }
-    </Grid>
-    <Button href="/regions/" variant="tertiary">Find your sub-region</Button>
   </Section>
 
-  <Section labelledBy="evidence-heading" reveal>
-    <h2 id="evidence-heading">Eight years on the record</h2>
-    <p class="standfirst">Not a summary — the work itself.</p>
-    <ul role="list" class="evidence">
-      {
-        evidence.map((item) => (
-          <li class="evidence__item">
-            <Figure
-              image={item.image.image}
-              alt={item.image.alt}
-              purpose="card"
-              ratio="landscape"
-              sizes="(min-width: 64rem) 30rem, 100vw"
-              variant="grid-item"
-            />
-            <p class="evidence__date">{item.date}</p>
-            <p class="evidence__copy">{item.copy}</p>
-          </li>
-        ))
-      }
-    </ul>
-    <Button href="/impact/" variant="tertiary">See our impact</Button>
-  </Section>
+  {/* WHERE WE WORK — full-bleed. The photograph is the section; the six names
+      sit over it at width and beneath it on a phone. */}
+  <EstablishingShot
+    image={regionsShot.image}
+    alt={regionsShot.alt}
+    headingId="where-we-work-heading"
+    heading="From Kabale to Kagadi"
+    standfirst="WUFPA covers the six sub-regions of Western Uganda. Each has its own coordinator, secretary and treasurer, and district coordinators working alongside them."
+    items={regions}
+    objectPosition="center 40%"
+  >
+    <Button href="/regions/" variant="inverse">Find your sub-region</Button>
+  </EstablishingShot>
 
-  <Section labelledBy="partners-heading" variant="subtle" container="narrow" reveal>
-    <h2 id="partners-heading">We do not work alone</h2>
-    <Prose>
-      <p>
-        WUFPA's training, competitions and campaigns are delivered with national and
-        international partners — the Uganda Communications Commission, UNATCOM for UNESCO, US
-        Mission Uganda and Film Possible, Alliance Française, the Goethe-Zentrum, the Uganda
-        Film Network and the National Producers Guild of Uganda.
-      </p>
-    </Prose>
-    <Button href="/partners/" variant="tertiary">Our partners</Button>
-  </Section>
-
-  <Section labelledBy="membership-heading" variant="inverse" reveal>
-    <h2 id="membership-heading">If you make films in Western Uganda, this is your association</h2>
-    <p class="standfirst standfirst--inverse">
-      Membership is open to production companies, community film groups, guilds and individual
-      creatives — writers, directors, actors, editors, camera operators, sound recordists,
-      animators, costume and make-up artists, and gaffers.
+  {/* EVIDENCE — the film strip. This is the page's signature composition. */}
+  <Section labelledBy="evidence-heading" spacing="loose" reveal>
+    <div class="band-head">
+      <h2 id="evidence-heading">Eight years on the record</h2>
+      <p class="band-head__note">Not a summary — the work itself.</p>
+    </div>
+    <FrameSequence frames={evidence} label="WUFPA activity record, 2022 to 2025" />
+    <p class="band-action">
+      <Button href="/impact/" variant="tertiary">See our impact</Button>
     </p>
+  </Section>
+
+  {/* PARTNERS — a typographic roll. Names at scale, no boxes, no logos
+      (⟦Q10⟧ — written permission not yet obtained). */}
+  <Section labelledBy="partners-heading" variant="subtle" reveal>
+    <div class="partners">
+      <div class="partners__intro">
+        <h2 id="partners-heading">We do not work alone</h2>
+        <p class="band-head__note">
+          WUFPA’s training, competitions and campaigns are delivered with national and
+          international partners.
+        </p>
+        <p class="band-action">
+          <Button href="/partners/" variant="tertiary">Our partners</Button>
+        </p>
+      </div>
+
+      <ul role="list" class="partners__roll">
+        <li>Uganda Communications Commission</li>
+        <li>UNATCOM for UNESCO</li>
+        <li>US Mission Uganda</li>
+        <li>Film Possible</li>
+        <li>Alliance Française</li>
+        <li>Goethe-Zentrum</li>
+        <li>Uganda Film Network</li>
+        <li>National Producers Guild of Uganda</li>
+      </ul>
+    </div>
+  </Section>
+
+  {/* MEMBERSHIP — the ask, over the whole association in one frame. */}
+  <EstablishingShot
+    image={membershipShot.image}
+    alt={membershipShot.alt}
+    headingId="membership-heading"
+    heading="If you make films in Western Uganda, this is your association"
+    standfirst="Membership is open to production companies, community film groups, guilds and individual creatives — writers, directors, actors, editors, camera operators, sound recordists, animators, costume and make-up artists, and gaffers."
+    objectPosition="center 35%"
+    class="membership-shot"
+  >
     <div class="membership__ctas">
       <Button href="/membership/join/" size="lg">Become a member</Button>
       <Button href="/membership/" variant="inverse" size="lg">What members get</Button>
     </div>
-  </Section>
+  </EstablishingShot>
 </BaseLayout>
 
 <style>
-  .standfirst {
-    max-inline-size: 42rem;
+  /* ── Shared band furniture ────────────────────────────────────────────
+     A heading and its note, then the composition, then one action. Kept
+     deliberately light: the sections differ by composition, not by chrome. */
+  .band-head__note {
+    margin: var(--space-3) 0 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
   }
 
-  /* Space the card grid off the heading it belongs to, and off the CTA that
-     follows it. Section owns the band's outer rhythm; this is the internal
-     gap between a band's own parts. */
-  .band-grid {
-    margin-block: var(--space-6);
+  .band-action {
+    margin: var(--space-6) 0 0;
   }
 
-  /* Evidence: photograph, then date, then what happened. The photograph leads
-     because docs/06 section 7's whole argument is that a real picture of a
-     real event carries more weight than the sentence beside it. */
-  .evidence {
+  .programmes-index {
+    margin-block-start: var(--space-7);
+  }
+
+  /* ── Who we are ───────────────────────────────────────────────────────
+     The year is a graphic element, not a heading: it is aria-hidden because
+     "2017" is already stated in the first sentence, and announcing it twice
+     tells a screen-reader user nothing new. */
+  .statement {
     display: grid;
-    gap: var(--space-6);
-    margin-block: var(--space-6);
-    padding: 0;
-    list-style: none;
-    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    gap: var(--space-5);
   }
 
-  .evidence__date {
-    margin: var(--space-3) 0 var(--space-1);
-    font-family: var(--font-ui);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .evidence__copy {
+  .statement__marker {
     margin: 0;
-    font-size: var(--text-base);
-    line-height: var(--leading-normal);
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-black);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-tight);
+    color: var(--line-default);
+  }
+
+  .statement__heading {
+    margin: 0 0 var(--space-5);
+    max-inline-size: 20ch;
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* The opening paragraph is set larger and in the body serif — it is the
+     one WUFPA sentence a visitor is most likely to read in full, so it is
+     given the weight of a standfirst rather than the weight of body copy. */
+  .statement__lead {
+    margin: 0;
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .statement__rest {
+    margin-block-start: var(--space-6);
+    max-inline-size: var(--measure-prose);
     color: var(--text-body);
   }
 
-  .standfirst--inverse {
-    color: var(--text-muted-on-inverse);
+  .statement__rest p {
+    margin: 0 0 var(--space-4);
+  }
+
+  .statement__action {
+    margin: var(--space-2) 0 0;
+  }
+
+  @media (min-width: 56rem) {
+    /* The marker moves into its own column and grows, so the section reads
+       as a dated entry rather than as a centred article. */
+    .statement {
+      grid-template-columns: minmax(6rem, 10rem) 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .statement__marker {
+      font-size: clamp(4rem, 8vw, 7rem);
+      /* Optically aligns the numeral's cap with the heading's. */
+      margin-block-start: -0.08em;
+    }
+
+    /* Body copy indents past the lead, so the eye steps down a level rather
+       than reading one uniform column. */
+    .statement__rest {
+      padding-inline-start: var(--space-6);
+      border-inline-start: 2px solid var(--line-accent);
+    }
+  }
+
+  /* ── Partners ─────────────────────────────────────────────────────────
+     Names set at scale in the display face. No logos (⟦Q10⟧), no boxes, no
+     grid of equal tiles — a roll of institution names IS the credential. */
+  .partners {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .partners__roll {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .partners__roll li {
+    padding-block: var(--space-3);
+    border-block-start: 1px solid var(--line-default);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--text-heading);
+  }
+
+  @media (min-width: 56rem) {
+    .partners {
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .partners__roll li {
+      font-size: var(--text-xl);
+    }
+  }
+
+  /* ── Membership ───────────────────────────────────────────────────────
+     A little more height than the regions shot: this is the page's closing
+     frame and the last thing a visitor sees before the footer. */
+  .membership-shot {
+    --shot-min-height: min(90vh, 50rem);
   }
 
   .membership__ctas {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-block-start: var(--space-6);
   }
 </style>

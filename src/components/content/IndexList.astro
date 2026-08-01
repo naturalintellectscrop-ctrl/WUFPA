@@ -1,0 +1,145 @@
+---
+/**
+ * IndexList — a numbered typographic index.
+ *
+ * REPLACES A GRID OF IDENTICAL CARDS. Six programmes rendered as six bordered
+ * boxes is the layout every template reaches for, and it flattens them: each
+ * card is the same size, so each programme looks equally weighted and equally
+ * skippable. An index does the opposite — it sets the whole set as one
+ * continuous list, numbered, so the reader sees the shape of the offer before
+ * they read any single item. It is how a festival programme sets its
+ * contents, and it is typography doing the work borders were doing before
+ * (docs/21 § 10).
+ *
+ * THE NUMERAL IS THE GRAPHIC. Set large, in the display face at black weight,
+ * in a muted tone so it structures without shouting. There is no icon, no
+ * illustration and no decorative rule beyond the hairline that separates one
+ * row from the next.
+ *
+ * ONE LINK PER ROW, COVERING THE ROW. The anchor sits on the title and a
+ * pseudo-element extends its hit area over the whole row, so the accessible
+ * name is the programme title while the target is the full row — the same
+ * contract EntityCard uses. Never a nested link inside a linked container.
+ */
+interface IndexItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+interface Props {
+  items: IndexItem[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<ol class:list={['index-list', className]} role="list">
+  {
+    items.map((item, i) => (
+      <li class="index-row">
+        <span class="index-row__number u-tabular" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <div class="index-row__body">
+          <h3 class="index-row__title">
+            <a href={item.href}>{item.title}</a>
+          </h3>
+          <p class="index-row__description">{item.description}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .index-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
+  .index-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-block-end: 1px solid var(--line-subtle);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .index-row__number {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-black);
+    line-height: 1.1;
+    color: var(--text-muted);
+    /* Optical alignment: the numeral's cap height sits with the title's,
+       which a raw baseline match does not achieve at differing sizes. */
+    padding-block-start: 0.1em;
+  }
+
+  .index-row__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+  }
+
+  .index-row__title a {
+    color: var(--text-heading);
+    text-decoration: none;
+  }
+
+  /* Row-wide hit area, from the title's own anchor. */
+  .index-row__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .index-row:hover {
+    background-color: var(--surface-subtle);
+  }
+
+  .index-row:hover .index-row__title a,
+  .index-row__title a:focus-visible {
+    color: var(--text-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .index-row__description {
+    margin: 0;
+    max-inline-size: var(--measure-prose);
+    color: var(--text-secondary);
+  }
+
+  /* At width the numeral grows into a true index column and the rows gain
+     air — a recomposition of the relationship between number and text, not a
+     scaling of the same arrangement. */
+  @media (min-width: 48rem) {
+    .index-row {
+      grid-template-columns: 5rem 1fr;
+      gap: var(--space-6);
+      padding-block: var(--space-6);
+    }
+
+    .index-row__number {
+      font-size: var(--text-2xl);
+    }
+
+    .index-row__title {
+      font-size: var(--text-2xl);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index-row {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * FrameSequence — WUFPA's activity record as a strip of dated frames.
+ *
+ * THE ONE COMPOSITION ON THIS SITE THAT COULD NOT BE LIFTED INTO ANOTHER
+ * ORGANISATION'S PAGE. WUFPA's own mark is a film reel feeding a strip of
+ * frames; its archive is a sequence of documentary stills, each belonging to
+ * a dated event. Presenting that record as a horizontal strip with sprocket
+ * perforations is not decoration applied to the content — it is the content's
+ * own form. A grid of six equal cards would have been the generic answer, and
+ * it is what this replaces.
+ *
+ * THE FRAMES ARE DELIBERATELY UNEQUAL. Every second frame is wider, so the
+ * eye moves at an uneven pace down the strip the way it does across a real
+ * contact sheet. Six identical tiles read as a template; an irregular
+ * sequence reads as a record of things that actually happened, at different
+ * scales, on different days.
+ *
+ * SCROLL-SNAP, NOT A CAROUSEL. There is no autoplay, no timer, no arrows
+ * that hide content from keyboard users. It is a native horizontally
+ * scrollable region with `tabindex="0"` and a `role`/`aria-label`, matching
+ * the `u-scroll-x` pattern the roster tables already use — so it is
+ * scrollable by touch, trackpad, arrow key and screen reader alike, and it
+ * works with JavaScript off. WCAG 2.2.2 is satisfied by there being nothing
+ * that moves on its own.
+ *
+ * DATES ARE SET LIKE SLATES. Year first, in the display face, tracked and
+ * small-capped above the caption — the way a clapperboard or an archive
+ * label is set. Where a date is genuinely unknown the caller passes the
+ * honest string ("Date not recorded"); it is never guessed.
+ */
+interface Frame {
+  /** Year or date label, rendered verbatim. Never invented. */
+  date: string;
+  copy: string;
+  image: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  frames: Frame[];
+  /** Accessible name for the scrollable region. */
+  label: string;
+  class?: string;
+}
+
+const { frames, label, class: className } = Astro.props;
+---
+
+<div
+  class:list={['strip', className]}
+  role="region"
+  aria-label={label}
+  tabindex="0"
+>
+  <ol class="strip__track" role="list">
+    {
+      frames.map((frame, index) => (
+        <li class:list={['frame-cell', index % 2 === 1 && 'frame-cell--wide']}>
+          <div class="frame-cell__media">
+            <Picture
+              src={frame.image}
+              alt={frame.alt}
+              formats={['avif', 'webp']}
+              widths={[400, 640, 900].filter((w) => w <= frame.image.width)}
+              sizes="(min-width: 64rem) 34rem, 78vw"
+              loading="lazy"
+              decoding="async"
+              quality={50}
+            />
+          </div>
+          <p class="frame-cell__date">{frame.date}</p>
+          <p class="frame-cell__copy">{frame.copy}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  /* The perforated edges. Two repeating-linear-gradients pinned to the top and
+     bottom of the track draw the sprocket holes — the film strip in WUFPA's
+     logo, at the scale of a page section. Drawn in CSS rather than shipped as
+     an image: it costs nothing on a metered connection and scales cleanly. */
+  .strip {
+    position: relative;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* Full-bleed out of the container so the strip runs to the viewport edge
+       and reads as continuing past it, the way a strip of film does. */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    padding-block: var(--space-6);
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        var(--ink-900) 0 10px,
+        transparent 10px 26px
+      ),
+      repeating-linear-gradient(
+        to right,
+        var(--ink-900) 0 10px,
+        transparent 10px 26px
+      );
+    background-size: 100% 6px;
+    background-position: left top, left bottom;
+    background-repeat: no-repeat;
+  }
+
+  /* The focus ring must be visible on a scroll container a keyboard user has
+     tabbed into — this is how they discover it is scrollable. */
+  .strip:focus-visible {
+    outline: var(--focus-ring-width, 3px) solid var(--focus-ring);
+    outline-offset: 4px;
+  }
+
+  .strip__track {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .frame-cell {
+    flex: none;
+    inline-size: min(78vw, 26rem);
+    scroll-snap-align: start;
+  }
+
+  /* The uneven rhythm. Wider frames at every second position break the
+     tile-grid reading and let the group photographs — which are the widest
+     images in the archive — run at something closer to their true shape. */
+  .frame-cell--wide {
+    inline-size: min(88vw, 34rem);
+  }
+
+  .frame-cell__media {
+    aspect-ratio: var(--ratio-landscape);
+    overflow: hidden;
+    background-color: var(--surface-muted);
+  }
+
+  .frame-cell__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  /* Slate lettering: display face, tracked, uppercase, accent-coloured.
+     --text-accent is 6.93:1 on white, so it clears AA as body-size text. */
+  .frame-cell__date {
+    margin: var(--space-4) 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-accent);
+  }
+
+  .frame-cell__copy {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+  }
+
+  /* Scroll-snap can trap a reader who scrolls by keyboard in small steps.
+     Turning it off where motion is unwelcome also removes the snap. */
+  @media (prefers-reduced-motion: reduce) {
+    .strip {
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+    }
+  }
+</style>

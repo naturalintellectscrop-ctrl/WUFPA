@@ -1,0 +1,135 @@
+---
+import type { Stat } from '../../lib/types';
+
+/**
+ * Ledger — the association's figures, set as a title card rather than as
+ * cards.
+ *
+ * REPLACES A ROW OF BORDERED BOXES. StatBlock draws four containers with
+ * borders and radii; that treatment says "dashboard widget" and it makes the
+ * figures smaller than the headline above them, which inverts their
+ * importance. These four numbers are the most checkable claims WUFPA makes —
+ * 300+, 6, 10, 2017 — and they should read at the scale of a statement.
+ *
+ * So: display face at black weight, hairline rules, and nothing else. The
+ * numbers carry it. This is the credits-roll / spec-sheet language a film
+ * body already owns, and it is the same reason docs/21 § 10 puts hierarchy
+ * before borders.
+ *
+ * Figure and label stay programmatically associated — the visually-hidden
+ * span joins them into one announcement, so a screen reader hears
+ * "300 plus film production houses" and not two orphan fragments.
+ *
+ * NO COUNT-UP ANIMATION. It delays the number, breaks under reduced motion,
+ * and reads as marketing rather than record.
+ */
+interface Props {
+  stats: Stat[];
+  /** Shared as-of note. An undated statistic ages into a lie. */
+  note?: string;
+  class?: string;
+}
+
+const { stats, note, class: className } = Astro.props;
+---
+
+<div class:list={['ledger', className]}>
+  <ul class="ledger__list" role="list">
+    {
+      stats.map((stat) => (
+        <li class="ledger__row">
+          <span class="ledger__figure u-tabular" aria-hidden="true">
+            {stat.figure}
+          </span>
+          <span class="ledger__label" aria-hidden="true">
+            {stat.label}
+          </span>
+          <span class="u-visually-hidden">
+            {stat.figure} {stat.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  {note && <p class="ledger__note">{note}</p>}
+</div>
+
+<style>
+  /* Base: a stacked ledger, each figure on its own line with a hairline above.
+     Reads down the page like a list of specifications. */
+  .ledger__list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: 1px solid var(--line-default);
+  }
+
+  .ledger__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  .ledger__figure {
+    flex: none;
+    /* Fixed measure so the labels align into a column regardless of how many
+       digits the figure has — the alignment is what makes it read as a
+       ledger rather than as a sentence. */
+    min-inline-size: 4.5ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-black);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-heading);
+  }
+
+  .ledger__label {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+  }
+
+  .ledger__note {
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  /* At width the ledger turns: four columns, figure over label, so the row of
+     numbers reads as one line of type across the page. This is a
+     recomposition, not a resize — the relationship between figure and label
+     changes from horizontal to vertical (docs/21 § 12). */
+  @media (min-width: 56rem) {
+    .ledger__list {
+      grid-template-columns: repeat(4, 1fr);
+      border-block-start: 0;
+    }
+
+    .ledger__row {
+      flex-direction: column;
+      align-items: start;
+      gap: var(--space-3);
+      padding-block: 0;
+      padding-inline-end: var(--space-5);
+      border-block-end: 0;
+      border-block-start: 2px solid var(--line-accent);
+      padding-block-start: var(--space-4);
+    }
+
+    .ledger__figure {
+      min-inline-size: 0;
+      font-size: var(--text-4xl);
+    }
+
+    .ledger__label {
+      font-size: var(--text-sm);
+      max-inline-size: 14ch;
+    }
+  }
+</style>

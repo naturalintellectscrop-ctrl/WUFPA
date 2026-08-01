@@ -141,6 +141,48 @@ function initMobileNav(): void {
   });
 
   closeButton?.addEventListener('click', () => setOpen(false));
+
+  // Selecting a nav link only unwinds the open state via navigation — which
+  // never fires for a link to the page already showing (e.g. tapping "About
+  // WUFPA" while on /about/), leaving the dialog open, scroll locked and
+  // focus trapped with no route back except Escape or the close button.
+  // Closing explicitly on every link click, same-page or not, is what the
+  // "close after selecting a navigation link" requirement actually needs.
+  panel.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const link = target.closest('a[href]');
+    if (link) {
+      setOpen(false);
+      return;
+    }
+    // The dialog is intentionally full-bleed (docs/08 section 4) — there is
+    // no page visible behind it to tap. Its own unoccupied background (i.e.
+    // a click that lands on the panel or scroll region themselves, not on
+    // any interactive content inside them) stands in for the "tap outside"
+    // gesture a backdrop would otherwise provide.
+    if (target === panel || target === (panel.querySelector('[data-mobile-scroll]') as Node)) {
+      setOpen(false);
+    }
+  });
+
+  // A page restored from bfcache (browser Back/Forward) can resurrect this
+  // module's closure with the dialog mid-open: `overflow: hidden` and the
+  // Escape listener from before the navigation are still live, but the user
+  // has no way to invoke `setOpen` again because the click that navigated
+  // away never ran it. Forcing closed on every restore guarantees scroll and
+  // focus are never left in a locked state the user can't escape.
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) setOpen(false);
+  });
+
+  // Crossing into the desktop layout (PrimaryNav's own --bp-lg, 64rem) while
+  // this dialog is open would otherwise leave it fixed, full-screen and
+  // scroll-locked behind/over the now-visible desktop nav, with no control
+  // left on screen able to close it — a resize-triggered trap.
+  const desktopQuery = window.matchMedia('(min-width: 64rem)');
+  desktopQuery.addEventListener('change', (event) => {
+    if (event.matches) setOpen(false);
+  });
 }
 
 if (document.readyState === 'loading') {

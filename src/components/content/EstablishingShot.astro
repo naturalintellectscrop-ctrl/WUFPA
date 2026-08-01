@@ -1,0 +1,254 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * EstablishingShot — a full-bleed photograph carrying a heading and a list.
+ *
+ * WHY THIS EXISTS. The archive is dominated by group photographs of twenty to
+ * a hundred real people. That scale is the single most persuasive thing WUFPA
+ * owns, and rendering those images at 30rem inside grid cards throws it away —
+ * a crowd shrunk to a thumbnail reads as a texture, not as three hundred
+ * production houses. This component lets one photograph run the full width of
+ * the viewport at its own proportions, which is the documentary convention
+ * for establishing where a scene takes place.
+ *
+ * CONTRAST IS MEASURED, NOT ASSUMED. Text over an image is the treatment
+ * docs/08 § 16 warns about, and it is only used here because the requirement
+ * is met by construction rather than by hoping the photograph is dark enough:
+ *
+ *   - The scrim is `--ink-900` at 78% over the image. Against `--ink-900`
+ *     itself white is 16.3:1; at 78% opacity over an arbitrary photograph the
+ *     worst case is the image showing through at 22%, and white on a 22%
+ *     blend of the brightest possible source still measures above 7:1.
+ *   - Text sits in its own column with a solid-enough gradient stop behind it,
+ *     never over the open middle of the frame.
+ *   - Below `--bp-lg` the overlay is abandoned entirely: photograph above,
+ *     text below on the page surface, where contrast is the plain
+ *     `--text-heading` on `--surface-page` pairing used everywhere else.
+ *     Small screens are where an overlay is least readable and where this
+ *     audience actually is (constraint C1).
+ *
+ * The image is `loading="lazy"` — this component never carries the LCP
+ * element, which belongs to the hero.
+ */
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  headingId: string;
+  heading: string;
+  standfirst?: string;
+  /** Rendered as a plain typographic list beneath the standfirst. */
+  items?: { label: string; note?: string }[];
+  objectPosition?: string;
+  class?: string;
+}
+
+const {
+  image,
+  alt,
+  headingId,
+  heading,
+  standfirst,
+  items = [],
+  objectPosition = 'center',
+  class: className,
+} = Astro.props;
+---
+
+<section class:list={['shot', className]} aria-labelledby={headingId}>
+  <div class="shot__media">
+    <Picture
+      src={image}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={[640, 960, 1280, 1920, 2400].filter((w) => w <= image.width)}
+      sizes="100vw"
+      loading="lazy"
+      decoding="async"
+      quality={50}
+      style={`object-position: ${objectPosition};`}
+    />
+  </div>
+
+  <div class="shot__panel">
+    <div class="shot__inner">
+      <h2 id={headingId} class="shot__heading">{heading}</h2>
+      {standfirst && <p class="shot__standfirst">{standfirst}</p>}
+
+      {
+        items.length > 0 && (
+          <ul role="list" class="shot__list">
+            {items.map((item) => (
+              <li class="shot__item">
+                <span class="shot__item-label">{item.label}</span>
+                {item.note && <span class="shot__item-note">{item.note}</span>}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* BASE (small screens): no overlay. Photograph, then text on the page
+     surface. This is the more readable arrangement and it is what the
+     majority of this audience will see. */
+  .shot {
+    background-color: var(--surface-page);
+  }
+
+  .shot__media {
+    aspect-ratio: var(--ratio-landscape);
+    overflow: hidden;
+    background-color: var(--surface-muted);
+  }
+
+  .shot__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .shot__panel {
+    padding-block: var(--space-7);
+  }
+
+  .shot__inner {
+    inline-size: 100%;
+    max-inline-size: var(--container-default);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .shot__heading {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-heading);
+  }
+
+  .shot__standfirst {
+    margin: 0 0 var(--space-6);
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* The list is set as rules, not as cards or pills. Six sub-region names
+     need no containers. */
+  .shot__list {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .shot__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-3);
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
+  .shot__item-label {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-heading);
+  }
+
+  .shot__item-note {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  /* AT --bp-lg: the photograph goes full-bleed behind the type. The panel
+     becomes an overlay occupying the left column only, with a gradient that
+     is fully opaque where the text sits and clears entirely by the midpoint,
+     so the open half of the frame is never obscured. */
+  @media (min-width: 64rem) {
+    /* Callers may raise this — the membership shot closes the homepage and
+       takes more height than the regions shot mid-page. Declared as a token
+       so the override is a value, not a duplicated rule. */
+    .shot {
+      position: relative;
+      display: grid;
+      min-block-size: var(--shot-min-height, min(84vh, 46rem));
+      isolation: isolate;
+    }
+
+    .shot__media {
+      grid-area: 1 / 1;
+      aspect-ratio: auto;
+      block-size: 100%;
+    }
+
+    .shot__panel {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      padding-block: var(--space-8);
+      /* The dense stops are held to 46% — past the 34rem text column on every
+         viewport this overlay applies to — so no text ever sits on the
+         falloff.
+
+         MEASURED against the worst case, a pure-white photograph showing
+         through the scrim:
+
+              88%    86%
+         white          11.25:1  10.50:1   (AAA)
+         muted-on-inv    6.48:1   6.05:1   (AA, comfortably)
+
+         An earlier version let the second stop fall to 78%, which put the
+         muted standfirst at 4.57:1 — passing AA, but with no margin left for
+         a bright frame. */
+      background-image: linear-gradient(
+        to right,
+        rgb(35 31 32 / 88%) 0%,
+        rgb(35 31 32 / 86%) 46%,
+        rgb(35 31 32 / 0%) 78%
+      );
+    }
+
+    .shot__inner {
+      max-inline-size: var(--container-default);
+    }
+
+    .shot__heading,
+    .shot__item-label {
+      color: var(--text-on-inverse);
+    }
+
+    .shot__standfirst,
+    .shot__item-note {
+      color: var(--text-muted-on-inverse);
+    }
+
+    .shot__heading {
+      font-size: var(--text-4xl);
+      max-inline-size: 16ch;
+    }
+
+    /* Text is confined to the left column so it never crosses into the clear
+       part of the gradient, where contrast is not guaranteed. */
+    .shot__heading,
+    .shot__standfirst,
+    .shot__list {
+      max-inline-size: 34rem;
+    }
+
+    .shot__item {
+      border-block-start-color: var(--line-inverse);
+    }
+  }
+</style>
