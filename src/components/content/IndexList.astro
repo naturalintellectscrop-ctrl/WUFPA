@@ -25,6 +25,14 @@ interface IndexItem {
   title: string;
   href: string;
   description: string;
+  /**
+   * An optional trailing data line — districts covered, a count, a date.
+   *
+   * Set small and muted beneath the description, so it reads as the row's
+   * supporting record rather than competing with the title. Kept optional
+   * because a row without one must not look incomplete.
+   */
+  meta?: string;
 }
 
 interface Props {
@@ -47,6 +55,7 @@ const { items, class: className } = Astro.props;
             <a href={item.href}>{item.title}</a>
           </h3>
           <p class="index-row__description">{item.description}</p>
+          {item.meta && <p class="index-row__meta">{item.meta}</p>}
         </div>
       </li>
     ))
@@ -117,6 +126,17 @@ const { items, class: className } = Astro.props;
     margin: 0;
     max-inline-size: var(--measure-prose);
     color: var(--text-secondary);
+  }
+
+  /* The record line: smaller, quieter, in the UI face because it carries data
+     rather than prose. --text-muted (--ink-600) measures 5.97:1 on the page
+     surface and 5.65:1 on --surface-subtle — the only two backgrounds an
+     IndexList is placed on. Both clear 4.5:1 for normal text at this size. */
+  .index-row__meta {
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
   }
 
   /* At width the numeral grows into a true index column and the rows gain

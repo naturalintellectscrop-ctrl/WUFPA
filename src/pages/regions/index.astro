@@ -4,8 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
-import Grid from '../../components/layout/Grid.astro';
-import EntityCard from '../../components/content/EntityCard.astro';
+import IndexList from '../../components/content/IndexList.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import { meta } from '../../lib/page-meta';
 
@@ -37,39 +36,50 @@ const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b
     crumbs={crumbs}
   />
 
-  <Section labelledBy="why-heading" container="narrow">
-    <h2 id="why-heading">Why we organise by sub-region</h2>
-    <Prose>
-      <p>
-        Uganda’s film industry has always been concentrated in Kampala. WUFPA’s answer was not
-        to open one office and hope people travelled to it, but to build leadership in every
-        sub-region. Sub-regional committees were introduced specifically to decentralise
-        governance and deliver programmes efficiently.
-      </p>
-    </Prose>
+  {/* The organising insight of the whole site, set as a statement rather than
+      as a paragraph under a heading. This one sentence is why WUFPA exists in
+      the shape it does, and it is the sentence a funder or a filmmaker should
+      leave the page having read. */}
+  <Section labelledBy="why-heading" spacing="loose">
+    <div class="creed">
+      <h2 id="why-heading" class="creed__label">Why we organise by sub-region</h2>
+      <div>
+        <div class="reveal reveal--letter">
+          <p class="creed__statement">
+            Uganda’s film industry has always been concentrated in Kampala.
+          </p>
+        </div>
+        <Prose class="creed__body">
+          <p>
+            WUFPA’s answer was not to open one office and hope people travelled to it, but to
+            build leadership in every sub-region. Sub-regional committees were introduced
+            specifically to decentralise governance and deliver programmes efficiently.
+          </p>
+        </Prose>
+      </div>
+    </div>
   </Section>
 
-  <Section labelledBy="regions-heading" variant="subtle" reveal>
+  {/* An index, not six cards. Six equal boxes told a filmmaker in Kanungu that
+      the six sub-regions are interchangeable; a numbered index sets them as
+      one continuous list, with the districts each one covers as the row's
+      record line — which is the information that actually answers "is my
+      district in there?". */}
+  <Section labelledBy="regions-heading" variant="subtle" spacing="loose" reveal>
     <h2 id="regions-heading">Find your sub-region</h2>
-    <Grid min="18rem" gap={5} maxColumns={3} class="regions">
-      {
-        regions.map((region) => (
-          <EntityCard
-            variant="region"
-            title={region.data.title}
-            href={`/regions/${region.data.key}/`}
-            description={region.data.opening}
-            meta={[
-              {
-                label: 'Districts',
-                value: region.data.districts.slice(0, 3).join(', ') +
-                  (region.data.districts.length > 3 ? ` +${region.data.districts.length - 3} more` : ''),
-              },
-            ]}
-          />
-        ))
-      }
-    </Grid>
+    <p class="band-note">
+      Each sub-region has a coordinator, a secretary and a treasurer, with district
+      coordinators working alongside them.
+    </p>
+    <IndexList
+      class="regions-index"
+      items={regions.map((region) => ({
+        title: region.data.title,
+        href: `/regions/${region.data.key}/`,
+        description: region.data.opening,
+        meta: region.data.districts.join(' · '),
+      }))}
+    />
   </Section>
 
   <Section labelledBy="next-heading" container="narrow" reveal>
@@ -98,7 +108,54 @@ const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b
 </BaseLayout>
 
 <style>
-  .regions {
+  .creed {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .creed__label {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-accent);
+  }
+
+  .creed__statement {
+    margin: 0;
+    max-inline-size: 22ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-heading);
+  }
+
+  .creed__body {
     margin-block-start: var(--space-6);
+    max-inline-size: var(--measure-prose);
+  }
+
+  @media (min-width: 64rem) {
+    .creed {
+      grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+  }
+
+  .regions-index {
+    margin-block-start: var(--space-7);
   }
 </style>
