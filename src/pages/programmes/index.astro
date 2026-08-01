@@ -3,74 +3,95 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
-import Grid from '../../components/layout/Grid.astro';
-import EntityCard from '../../components/content/EntityCard.astro';
-import RelatedLinks from '../../components/content/RelatedLinks.astro';
+import FeatureRow from '../../components/content/FeatureRow.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import Button from '../../components/primitives/Button.astro';
+import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
 
 /**
- * /programmes/ — the index of the six programme areas.
+ * /programmes/ — docs/04 § 6.
  *
- * Experience intent (docs/21 § 2.3): "Encouraged · Included · Empowered."
- * The mechanism is the standfirst, which frames the six areas as the whole of
- * one filmmaker's problem rather than six departments of an organisation —
- * so a reader recognises their own situation in the list before they read a
- * single card.
+ * ART DIRECTION. The homepage already carries these six as a numbered index:
+ * a compact list whose job is to show the shape of the offer in one screen
+ * and send the reader onward. This page is the destination, so repeating that
+ * index here would make the click feel like it went nowhere. Instead each
+ * programme gets the full width of the page as an editorial spread —
+ * photograph on one side, number and text on the other, direction alternating
+ * down the page.
  *
- * Reference: Academy Museum, editorial storytelling only — a programme index
- * that reads as a body of work rather than a services menu.
+ * That does two things a six-card grid could not. It lets each programme's
+ * photograph run at a size where the people in it are legible, and it stops
+ * the six reading as interchangeable tiles: a reader meets them in sequence,
+ * one at a time, the way a documentary introduces its subjects.
  *
- * Copy verbatim from docs/04 § 6 and § 6.1. Card copy is NOT rewritten for
- * this page; the same six strings appear on the homepage's "what we do" band,
- * drawn from the same source, so the two cannot drift.
+ * THE KIBANDA INITIATIVE HAS NO PHOTOGRAPH, AND THE PAGE SAYS SO BY ITS
+ * COMPOSITION. The archive contains no community screening. FeatureRow
+ * composes a photo-less entry as a centred typographic feature at the same
+ * scale as the others, so the absence reads as deliberate rather than broken.
+ * Borrowing a workshop photograph and letting it stand in for a screening
+ * would be the exact substitution docs/20 § 1 exists to prevent.
+ *
+ * Copy is verbatim from docs/04 § 6 and § 6.1 — the same six strings the
+ * homepage uses, from the same source, so the two cannot drift.
  */
 
 const page = meta('/programmes/');
-
 const crumbs = [{ label: 'Home', href: '/' }, { label: 'What we do' }];
 
-/* docs/04 § 6.1, verbatim. Order is the document's order, which runs the
-   filmmaker's problem end to end: learn the craft, keep the rights, reach an
-   audience, get paid, get financed, be recognised. */
+const closingShot = getPhoto('programmes/training/matatu-film-lab-cohort-2024.jpeg');
+
+/* Order is docs/04 § 6.1's order, which runs a filmmaker's problem end to
+   end: learn the craft, keep the rights, reach an audience, get paid, get
+   financed, be recognised. `photo: null` is a statement of fact about the
+   archive, not an omission to be filled later with something borrowed. */
 const programmes = [
   {
     title: 'Training & Capacity Building',
     href: '/programmes/training/',
     description:
       'Workshops, master classes and mentorship in screenwriting, directing, acting, cinematography, editing and production — delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
+    photo: 'programmes/training/matatu-film-lab-training-room-2024.jpeg',
   },
   {
     title: 'Advocacy, Rights & Anti-Piracy',
     href: '/programmes/advocacy/',
     description:
       'We campaign for filmmakers’ copyright, take that campaign to the streets, and press for film to be taught in Uganda’s schools.',
+    photo: 'programmes/advocacy/together-against-piracy-banner-mbarara.jpeg',
   },
   {
     title: 'The Kibanda Initiative',
     href: '/programmes/kibanda/',
     description:
       'Community film screenings that bring Western Ugandan films to towns, schools and rural communities.',
+    photo: null,
   },
   {
     title: 'Distribution & Market Access',
     href: '/programmes/distribution/',
     description:
       'We organised the region’s film distributors, and members’ films now air on five regional broadcasters.',
+    photo: 'programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg',
   },
   {
     title: 'Competitions & Awards',
     href: '/programmes/competitions/',
     description:
       'We persuaded the Uganda Communications Commission to create a regional film competition, and we run the Western Uganda Film Awards Gala.',
+    photo: 'programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg',
   },
   {
     title: 'International Exposure',
     href: '/programmes/international/',
     description:
       'Delegations to Zanzibar, Kigali and beyond, so our members meet the industry outside Uganda.',
+    photo: 'programmes/international/kigali-content-market-2023-panel.jpeg',
   },
-];
+].map((programme) => ({
+  ...programme,
+  media: programme.photo ? getPhoto(programme.photo) : null,
+}));
 ---
 
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="CollectionPage">
@@ -80,66 +101,85 @@ const programmes = [
     crumbs={crumbs}
   />
 
-  <Section labelledBy="programmes-heading">
+  {/* Each spread is its own band so the alternation carries its own rhythm
+      rather than sitting inside one long scrolling column. Spacing alternates
+      with direction, which is what stops six spreads reading as a pattern. */}
+  <Section labelledBy="programmes-heading" spacing="loose">
     <h2 id="programmes-heading" class="u-visually-hidden">The six programme areas</h2>
-    <Grid min="18rem" gap={5}>
+
+    <div class="features">
       {
-        programmes.map((programme) => (
-          <EntityCard
-            variant="programme"
+        programmes.map((programme, index) => (
+          <FeatureRow
+            number={String(index + 1).padStart(2, '0')}
             title={programme.title}
             href={programme.href}
             description={programme.description}
+            reversed={index % 2 === 1}
+            headingLevel={3}
+            {...programme.media ? { image: programme.media.image, alt: programme.media.alt } : {}}
           />
         ))
       }
-    </Grid>
+    </div>
   </Section>
 
-  <Section labelledBy="join-heading" variant="subtle" container="narrow" reveal>
-    <h2 id="join-heading">Every one of these is open to members</h2>
+  {/* The closing ask sits over the Matatu Film Lab cohort — forty-odd members
+      in one frame, which is the argument for joining stated as a picture
+      rather than as a sentence. */}
+  <EstablishingShot
+    image={closingShot.image}
+    alt={closingShot.alt}
+    headingId="join-heading"
+    heading="Every one of these is open to members"
+    standfirst="WUFPA does not make films. It makes it possible for its members to — by teaching the craft, defending the rights, opening the markets and putting the work in front of audiences and juries."
+    objectPosition="center 40%"
+  >
+    <div class="actions">
+      <Button href="/membership/join/" size="lg">Become a member</Button>
+      <Button href="/membership/" variant="inverse" size="lg">What membership provides</Button>
+    </div>
+  </EstablishingShot>
+
+  <Section labelledBy="elsewhere-heading" variant="subtle" container="narrow">
+    <h2 id="elsewhere-heading">Where this work happens</h2>
     <Prose>
       <p>
-        WUFPA does not make films. It makes it possible for its members to — by teaching the
-        craft, defending the rights, opening the markets and putting the work in front of
-        audiences and juries. Membership is what connects a filmmaker in any of the six
-        sub-regions to all six of these programmes.
+        These six programmes are delivered across the six sub-regions of Western Uganda, with
+        coordinators in around twenty-five districts, and alongside the national and
+        international institutions WUFPA partners with.
       </p>
     </Prose>
-    <div class="actions">
-      <Button href="/membership/join/">Become a member</Button>
-      <Button href="/membership/" variant="tertiary">What membership provides</Button>
+    <div class="actions actions--inline">
+      <Button href="/regions/" variant="secondary">Our six sub-regions</Button>
+      <Button href="/partners/" variant="tertiary">Our partners</Button>
     </div>
-
-    <RelatedLinks
-      heading="Elsewhere on this site"
-      links={[
-        {
-          href: '/regions/',
-          label: 'Our six sub-regions',
-          reason: 'Where these programmes are delivered, and who coordinates them.',
-        },
-        {
-          href: '/partners/',
-          label: 'Our partners',
-          reason: 'The institutions this work is delivered with.',
-        },
-        {
-          href: '/about/',
-          label: 'About WUFPA',
-          reason: 'The objectives these six areas turn into work.',
-        },
-      ]}
-    />
   </Section>
 </BaseLayout>
 
 <style>
+  /* The gap between spreads is larger than any gap inside one, so each
+     programme reads as a complete unit before the next begins. */
+  .features {
+    display: grid;
+    gap: var(--space-9);
+  }
+
+  @media (min-width: 56rem) {
+    .features {
+      gap: calc(var(--space-8) * 1.6);
+    }
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .actions--inline {
     margin-block-start: var(--space-6);
+    gap: var(--space-4);
+    align-items: center;
   }
 </style>

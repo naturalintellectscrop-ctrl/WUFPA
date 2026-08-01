@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
-import Grid from '../../components/layout/Grid.astro';
 import Figure from '../../components/media/Figure.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import Button from '../../components/primitives/Button.astro';
 import { getPhoto } from '../../lib/photos';
@@ -13,17 +13,26 @@ import { meta } from '../../lib/page-meta';
 /**
  * /programmes/international/ — docs/04 § 6.7, verbatim.
  *
- * Experience intent: "Encouraged · Included · Empowered." The mechanism is
- * the delegate accreditation photographs — named WUFPA members holding
- * credentials at an international market. That is a more specific claim than
- * any sentence about ambition.
+ * ART DIRECTION. A24-adjacent confidence: one wide image, generous space, no
+ * crowding. The temptation on a page about international festivals is to fill
+ * it — banners, badges, logos, a grid of everything. That reads as a scrapbook
+ * and undercuts the claim. Restraint reads as having been there.
  *
- * Reference: A24, cinematic confidence only — one wide image, generous space,
- * no crowding.
+ * THE DELEGATE CARDS ARE THE EVIDENCE AND ARE COMPOSED AS SUCH. Two named
+ * WUFPA members holding accreditation at the Kigali International Content
+ * Market is a far more specific claim than any sentence about ambition — and
+ * accreditation cards are objects with text on them, so they are shown large
+ * enough to read. An earlier pass put them in a three-up grid alongside a
+ * festival banner, at a size where the names were illegible and the card and
+ * the banner read as the same kind of thing. They are not: one is a person,
+ * one is signage.
  *
- * The CTA here is "Support this work", per docs/04 § 6.7, not "Become a
- * member": travel support is named in [P3] as a current association need, so
- * the honest ask on this page is funding rather than membership.
+ * So the two cards get a two-up at portrait scale, and the Mashariki banner
+ * moves out to open the page full-bleed, where signage belongs.
+ *
+ * The CTA is "Support this work", per docs/04 § 6.7, not "Become a member":
+ * travel support is named in [P3] as a current association need, so the honest
+ * ask on this page is funding.
  */
 
 const page = meta('/programmes/international/');
@@ -33,12 +42,13 @@ const crumbs = [
   { label: 'International exposure' },
 ];
 
-const hero = getPhoto('programmes/international/kigali-content-market-2023-panel.jpeg');
+const banner = getPhoto('programmes/international/mashariki-film-festival-banner-2023.jpeg');
+const panel = getPhoto('programmes/international/kigali-content-market-2023-panel.jpeg');
 
-const kigali = [
+/* Two named delegates, accredited at Kigali 2023. */
+const delegates = [
   'programmes/international/kigali-delegate-card-katabazi-george.jpeg',
   'programmes/international/kigali-delegate-card-kamugisha-william.jpeg',
-  'programmes/international/mashariki-film-festival-banner-2023.jpeg',
 ].map((file) => getPhoto(file));
 ---
 
@@ -49,62 +59,77 @@ const kigali = [
     crumbs={crumbs}
   />
 
-  <Section spacing="compact">
-    <Figure
-      image={hero.image}
-      alt={hero.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...hero.caption ? { caption: hero.caption } : {}}
-      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
-    />
-  </Section>
+  <EstablishingShot
+    image={banner.image}
+    alt={banner.alt}
+    headingId="festivals-heading"
+    heading="Beyond Uganda"
+    standfirst="WUFPA has led delegations of producers to benchmark and participate in international film festivals — the African Mashariki Film Festival and the Zanzibar International Film Festival among them."
+    objectPosition="center 45%"
+  />
 
-  <Section labelledBy="delegations-heading" container="narrow" reveal>
+  <Section labelledBy="delegations-heading" container="narrow" spacing="loose">
     <h2 id="delegations-heading">Delegations</h2>
+    <p class="lead">
+      Exposure to global trends, networking opportunities and collaborative projects — the
+      things a filmmaker cannot get without being in the room.
+    </p>
     <Prose>
       <p>
-        WUFPA has led delegations of producers to benchmark and participate in international
-        film festivals — including the African Mashariki Film Festival and the Zanzibar
-        International Film Festival — exposing members to global trends, networking
-        opportunities and collaborative projects.
-      </p>
-      <p>
-        In November 2023, a WUFPA delegation attended the Kigali International Content Market
-        in Kigali, Rwanda.
+        In November 2023, a WUFPA delegation attended the Kigali International Content Market in
+        Kigali, Rwanda.
       </p>
     </Prose>
   </Section>
 
-  <Section labelledBy="kigali-heading" variant="subtle" reveal>
-    <h2 id="kigali-heading">Kigali International Content Market, 2023</h2>
-    <Grid min="16rem" gap={6} class="kigali">
+  {/* The wide frame, alone in its band. One image, given room. */}
+  <Section spacing="loose" reveal>
+    <Figure
+      image={panel.image}
+      alt={panel.alt}
+      purpose="hero"
+      ratio="auto"
+      variant="wide"
+      sizes="(min-width: 64rem) 60rem, 100vw"
+      {...panel.caption ? { caption: panel.caption } : {}}
+      {...panel.dateNote ? { dateNote: panel.dateNote } : {}}
+    />
+  </Section>
+
+  {/* Accreditation cards, large enough that the names on them can be read. */}
+  <Section labelledBy="delegates-heading" variant="subtle" spacing="loose" reveal>
+    <h2 id="delegates-heading">Accredited at Kigali, November 2023</h2>
+    <p class="band-note">
+      WUFPA members carried delegate credentials at the Kigali International Content Market.
+    </p>
+
+    <div class="delegates">
       {
-        kigali.map((photo) => (
+        delegates.map((photo) => (
           <Figure
             image={photo.image}
             alt={photo.alt}
             purpose="card"
             ratio="auto"
-            variant="grid-item"
-            sizes="(min-width: 64rem) 20rem, 100vw"
-            {...photo.caption ? { caption: photo.caption } : {}}
-            {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
+            sizes="(min-width: 56rem) 26rem, 100vw"
+            {...(photo.caption ? { caption: photo.caption } : {})}
+            {...(photo.dateNote ? { dateNote: photo.dateNote } : {})}
           />
         ))
       }
-    </Grid>
+    </div>
   </Section>
 
   <Section labelledBy="cta-heading" container="narrow" reveal>
     <h2 id="cta-heading">What this needs</h2>
+    <p class="lead">
+      Travel support and exchange programmes for festivals, labs and residencies are among the
+      association’s current needs.
+    </p>
     <Prose>
       <p>
-        Travel support and exchange programmes for festivals, labs and residencies are among
-        the association’s current needs. Sponsoring a delegate is one of the most direct ways
-        to put a Western Ugandan filmmaker in an international room.
+        Sponsoring a delegate is one of the most direct ways to put a Western Ugandan filmmaker
+        in an international room.
       </p>
     </Prose>
     <div class="actions">
@@ -136,8 +161,37 @@ const kigali = [
 </BaseLayout>
 
 <style>
-  .kigali {
-    margin-block-start: var(--space-6);
+  .lead {
+    margin: 0 0 var(--space-5);
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+  }
+
+  /* Two up, not three, and not a min-width grid: two accreditation cards side
+     by side read as a pair of people. Adding a third tile of signage would
+     make all three read as decoration. */
+  .delegates {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--space-7);
+  }
+
+  @media (min-width: 48rem) {
+    .delegates {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-7);
+      max-inline-size: 56rem;
+    }
   }
 
   .actions {

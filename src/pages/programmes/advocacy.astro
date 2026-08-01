@@ -5,6 +5,8 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Grid from '../../components/layout/Grid.astro';
 import Figure from '../../components/media/Figure.astro';
+import FrameSequence from '../../components/content/FrameSequence.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import Button from '../../components/primitives/Button.astro';
 import { getPhoto } from '../../lib/photos';
@@ -13,12 +15,22 @@ import { meta } from '../../lib/page-meta';
 /**
  * /programmes/advocacy/ — docs/04 § 6.3, verbatim.
  *
- * Experience intent: "Encouraged · Included · Empowered." The mechanism here
- * is the street march photography — advocacy is shown as something WUFPA did
- * in public with named institutions beside it, not as a position statement.
+ * ART DIRECTION. This is the most photographed thing WUFPA does: a copyright
+ * campaign that went into the street, with a brass band, hand-lettered
+ * placards and a banner reading "Infringement on one's Copyright is A Crime".
+ * The archive holds four frames of that march. An earlier pass rendered them
+ * as a grid of thumbnails under a heading, which is how a report illustrates
+ * itself; the march deserves to be shown at the scale it happened.
  *
- * Reference: National Geographic, documentary authenticity only. The images
- * are records of an event, presented without treatment.
+ * So the page opens on the banner full-bleed — the establishing shot names
+ * the campaign in the campaigners' own words before any of WUFPA's prose does
+ * — and the march itself runs as a frame sequence, which is the one place on
+ * this site where the strip metaphor is literally a sequence of moments from
+ * a single event.
+ *
+ * The sensitisation record stays a grid, deliberately: five sub-regions
+ * covered district by district IS a list, and setting a list as anything
+ * other than a list would be decoration.
  */
 
 const page = meta('/programmes/advocacy/');
@@ -28,7 +40,10 @@ const crumbs = [
   { label: 'Advocacy and filmmakers’ rights' },
 ];
 
-const hero = getPhoto('programmes/advocacy/together-against-piracy-banner-mbarara.jpeg');
+const banner = getPhoto('programmes/advocacy/together-against-piracy-banner-mbarara.jpeg');
+const representation = getPhoto(
+  'programmes/advocacy/parliamentary-forum-creative-industries-podium.jpeg',
+);
 
 /* The campaign partners, docs/04 § 6.3 from [P13]. */
 const campaignPartners = [
@@ -39,8 +54,36 @@ const campaignPartners = [
   'Media Council of Uganda',
 ];
 
-/* Sensitisation record, docs/04 § 6.3. Each entry is a recorded meeting or
-   workshop with a photograph in the archive. */
+/* The march, as a sequence. Every frame is from the same campaign; the dates
+   are unrecorded in the archive and say so rather than being guessed. */
+const march = [
+  {
+    date: 'Together Against Piracy',
+    copy: 'Members carry the campaign banner through Mbarara.',
+    photo: 'programmes/advocacy/together-against-piracy-march-street.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'A brass band leads the march along a Mbarara street.',
+    photo: 'programmes/advocacy/together-against-piracy-brass-band-placards.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'Hand-lettered placards: infringement on one’s copyright is a crime.',
+    photo: 'programmes/advocacy/together-against-piracy-march-mbarara-street.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'Ankole City Actors join the campaign in the city centre.',
+    photo: 'programmes/advocacy/together-against-piracy-ankole-city-actors-banner.jpeg',
+  },
+].map((item) => {
+  const photo = getPhoto(item.photo);
+  return { date: item.date, copy: item.copy, image: photo.image, alt: photo.alt };
+});
+
+/* Sensitisation record, docs/04 § 6.3 — recorded meetings with a photograph
+   in the archive. */
 const sensitisation = [
   {
     place: 'Greater Bushenyi',
@@ -57,10 +100,6 @@ const sensitisation = [
     photo: 'regions/ankole/sensitisation-ibanda-kazo-kiruhura-kamwengye-kitagwenda.jpeg',
   },
 ].map((item) => ({ ...item, image: getPhoto(item.photo) }));
-
-const representation = getPhoto(
-  'programmes/advocacy/parliamentary-forum-creative-industries-podium.jpeg',
-);
 ---
 
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
@@ -70,30 +109,26 @@ const representation = getPhoto(
     crumbs={crumbs}
   />
 
-  <Section spacing="compact">
-    <Figure
-      image={hero.image}
-      alt={hero.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...hero.caption ? { caption: hero.caption } : {}}
-      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
-    />
-  </Section>
+  {/* The campaign's own words, at the scale they were carried. */}
+  <EstablishingShot
+    image={banner.image}
+    alt={banner.alt}
+    headingId="campaign-heading"
+    heading="Together Against Piracy"
+    standfirst="The campaign runs jointly with the Uganda Communications Commission, the Uganda Registration Services Bureau, the Uganda Film Council, the Uganda Federation of Movie Industry and the Media Council of Uganda."
+    objectPosition="center 45%"
+  />
 
-  <Section labelledBy="copyright-heading" container="narrow" reveal>
+  <Section labelledBy="copyright-heading" container="narrow" spacing="loose">
     <h2 id="copyright-heading">Copyright</h2>
+    <p class="lead">
+      WUFPA’s first president led early campaigns in Mbarara City and the surrounding areas on a
+      single principle: infringement on one’s copyright is a crime.
+    </p>
     <Prose>
       <p>
-        WUFPA’s first president led early campaigns in Mbarara City and the surrounding areas
-        on a single principle: infringement on one’s copyright is a crime. At the time, piracy
-        was normalised — saying it out loud was a bold step.
-      </p>
-      <p>
-        That work continues as the <strong>Together Against Piracy</strong> campaign, run
-        jointly with:
+        At the time, piracy was normalised — saying it out loud was a bold step. That work
+        continues as the Together Against Piracy campaign, run jointly with:
       </p>
       <ul>
         {campaignPartners.map((partner) => <li>{partner}</li>)}
@@ -101,43 +136,56 @@ const representation = getPhoto(
     </Prose>
   </Section>
 
-  <Section labelledBy="representation-heading" variant="subtle" reveal>
+  {/* The march as a sequence of moments — the one section on this site where
+      the film-strip metaphor describes what it actually contains. */}
+  <Section labelledBy="march-heading" variant="subtle" spacing="loose" reveal>
+    <h2 id="march-heading">Into the street</h2>
+    <p class="band-note">
+      Four frames from the campaign march through Mbarara, with a brass band and placards made
+      by members.
+    </p>
+    <FrameSequence frames={march} label="The Together Against Piracy march, Mbarara" />
+  </Section>
+
+  <Section labelledBy="representation-heading" reveal>
     <h2 id="representation-heading">Representation</h2>
     <div class="split">
-      <Prose>
-        <p>
+      <div>
+        <p class="lead">
           Representing filmmakers’ interests on national and regional platforms is one of
-          WUFPA’s five core objectives. WUFPA representatives have attended the Uganda
-          Parliamentary Forum for Creative Industries, met the Uganda Registration Services
-          Bureau’s regional offices, and hosted the Uganda Federation of Movie Industry and
-          the Uganda Film Association.
+          WUFPA’s five core objectives.
         </p>
-      </Prose>
+        <Prose>
+          <p>
+            WUFPA representatives have attended the Uganda Parliamentary Forum for Creative
+            Industries, met the Uganda Registration Services Bureau’s regional offices, and
+            hosted the Uganda Federation of Movie Industry and the Uganda Film Association.
+          </p>
+        </Prose>
+      </div>
       <Figure
         image={representation.image}
         alt={representation.alt}
         purpose="card"
         ratio="landscape"
-        sizes="(min-width: 64rem) 28rem, 100vw"
+        sizes="(min-width: 56rem) 30rem, 100vw"
         {...representation.caption ? { caption: representation.caption } : {}}
         {...representation.dateNote ? { dateNote: representation.dateNote } : {}}
       />
     </div>
   </Section>
 
-  <Section labelledBy="curriculum-heading" container="narrow" reveal>
+  <Section labelledBy="curriculum-heading" variant="subtle" container="narrow" reveal>
     <h2 id="curriculum-heading">Film in the curriculum</h2>
-    <Prose>
-      <p>
-        WUFPA is campaigning to have film and media production included in Uganda’s national
-        education curriculum, particularly in vocational and secondary schools.
-      </p>
-    </Prose>
+    <p class="lead">
+      WUFPA is campaigning to have film and media production included in Uganda’s national
+      education curriculum, particularly in vocational and secondary schools.
+    </p>
   </Section>
 
-  <Section labelledBy="sensitisation-heading" variant="subtle" reveal>
+  <Section labelledBy="sensitisation-heading" spacing="loose" reveal>
     <h2 id="sensitisation-heading">Sensitisation across the region</h2>
-    <p class="standfirst">
+    <p class="band-note">
       WUFPA’s district-by-district sensitisation programme is how the association grew from 14
       companies to more than 300.
     </p>
@@ -145,34 +193,34 @@ const representation = getPhoto(
     <Grid min="18rem" gap={6} class="sensitisation">
       {
         sensitisation.map((item) => (
-          <article class="sensitisation__item">
+          <article>
             <Figure
               image={item.image.image}
               alt={item.image.alt}
-              purpose="card"
+              purpose="thumbnail"
               ratio="landscape"
               variant="grid-item"
               sizes="(min-width: 64rem) 22rem, 100vw"
             />
-            <h3 class="sensitisation__place">{item.place}</h3>
+            <h3 class="place">{item.place}</h3>
           </article>
         ))
       }
     </Grid>
   </Section>
 
-  <Section labelledBy="cta-heading" container="narrow" reveal>
+  <Section labelledBy="cta-heading" variant="subtle" container="narrow" reveal>
     <h2 id="cta-heading">This work is done on behalf of members</h2>
     <Prose>
       <p>
-        Every campaign, forum appearance and sensitisation meeting above was WUFPA
-        representing film producers in Western Uganda. Membership is what gives that
-        representation its mandate.
+        Every campaign, forum appearance and sensitisation meeting above was WUFPA representing
+        film producers in Western Uganda. Membership is what gives that representation its
+        mandate.
       </p>
     </Prose>
-    <div class="actions">
+    <p class="band-action">
       <Button href="/membership/join/">Become a member</Button>
-    </div>
+    </p>
 
     <RelatedLinks
       heading="Related work"
@@ -198,6 +246,24 @@ const representation = getPhoto(
 </BaseLayout>
 
 <style>
+  /* The opening sentence of a section, set in the body serif at display size.
+     It carries the section's argument; the Prose beneath carries the detail. */
+  .lead {
+    margin: 0 0 var(--space-5);
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 var(--space-6);
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+  }
+
   .split {
     display: grid;
     gap: var(--space-6);
@@ -207,7 +273,7 @@ const representation = getPhoto(
   @media (min-width: 56rem) {
     .split {
       grid-template-columns: 1fr 1fr;
-      align-items: start;
+      align-items: center;
       gap: var(--space-8);
     }
   }
@@ -216,15 +282,12 @@ const representation = getPhoto(
     margin-block-start: var(--space-6);
   }
 
-  .sensitisation__place {
+  .place {
     margin: var(--space-4) 0 0;
     font-size: var(--text-lg);
   }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-6);
+  .band-action {
+    margin: var(--space-6) 0 0;
   }
 </style>

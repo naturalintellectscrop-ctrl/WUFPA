@@ -4,6 +4,7 @@ import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Figure from '../../components/media/Figure.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import Button from '../../components/primitives/Button.astro';
 import { getPhoto } from '../../lib/photos';
@@ -12,11 +13,23 @@ import { meta } from '../../lib/page-meta';
 /**
  * /programmes/distribution/ — docs/04 § 6.5, verbatim.
  *
- * Experience intent: "Encouraged · Included · Empowered." The mechanism is
- * the broadcaster list — five named channels a member's film can actually
- * air on, which is a concrete outcome rather than an aspiration.
+ * ART DIRECTION. The strongest thing on this page is five channel names. A
+ * filmmaker in Kabale reading "TV West" understands the offer instantly, in a
+ * way no paragraph about market access achieves — those five names ARE the
+ * outcome. An earlier pass set them as a wrapped row of small rules under a
+ * "Broadcast" heading, which is how you treat metadata, not how you treat the
+ * point of the page.
  *
- * Reference: British Film Institute, institutional credibility only.
+ * So they now run at display scale, one per line, numbered, taking a band on
+ * their own. The composition is deliberately the inverse of the training
+ * page's partner roll — there the type is quiet because the evidence is the
+ * photographs; here the type IS the evidence and the photography supports.
+ *
+ * The MoU signing opens full-bleed, because a signature on a broadcast
+ * agreement is the moment access was actually granted.
+ *
+ * ⟦Q10⟧ No broadcaster logos — written permission has not been obtained, and
+ * these are commercial marks.
  */
 
 const page = meta('/programmes/distribution/');
@@ -26,10 +39,11 @@ const crumbs = [
   { label: 'Distribution and market access' },
 ];
 
-const hero = getPhoto('programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg');
+const signing = getPhoto('programmes/distribution/sky-tv-mbarara-mou-2022-signing.jpeg');
 const distributors = getPhoto(
   'programmes/distribution/ufmi-ceo-arthur-mpeirwe-film-distributors.jpeg',
 );
+const mouGroup = getPhoto('programmes/distribution/sky-tv-mbarara-mou-2022-group.jpeg');
 
 /* docs/04 § 6.5 from [P2]. Five named platforms — a fact, not a claim. */
 const broadcasters = [
@@ -48,68 +62,90 @@ const broadcasters = [
     crumbs={crumbs}
   />
 
-  <Section spacing="compact">
-    <Figure
-      image={hero.image}
-      alt={hero.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...hero.caption ? { caption: hero.caption } : {}}
-      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
-    />
+  <EstablishingShot
+    image={signing.image}
+    alt={signing.alt}
+    headingId="mou-heading"
+    heading="Signed with Sky TV, Mbarara City"
+    standfirst="In 2022, WUFPA signed a memorandum of understanding to work with Sky TV in Mbarara City — an agreement that put members’ films in front of a broadcast audience."
+    objectPosition="center 40%"
+  />
+
+  {/* The five names at scale. This band is the page's argument. */}
+  <Section labelledBy="broadcast-heading" spacing="loose" reveal>
+    <div class="roll">
+      <div class="roll__intro">
+        <h2 id="broadcast-heading">Where members’ films air</h2>
+        <p class="band-note">
+          Films by WUFPA members are aired regularly on five regional platforms.
+        </p>
+      </div>
+
+      <ol role="list" class="channels">
+        {
+          broadcasters.map((channel, index) => (
+            <li class="channel">
+              <span class="channel__number u-tabular" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span class="channel__name">{channel}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </Section>
 
-  <Section labelledBy="group-heading" reveal>
+  <Section labelledBy="group-heading" variant="subtle" reveal>
     <h2 id="group-heading">The Film Distributors Group</h2>
     <div class="split">
-      <Prose>
-        <p>
+      <div>
+        <p class="lead">
           WUFPA organised Western Uganda’s film distributors and librarians to buy and promote
-          local film content — a step towards a regional film economy rather than a regional
-          film hobby. The Western Uganda Film Distributors Group connects producers directly
-          with content buyers.
+          local film content.
         </p>
-      </Prose>
+        <Prose>
+          <p>
+            That is a step towards a regional film economy rather than a regional film hobby.
+            The Western Uganda Film Distributors Group connects producers directly with content
+            buyers.
+          </p>
+        </Prose>
+      </div>
       <Figure
         image={distributors.image}
         alt={distributors.alt}
         purpose="card"
         ratio="landscape"
-        sizes="(min-width: 64rem) 28rem, 100vw"
+        sizes="(min-width: 56rem) 30rem, 100vw"
         {...distributors.caption ? { caption: distributors.caption } : {}}
         {...distributors.dateNote ? { dateNote: distributors.dateNote } : {}}
       />
     </div>
   </Section>
 
-  <Section labelledBy="broadcast-heading" variant="subtle" reveal>
-    <h2 id="broadcast-heading">Broadcast</h2>
-    <p class="standfirst">Members’ films are aired regularly on regional platforms.</p>
-
-    <ul role="list" class="broadcasters">
-      {broadcasters.map((channel) => <li class="broadcaster">{channel}</li>)}
-    </ul>
-
-    <Prose class="mou">
-      <p>
-        In 2022, WUFPA signed a memorandum of understanding to work with Sky TV in Mbarara
-        City.
-      </p>
-    </Prose>
-  </Section>
-
   <Section labelledBy="cta-heading" container="narrow" reveal>
     <h2 id="cta-heading">Getting your film to an audience</h2>
     <Prose>
       <p>
-        Distribution introductions, the distributors group and the broadcast relationships
-        above are all reached through the association. Membership is the route in.
+        Distribution introductions, the distributors group and the broadcast relationships above
+        are all reached through the association. Membership is the route in.
       </p>
     </Prose>
     <div class="actions">
       <Button href="/membership/join/">Become a member</Button>
+    </div>
+
+    <div class="closing-frame">
+      <Figure
+        image={mouGroup.image}
+        alt={mouGroup.alt}
+        purpose="card"
+        ratio="landscape"
+        sizes="(min-width: 56rem) 44rem, 100vw"
+        {...mouGroup.caption ? { caption: mouGroup.caption } : {}}
+        {...mouGroup.dateNote ? { dateNote: mouGroup.dateNote } : {}}
+      />
     </div>
 
     <RelatedLinks
@@ -136,6 +172,85 @@ const broadcasters = [
 </BaseLayout>
 
 <style>
+  .lead {
+    margin: 0 0 var(--space-5);
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+  }
+
+  .roll {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* Five names, one per line, at display scale. No boxes: five containers
+     around five short strings would be the "oversized cards simply to occupy
+     space" docs/21 § 2.4 rules out — and would shrink the names, which are
+     the whole point of the band. */
+  .channels {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .channel {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-block-start: 1px solid var(--line-default);
+  }
+
+  .channel:last-child {
+    border-block-end: 1px solid var(--line-default);
+  }
+
+  .channel__number {
+    flex: none;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-accent);
+  }
+
+  .channel__name {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-heading);
+  }
+
+  @media (min-width: 56rem) {
+    .roll {
+      grid-template-columns: 1fr 1.35fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .channel {
+      padding-block: var(--space-5);
+    }
+
+    .channel__name {
+      font-size: var(--text-3xl);
+    }
+  }
+
   .split {
     display: grid;
     gap: var(--space-6);
@@ -145,34 +260,9 @@ const broadcasters = [
   @media (min-width: 56rem) {
     .split {
       grid-template-columns: 1fr 1fr;
-      align-items: start;
+      align-items: center;
       gap: var(--space-8);
     }
-  }
-
-  /* A list of five names, set as a row of plain rules rather than cards.
-     Five boxes to hold five short strings would be the "oversized cards
-     simply to occupy space" docs/21 § 2.4 rules out. */
-  .broadcasters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-6);
-    margin: var(--space-5) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .broadcaster {
-    padding-inline-start: var(--space-4);
-    border-inline-start: 2px solid var(--line-accent);
-    font-family: var(--font-ui);
-    font-size: var(--text-lg);
-    font-weight: var(--weight-semibold);
-    color: var(--text-heading);
-  }
-
-  .mou {
-    margin-block-start: var(--space-7);
   }
 
   .actions {
@@ -180,5 +270,9 @@ const broadcasters = [
     flex-wrap: wrap;
     gap: var(--space-4);
     margin-block-start: var(--space-6);
+  }
+
+  .closing-frame {
+    margin-block-start: var(--space-8);
   }
 </style>

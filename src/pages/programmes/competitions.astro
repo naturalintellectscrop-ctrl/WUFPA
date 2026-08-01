@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
-import Grid from '../../components/layout/Grid.astro';
-import Figure from '../../components/media/Figure.astro';
+import FrameSequence from '../../components/content/FrameSequence.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import Button from '../../components/primitives/Button.astro';
 import { getPhoto } from '../../lib/photos';
@@ -13,24 +13,31 @@ import { meta } from '../../lib/page-meta';
 /**
  * /programmes/competitions/ — docs/04 § 6.6.
  *
+ * ART DIRECTION. The claim on this page is unusual and worth composing around:
+ * WUFPA argued a national regulator into creating a regional film
+ * competition, then prepared its own members to win it. That is a two-beat
+ * story — the argument, then the result — and the archive holds the result in
+ * four frames of members holding trophies, certificates and an oversized UCC
+ * cheque.
+ *
+ * So the page opens on the single strongest frame (a winner and a cultural
+ * leader in traditional dress, against the UCC 25 backdrop), states the
+ * argument in type, and then runs the ceremony as a sequence. The trophies
+ * are the evidence; a grid of equal thumbnails would have flattened them.
+ *
  * TWO OPEN CLIENT QUESTIONS ARE HANDLED BY OMISSION, NOT BY GUESSING.
  *
- *   ⟦Q7⟧ The current competition edition and whether entries are open. The
- *   profile records a 3rd edition "being organised" as of November 2025. That
- *   is a status which may have changed, so no edition number and no entry
- *   status is published — the page describes the competition and WUFPA's role
- *   in creating it, both of which are settled history.
+ *   ⟦Q7⟧ The current edition and whether entries are open. The profile records
+ *   a 3rd edition "being organised" as of November 2025 — a status that may
+ *   have changed. No edition number and no entry status is published.
  *
  *   ⟦Q6⟧ The Western Uganda Film Awards Gala was scheduled for 13 December
- *   2025 and no supplied source records the outcome. docs/04 § 6.6 is explicit:
- *   DO NOT PUBLISH THIS SECTION IN THE FUTURE TENSE. A date that has passed,
- *   written as upcoming, is the single clearest signal that a site is
- *   abandoned (docs/20's two-year test). So the Gala is named as something
- *   WUFPA organises — true in the present tense, and independent of what
- *   happened on any one date — with no date attached until WUFPA confirms.
- *
- * The winners' photographs carry the argument instead: members have taken
- * trophies at this competition, and that is documented.
+ *   2025 and no supplied source records the outcome. docs/04 § 6.6 is
+ *   explicit: DO NOT PUBLISH THIS SECTION IN THE FUTURE TENSE. A date that
+ *   has passed, written as upcoming, is the clearest possible signal that a
+ *   site is abandoned (docs/20's two-year test). The Gala is named as
+ *   something WUFPA organises — true in the present tense, independent of any
+ *   one date — with no date attached until WUFPA confirms.
  */
 
 const page = meta('/programmes/competitions/');
@@ -40,13 +47,40 @@ const crumbs = [
   { label: 'Film competitions and awards' },
 ];
 
-const hero = getPhoto('programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg');
+const trophy = getPhoto('programmes/competitions/ucc-regional-film-competition-trophy-winner.jpeg');
 
-const winners = [
-  'programmes/competitions/ucc-regional-competition-ceremony-stage.jpeg',
-  'programmes/competitions/ucc-regional-film-competition-winners-group.jpeg',
-  'programmes/competitions/ucc-regional-film-competition-prize-cheque.jpeg',
-].map((file) => getPhoto(file));
+/* The ceremony, as a sequence. Dates are unrecorded in the archive; the
+   frames say so rather than carrying an invented year. */
+const ceremony = [
+  {
+    date: 'UCC Regional Film Competition',
+    copy: 'Winners hold their certificates aloft on stage, against the UCC 25 backdrop.',
+    photo: 'programmes/competitions/ucc-regional-competition-ceremony-stage.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'Trophies wait backstage before the presentation.',
+    photo: 'programmes/competitions/ucc-regional-competition-trophy-cultural-leader.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'The winners’ group, trophies and framed certificates in hand.',
+    photo: 'programmes/competitions/ucc-regional-film-competition-winners-group.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'An oversized Uganda Communications Commission cheque is presented on a lit stage.',
+    photo: 'programmes/competitions/ucc-regional-film-competition-prize-cheque.jpeg',
+  },
+  {
+    date: 'Date not recorded',
+    copy: 'Winners outdoors after the ceremony, with a cultural leader among them.',
+    photo: 'programmes/competitions/ucc-regional-competition-winners-outdoor.jpeg',
+  },
+].map((item) => {
+  const photo = getPhoto(item.photo);
+  return { date: item.date, copy: item.copy, image: photo.image, alt: photo.alt };
+});
 ---
 
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
@@ -56,62 +90,45 @@ const winners = [
     crumbs={crumbs}
   />
 
-  <Section spacing="compact">
-    <Figure
-      image={hero.image}
-      alt={hero.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...hero.caption ? { caption: hero.caption } : {}}
-      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
-    />
-  </Section>
+  <EstablishingShot
+    image={trophy.image}
+    alt={trophy.alt}
+    headingId="ucc-heading"
+    heading="The UCC Regional Film Competition"
+    standfirst="WUFPA successfully advocated to the Uganda Communications Commission to launch a regional film competition — one of the association’s first and most consequential wins."
+    objectPosition="center 30%"
+  />
 
-  <Section labelledBy="ucc-heading" container="narrow" reveal>
-    <h2 id="ucc-heading">The UCC Regional Film Competition</h2>
+  <Section labelledBy="support-heading" container="narrow" spacing="loose">
+    <h2 id="support-heading">Preparing members to enter</h2>
+    <p class="lead">
+      Arguing a competition into existence is only half of it. WUFPA has supported the
+      competition with master classes delivered alongside Kampala Film School.
+    </p>
     <Prose>
       <p>
-        WUFPA successfully advocated to the Uganda Communications Commission to launch a
-        regional film competition — one of the association’s first and most consequential
-        wins.
-      </p>
-      <p>
-        WUFPA has supported the competition with master classes delivered alongside Kampala
-        Film School, and members have taken trophies, certificates and prizes at its Western
-        Region ceremonies.
+        Members have taken trophies, certificates and prizes at its Western Region ceremonies —
+        the frames below are from those presentations.
       </p>
     </Prose>
   </Section>
 
-  <Section labelledBy="winners-heading" variant="subtle" reveal>
-    <h2 id="winners-heading">Members at the Western Region ceremonies</h2>
-    <Grid min="18rem" gap={6} class="winners">
-      {
-        winners.map((photo) => (
-          <Figure
-            image={photo.image}
-            alt={photo.alt}
-            purpose="card"
-            ratio="landscape"
-            variant="grid-item"
-            sizes="(min-width: 64rem) 22rem, 100vw"
-            {...photo.caption ? { caption: photo.caption } : {}}
-            {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
-          />
-        ))
-      }
-    </Grid>
+  <Section labelledBy="ceremony-heading" variant="subtle" spacing="loose" reveal>
+    <h2 id="ceremony-heading">At the Western Region ceremonies</h2>
+    <p class="band-note">
+      Five frames from the presentations. Where the archive does not record a date, the frame
+      says so.
+    </p>
+    <FrameSequence frames={ceremony} label="UCC Regional Film Competition ceremonies" />
   </Section>
 
   <Section labelledBy="gala-heading" container="narrow" reveal>
     <h2 id="gala-heading">The Western Uganda Film Awards Gala</h2>
+    <p class="lead">
+      WUFPA organises the Western Uganda Film Awards Gala, the association’s own awards
+      ceremony recognising filmmakers across the six sub-regions.
+    </p>
     <Prose>
-      <p>
-        WUFPA organises the Western Uganda Film Awards Gala, the association’s own awards
-        ceremony recognising filmmakers across the six sub-regions.
-      </p>
       <p>
         Details of the next Gala — including the date, venue and how members enter — are
         announced through our news page and to members directly.
@@ -131,9 +148,9 @@ const winners = [
         of when entries open, both run through the association.
       </p>
     </Prose>
-    <div class="actions">
+    <p class="band-action">
       <Button href="/membership/join/">Become a member</Button>
-    </div>
+    </p>
 
     <RelatedLinks
       heading="Related work"
@@ -159,8 +176,20 @@ const winners = [
 </BaseLayout>
 
 <style>
-  .winners {
-    margin-block-start: var(--space-6);
+  .lead {
+    margin: 0 0 var(--space-5);
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 var(--space-6);
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
   }
 
   .actions {
@@ -168,5 +197,9 @@ const winners = [
     flex-wrap: wrap;
     gap: var(--space-4);
     margin-block-start: var(--space-6);
+  }
+
+  .band-action {
+    margin: var(--space-6) 0 0;
   }
 </style>

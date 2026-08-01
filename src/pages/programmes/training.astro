@@ -2,10 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
-import Prose from '../../components/layout/Prose.astro';
-import Stack from '../../components/layout/Stack.astro';
-import Grid from '../../components/layout/Grid.astro';
-import Figure from '../../components/media/Figure.astro';
+import FeatureRow from '../../components/content/FeatureRow.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import Button from '../../components/primitives/Button.astro';
 import { getPhoto } from '../../lib/photos';
@@ -14,15 +12,18 @@ import { meta } from '../../lib/page-meta';
 /**
  * /programmes/training/ — docs/04 § 6.2, verbatim.
  *
- * Experience intent: "Encouraged · Included · Empowered." The mechanism is
- * the delivered-training list — six real, dated sessions with named partners
- * — which tells a prospective member that training here is a thing that
- * happens, not a thing that is promised.
+ * ART DIRECTION. The argument here is that training in Western Uganda is a
+ * thing that happens rather than a thing that is offered — six real sessions,
+ * each with named partners and, for most, a photograph of the room. So the
+ * delivered-training list is the page, not a footnote to it, and each entry
+ * gets an editorial spread with its own photograph rather than a place in a
+ * grid.
  *
- * Reference: British Film Institute, institutional credibility only.
- *
- * Every partner named below is in docs/02 § 13's approved list. The
- * photographs are of these exact sessions.
+ * The partner roll is typographic. Six institution names set at scale are
+ * their own credential; putting them in boxes would add six containers to a
+ * page whose argument is the names inside them (docs/21 § 10). No logos —
+ * ⟦Q10⟧, written permission has not been obtained, and several are government
+ * bodies and diplomatic missions with strict identity rules.
  */
 
 const page = meta('/programmes/training/');
@@ -32,7 +33,7 @@ const crumbs = [
   { label: 'Training and master classes' },
 ];
 
-const hero = getPhoto('programmes/training/matatu-film-lab-cohort-2024.jpeg');
+const cohort = getPhoto('programmes/training/matatu-film-lab-cohort-2024.jpeg');
 
 /* docs/04 § 6.2, verbatim from [P2]. */
 const partners = [
@@ -44,8 +45,9 @@ const partners = [
   'National Producers Guild of Uganda (PGU)',
 ];
 
-/* Delivered training, docs/04 § 6.2. Each carries its own photograph where one
-   exists in the archive — the evidence is the point of this section. */
+/* Delivered training, docs/04 § 6.2. Each carries the photograph of that
+   specific session. `photo: null` where the archive holds none — the entry
+   still stands, because the session still happened. */
 const delivered = [
   {
     title: 'Master classes with Kampala Film School',
@@ -65,12 +67,12 @@ const delivered = [
   },
   {
     title: 'Training workshop with UNATCOM for UNESCO',
-    detail: null,
+    detail: 'Delivered with the Uganda National Commission for UNESCO.',
     photo: 'programmes/training/unatcom-unesco-training-workshop.jpeg',
   },
   {
     title: 'A workshop with Film Impact Movement (USA)',
-    detail: null,
+    detail: 'Hosted with the Film Impact Movement.',
     photo: 'programmes/training/film-impact-movement-usa-workshop.jpeg',
   },
   {
@@ -78,7 +80,7 @@ const delivered = [
     detail: '2023.',
     photo: 'programmes/training/joshua-stoone-us-film-expert-2023.jpeg',
   },
-].map((item) => ({ ...item, image: getPhoto(item.photo) }));
+].map((item) => ({ ...item, media: getPhoto(item.photo) }));
 ---
 
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
@@ -88,76 +90,69 @@ const delivered = [
     crumbs={crumbs}
   />
 
-  <Section labelledBy="intro-heading" container="narrow">
+  <Section labelledBy="intro-heading" container="narrow" spacing="loose">
     <h2 id="intro-heading" class="u-visually-hidden">Why we train</h2>
-    <Prose>
-      <p>
-        Capacity building is WUFPA’s first core objective: to develop skills among members
-        through workshops, mentorships and hands-on training.
-      </p>
-    </Prose>
-  </Section>
-
-  <Section spacing="compact">
-    <Figure
-      image={hero.image}
-      alt={hero.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...hero.caption ? { caption: hero.caption } : {}}
-      {...hero.dateNote ? { dateNote: hero.dateNote } : {}}
-    />
-  </Section>
-
-  <Section labelledBy="partners-heading" variant="subtle" reveal>
-    <h2 id="partners-heading">Who we train with</h2>
-    <p class="standfirst">
-      WUFPA receives annual workshops and training support from national and international
-      partners.
+    <p class="lead">
+      Capacity building is WUFPA’s first core objective: to develop skills among members
+      through workshops, mentorships and hands-on training.
     </p>
-    <Stack as="ul" gap={3} class="partner-list">
-      {partners.map((partner) => <li>{partner}</li>)}
-    </Stack>
   </Section>
 
-  <Section labelledBy="delivered-heading" reveal>
-    <h2 id="delivered-heading">Training we have delivered</h2>
-    <p class="standfirst">Each of these happened. The photographs are from the sessions.</p>
+  {/* The partner roll — names at scale, no boxes, no logos (⟦Q10⟧). */}
+  <Section labelledBy="partners-heading" variant="subtle" reveal>
+    <div class="roll">
+      <div class="roll__intro">
+        <h2 id="partners-heading">Who we train with</h2>
+        <p class="band-note">
+          WUFPA receives annual workshops and training support from national and international
+          partners.
+        </p>
+      </div>
+      <ul role="list" class="roll__names">
+        {partners.map((partner) => <li>{partner}</li>)}
+      </ul>
+    </div>
+  </Section>
 
-    <Grid min="20rem" gap={7} class="delivered">
+  {/* Delivered training as editorial spreads — the evidence, at a size where
+      the rooms and the people in them are legible. */}
+  <Section labelledBy="delivered-heading" spacing="loose" reveal>
+    <h2 id="delivered-heading">Training we have delivered</h2>
+    <p class="band-note">Each of these happened. The photographs are from the sessions.</p>
+
+    {/* No `href` on these rows — they are records of sessions that happened,
+        not links to anywhere. Pointing them at the join form would be a false
+        affordance: the reader clicks the Matatu Film Lab and gets a form. */}
+    <div class="features">
       {
-        delivered.map((item) => (
-          <article class="delivered__item">
-            <Figure
-              image={item.image.image}
-              alt={item.image.alt}
-              purpose="card"
-              ratio="landscape"
-              variant="grid-item"
-              sizes="(min-width: 64rem) 30rem, 100vw"
-            />
-            <h3 class="delivered__title">{item.title}</h3>
-            {item.detail && <p class="delivered__detail">{item.detail}</p>}
-          </article>
+        delivered.map((item, index) => (
+          <FeatureRow
+            number={String(index + 1).padStart(2, '0')}
+            title={item.title}
+            description={item.detail}
+            image={item.media.image}
+            alt={item.media.alt}
+            reversed={index % 2 === 1}
+            headingLevel={3}
+          />
         ))
       }
-    </Grid>
+    </div>
   </Section>
 
-  <Section labelledBy="cta-heading" variant="subtle" container="narrow" reveal>
-    <h2 id="cta-heading">Training is a membership benefit</h2>
-    <Prose>
-      <p>
-        Every session above was open to WUFPA members. Joining is how a filmmaker in any of
-        the six sub-regions gets access to the next one.
-      </p>
-    </Prose>
-    <div class="actions">
-      <Button href="/membership/join/">Become a member</Button>
-    </div>
+  <EstablishingShot
+    image={cohort.image}
+    alt={cohort.alt}
+    headingId="cta-heading"
+    heading="Training is a membership benefit"
+    standfirst="Every session above was open to WUFPA members. Joining is how a filmmaker in any of the six sub-regions gets access to the next one."
+    objectPosition="center 40%"
+  >
+    <Button href="/membership/join/" size="lg">Become a member</Button>
+  </EstablishingShot>
 
+  <Section labelledBy="related-heading" variant="subtle" container="narrow">
+    <h2 id="related-heading" class="u-visually-hidden">Related work</h2>
     <RelatedLinks
       heading="Related work"
       links={[
@@ -182,34 +177,67 @@ const delivered = [
 </BaseLayout>
 
 <style>
-  .partner-list {
-    margin-block-start: var(--space-5);
-    max-inline-size: var(--measure-prose);
-    padding-inline-start: var(--space-5);
-  }
-
-  .partner-list li {
-    color: var(--text-body);
-  }
-
-  .delivered {
-    margin-block-start: var(--space-6);
-  }
-
-  .delivered__title {
-    margin: var(--space-4) 0 var(--space-2);
-    font-size: var(--text-lg);
-  }
-
-  .delivered__detail {
+  .lead {
     margin: 0;
+    max-inline-size: var(--measure-narrow);
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--text-heading);
+  }
+
+  .band-note {
+    margin: var(--space-3) 0 0;
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-lg);
     color: var(--text-secondary);
   }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-6);
+  /* Partner roll: intro beside the names at width, stacked below it. */
+  .roll {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .roll__names {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roll__names li {
+    padding-block: var(--space-3);
+    border-block-start: 1px solid var(--line-default);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--text-heading);
+  }
+
+  @media (min-width: 56rem) {
+    .roll {
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .roll__names li {
+      font-size: var(--text-xl);
+    }
+  }
+
+  .features {
+    display: grid;
+    gap: var(--space-9);
+    margin-block-start: var(--space-7);
+  }
+
+  @media (min-width: 56rem) {
+    .features {
+      gap: calc(var(--space-8) * 1.6);
+    }
   }
 </style>

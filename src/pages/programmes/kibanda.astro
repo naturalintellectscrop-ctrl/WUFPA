@@ -23,6 +23,16 @@ import { meta } from '../../lib/page-meta';
  * No photograph: the archive contains no Kibanda screening. Using a workshop
  * photograph to illustrate a screening would caption a real event as
  * something it was not.
+ *
+ * ART DIRECTION FOR A PAGE WITH NO PHOTOGRAPHS. Every other programme page is
+ * carried by its archive; this one has none, and the honest response is to let
+ * typography and white space do the work rather than to disguise the absence.
+ * The initiative's governing sentence — films made in Western Uganda should be
+ * watched in Western Uganda — is set at display scale as a standalone
+ * statement, because it is the whole argument and it is strong enough to hold
+ * a band on its own. That is a deliberate composition, not a fallback: a short
+ * page set confidently reads as considered, while the same page padded with
+ * bands and borrowed imagery reads as thin.
  */
 
 const page = meta('/programmes/kibanda/');
@@ -40,13 +50,18 @@ const crumbs = [
     crumbs={crumbs}
   />
 
-  <Section labelledBy="about-heading" container="narrow">
+  {/* The argument, set as a statement. No photograph exists for this
+      programme, so the type carries the band alone — at a scale that says
+      this was a choice. */}
+  <Section labelledBy="about-heading" container="narrow" spacing="loose">
     <h2 id="about-heading" class="u-visually-hidden">About the initiative</h2>
-    <Prose>
+    <p class="statement">
+      Films made in Western Uganda should be watched in Western&nbsp;Uganda.
+    </p>
+    <Prose class="statement-body">
       <p>
-        Films made in Western Uganda should be watched in Western Uganda. The Kibanda
-        Initiative takes members’ films to the places where audiences already are, rather than
-        waiting for audiences to find them.
+        The Kibanda Initiative takes members’ films to the places where audiences already are,
+        rather than waiting for audiences to find them.
       </p>
       <p>
         The initiative was launched under the association’s current leadership and is being
@@ -93,6 +108,30 @@ const crumbs = [
 </BaseLayout>
 
 <style>
+  /* Display scale, tight leading, negative tracking — the page's one piece of
+     typographic weight, standing in for the photograph it does not have. */
+  .statement {
+    margin: 0;
+    max-inline-size: 20ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-heading);
+  }
+
+  @media (min-width: 56rem) {
+    .statement {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  .statement-body {
+    margin-block-start: var(--space-7);
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;

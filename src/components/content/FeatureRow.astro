@@ -28,7 +28,16 @@ interface Props {
   /** Two-digit index, e.g. "01". Presentational — hidden from assistive tech. */
   number: string;
   title: string;
-  href: string;
+  /**
+   * Omit where the entry has no destination.
+   *
+   * A record of something that happened — a training session delivered in
+   * 2023 — is not a link, and giving it one that lands somewhere unrelated
+   * (a signup form, say) is a false affordance: the reader clicks expecting
+   * the thing named and gets something else. Without `href` the row renders
+   * as a plain feature with no hover state and no hit area.
+   */
+  href?: string;
   description: string;
   /** Omit where the archive genuinely has no photograph of this subject. */
   image?: ImageMetadata;
@@ -58,6 +67,7 @@ const Heading = `h${headingLevel}` as const;
 <article
   class:list={[
     'feature',
+    href && 'feature--linked',
     reversed && 'feature--reversed',
     !image && 'feature--textonly',
     className,
@@ -83,7 +93,7 @@ const Heading = `h${headingLevel}` as const;
   <div class="feature__body">
     <p class="feature__number u-tabular" aria-hidden="true">{number}</p>
     <Heading class="feature__title">
-      <a href={href}>{title}</a>
+      {href ? <a href={href}>{title}</a> : title}
     </Heading>
     <p class="feature__description">{description}</p>
     <slot />
@@ -113,8 +123,9 @@ const Heading = `h${headingLevel}` as const;
   }
 
   /* The only motion on the row, and it is small. Movement here signals that
-     the spread is one target — it does not decorate. */
-  .feature:hover .feature__media :global(img) {
+     the spread is one target — it does not decorate, which is why it fires
+     only on rows that actually go somewhere. */
+  .feature--linked:hover .feature__media :global(img) {
     scale: 1.02;
   }
 
@@ -145,7 +156,7 @@ const Heading = `h${headingLevel}` as const;
     inset: 0;
   }
 
-  .feature:hover .feature__title a,
+  .feature--linked:hover .feature__title a,
   .feature__title a:focus-visible {
     color: var(--text-accent);
     text-decoration: underline;
@@ -191,7 +202,7 @@ const Heading = `h${headingLevel}` as const;
 
   @media (prefers-reduced-motion: reduce) {
     .feature__media :global(img),
-    .feature:hover .feature__media :global(img) {
+    .feature--linked:hover .feature__media :global(img) {
       transition: none;
       scale: 1;
     }
