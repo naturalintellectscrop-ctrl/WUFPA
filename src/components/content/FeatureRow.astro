@@ -1,0 +1,199 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * FeatureRow — one entry set as an editorial spread: photograph on one side,
+ * numbered text on the other, alternating direction down the page.
+ *
+ * WHY NOT A CARD GRID. Six programmes in six equal boxes tells a reader that
+ * the six are interchangeable and equally skippable, and it shrinks the
+ * photograph — which is the evidence — to a thumbnail. A spread gives each
+ * programme the width of the page, lets its photograph run at a size where
+ * the people in it are legible, and uses alternation rather than repetition
+ * to carry the eye down. The reader meets six things in sequence instead of
+ * scanning a matrix.
+ *
+ * THE PHOTOGRAPH IS OPTIONAL, AND THAT IS A FEATURE. The archive has no
+ * Kibanda screening in it. Rather than borrow a workshop photograph and
+ * caption it as something it is not, a photo-less entry composes as a
+ * typographic feature at the same scale — the number and the type carry it.
+ * An entry that admits it has no picture is worth more than one that lies
+ * about having one (docs/20 § 1).
+ *
+ * `reversed` flips the spread. The caller alternates it; the component does
+ * not decide, because the rhythm belongs to the page.
+ */
+interface Props {
+  /** Two-digit index, e.g. "01". Presentational — hidden from assistive tech. */
+  number: string;
+  title: string;
+  href: string;
+  description: string;
+  /** Omit where the archive genuinely has no photograph of this subject. */
+  image?: ImageMetadata;
+  alt?: string;
+  /** Flips the photograph to the opposite side. */
+  reversed?: boolean;
+  /** Heading level, so the component never breaks a page's outline. */
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const {
+  number,
+  title,
+  href,
+  description,
+  image,
+  alt,
+  reversed = false,
+  headingLevel = 3,
+  class: className,
+} = Astro.props;
+
+const Heading = `h${headingLevel}` as const;
+---
+
+<article
+  class:list={[
+    'feature',
+    reversed && 'feature--reversed',
+    !image && 'feature--textonly',
+    className,
+  ]}
+>
+  {
+    image && alt && (
+      <div class="feature__media">
+        <Picture
+          src={image}
+          alt={alt}
+          formats={['avif', 'webp']}
+          widths={[480, 720, 1080].filter((w) => w <= image.width)}
+          sizes="(min-width: 56rem) 46vw, 100vw"
+          loading="lazy"
+          decoding="async"
+          quality={50}
+        />
+      </div>
+    )
+  }
+
+  <div class="feature__body">
+    <p class="feature__number u-tabular" aria-hidden="true">{number}</p>
+    <Heading class="feature__title">
+      <a href={href}>{title}</a>
+    </Heading>
+    <p class="feature__description">{description}</p>
+    <slot />
+  </div>
+</article>
+
+<style>
+  .feature {
+    display: grid;
+    gap: var(--space-5);
+    /* The row is a link target end to end; the anchor's pseudo-element does
+       the work, so the whole spread is clickable without nesting controls. */
+    position: relative;
+  }
+
+  .feature__media {
+    aspect-ratio: var(--ratio-landscape);
+    overflow: hidden;
+    background-color: var(--surface-muted);
+  }
+
+  .feature__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: scale var(--duration-slow) var(--ease-out);
+  }
+
+  /* The only motion on the row, and it is small. Movement here signals that
+     the spread is one target — it does not decorate. */
+  .feature:hover .feature__media :global(img) {
+    scale: 1.02;
+  }
+
+  .feature__number {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-accent);
+  }
+
+  .feature__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .feature__title a {
+    color: var(--text-heading);
+    text-decoration: none;
+  }
+
+  .feature__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .feature:hover .feature__title a,
+  .feature__title a:focus-visible {
+    color: var(--text-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+  }
+
+  .feature__description {
+    margin: 0;
+    max-inline-size: var(--measure-prose);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 56rem) {
+    .feature {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .feature--reversed .feature__media {
+      order: 2;
+    }
+
+    /* A text-only entry keeps the spread's width rather than collapsing to a
+       half-column, so the absence of a photograph reads as a deliberate
+       composition and not as a broken row. */
+    .feature--textonly {
+      grid-template-columns: minmax(0, 46rem);
+      justify-content: center;
+      text-align: center;
+    }
+
+    .feature--textonly .feature__description {
+      margin-inline: auto;
+    }
+
+    .feature__title {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature__media :global(img),
+    .feature:hover .feature__media :global(img) {
+      transition: none;
+      scale: 1;
+    }
+  }
+</style>
