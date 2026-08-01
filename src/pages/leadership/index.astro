@@ -172,7 +172,7 @@ const trustees = [
   <Section labelledBy="executive-heading">
     <h2 id="executive-heading">Executive Committee, 2025–2030</h2>
     <p class="standfirst">Eleven officers, elected for the 2025–2030 term.</p>
-    <Grid min="14rem" gap={6} class="people">
+    <Grid min="14rem" gap={6} maxColumns={5} class="people">
       {
         executive.map((person) => (
           <PersonCard
@@ -197,7 +197,7 @@ const trustees = [
         than leaving when their terms ended.
       </p>
     </Prose>
-    <Grid min="14rem" gap={6} class="people">
+    <Grid min="14rem" gap={6} maxColumns={5} class="people">
       {
         trustees.map((person) => (
           <PersonCard
@@ -254,7 +254,7 @@ const trustees = [
 
 <style>
   .people {
-    margin-block-start: var(--space-6);
+    margin-block-start: var(--space-7);
   }
 
   .actions {

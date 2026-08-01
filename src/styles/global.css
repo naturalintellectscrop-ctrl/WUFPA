@@ -60,11 +60,37 @@
     gap: var(--space-3);
   }
 
-  /* Grid — column count follows available space, so it needs no breakpoints. */
+  /* Grid — column count follows available space, so it needs no breakpoints.
+   *
+   * --grid-max-columns caps how far auto-fit may run. Once the layout
+   * containers reached 96/116rem, an uncapped auto-fit gave a 1856px band
+   * seven-plus columns of 14rem cards: portraits shrank to thumbnails and
+   * names wrapped, so a committee read as a contact sheet. The cap is set per
+   * grid where it matters and defaults to a number no container can reach, so
+   * every existing grid keeps its previous behaviour exactly.
+   *
+   * The min() keeps a single column from overflowing a narrow viewport, and
+   * the calc subtracts the gaps so N columns plus their gutters still fit. */
   .grid {
     display: grid;
     gap: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 18rem), 100%), 1fr));
+    --grid-max-columns: 99;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(
+        min(
+          max(
+            var(--grid-min, 18rem),
+            calc(
+              (100% - (var(--grid-max-columns) - 1) * var(--grid-gap, var(--space-5))) /
+                var(--grid-max-columns)
+            )
+          ),
+          100%
+        ),
+        1fr
+      )
+    );
   }
 
   /* Switcher — equal columns above a threshold, stacked below, without a

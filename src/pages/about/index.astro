@@ -5,7 +5,6 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Sidebar from '../../components/layout/Sidebar.astro';
 import Stack from '../../components/layout/Stack.astro';
-import Grid from '../../components/layout/Grid.astro';
 import KeyFacts from '../../components/content/KeyFacts.astro';
 import Disclosure from '../../components/content/Disclosure.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
@@ -126,50 +125,72 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About WUFPA' }];
   {/* Vision and mission are pull-quotes rather than body copy: they are WUFPA's
       own words about itself, and setting them apart is how the page shows that
       rather than asserting it. Weight and measure do the work — no colour,
-      no border (docs/21 § 10). */}
-  <Section labelledBy="vision-heading" variant="subtle" container="narrow" reveal>
-    <h2 id="vision-heading">Our vision</h2>
-    <blockquote class="statement">
-      <p>
-        To be a leading regional force in empowering filmmakers and using film as a medium
-        for social transformation, cultural preservation, and economic development in
-        Western Uganda.
-      </p>
-    </blockquote>
+      no border (docs/21 § 10).
+
+      The vision runs at display scale across the full band with the label set
+      small beside it. Vision and mission were previously two consecutive
+      narrow blockquote bands — the same shape twice, which made WUFPA's two
+      defining statements read as a pair of indistinguishable quotations. They
+      are now composed differently from each other: the vision as a statement,
+      the mission as a spread with its detail alongside. */}
+  <Section labelledBy="vision-heading" variant="subtle" spacing="loose" reveal>
+    <div class="creed">
+      <h2 id="vision-heading" class="creed__label">Our vision</h2>
+      <div class="reveal reveal--letter">
+        <blockquote class="creed__quote">
+          <p>
+            To be a leading regional force in empowering filmmakers and using film as a medium
+            for social transformation, cultural preservation, and economic development in
+            Western Uganda.
+          </p>
+        </blockquote>
+      </div>
+    </div>
   </Section>
 
-  <Section labelledBy="mission-heading" container="narrow" reveal>
-    <h2 id="mission-heading">Our mission</h2>
-    <blockquote class="statement">
-      <p>
-        To unite, train, and support film producers and creatives in Western Uganda to
-        create high-quality films that address key social issues, promote cultural heritage,
-        and contribute to sustainable community development.
-      </p>
-    </blockquote>
-    <Prose class="mission-detail">
-      <p>
-        We nurture filmmakers capable of writing, directing, producing and acting in
-        socially impactful and culturally rooted films, using cinema as a tool for
-        education, cultural tourism and community development.
-      </p>
-    </Prose>
+  <Section labelledBy="mission-heading" spacing="loose" reveal>
+    <div class="creed creed--split">
+      <h2 id="mission-heading" class="creed__label">Our mission</h2>
+      <div>
+        <blockquote class="creed__quote creed__quote--sm">
+          <p>
+            To unite, train, and support film producers and creatives in Western Uganda to
+            create high-quality films that address key social issues, promote cultural
+            heritage, and contribute to sustainable community development.
+          </p>
+        </blockquote>
+        <Prose class="mission-detail">
+          <p>
+            We nurture filmmakers capable of writing, directing, producing and acting in
+            socially impactful and culturally rooted films, using cinema as a tool for
+            education, cultural tourism and community development.
+          </p>
+        </Prose>
+      </div>
+    </div>
   </Section>
 
   <Section labelledBy="objectives-heading" variant="subtle" reveal>
     <h2 id="objectives-heading">Our core objectives</h2>
     <p class="standfirst">Five objectives, as WUFPA states them.</p>
 
-    <Grid min="19rem" gap={6} class="objectives">
+    {/* Numbered rows, not a card grid. Five objectives in five boxes made them
+        read as interchangeable tiles; numbering them states that they are an
+        ordered set WUFPA committed to, and the full band width lets each
+        objective's text breathe on one or two lines instead of four. */}
+    <ol role="list" class="objectives">
       {
-        objectives.map((objective) => (
-          <article class="objective">
+        objectives.map((objective, index) => (
+          <li class="objective">
+            <span class="objective__number u-tabular" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
             <h3 class="objective__name">{objective.name}</h3>
             <p class="objective__text">{objective.text}</p>
-          </article>
+          </li>
         ))
       }
-    </Grid>
+    </ol>
 
     {/* Progressive disclosure serves A1 (prospective member) and A2
         (institutional partner) without a compromise that serves neither —
@@ -215,44 +236,115 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About WUFPA' }];
      the site describing WUFPA. No quotation marks: the <blockquote> carries the
      semantics and decorative glyphs would be exactly the ornament docs/21 § 2.4
      rules out. */
-  .statement {
+  /* The label is set small and quiet so the statement beside it carries the
+     band. A heading at heading size competing with a display-scale quotation
+     would make the reader choose which to read first. */
+  .creed {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .creed__label {
     margin: 0;
-    max-inline-size: var(--measure-narrow);
-    font-family: var(--font-body);
-    font-size: var(--text-xl);
-    line-height: var(--leading-relaxed);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-accent);
+  }
+
+  .creed__quote {
+    margin: 0;
+    max-inline-size: 24ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
     color: var(--text-heading);
   }
 
-  .statement p {
+  /* The mission is the longer statement and sits beside its detail, so it runs
+     a step down from the vision — same family, different weight in the page. */
+  .creed__quote--sm {
+    max-inline-size: var(--measure-narrow);
+    font-size: var(--text-2xl);
+  }
+
+  .creed__quote p {
     margin: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .creed {
+      grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .creed--split .creed__quote {
+      max-inline-size: 40ch;
+    }
   }
 
   .mission-detail {
     margin-block-start: var(--space-6);
+    max-inline-size: var(--measure-prose);
   }
 
   .objectives {
-    margin-block-start: var(--space-6);
+    display: grid;
+    gap: 0;
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  /* Border-inline-start, not a card. A box around each objective would add five
-     containers to a page whose argument is the text inside them; a rule is
-     enough to group and costs no enclosure (docs/21 § 10 — spacing before
-     borders, and where a border is used, one). */
+  /* A numbered row per objective, separated by a hairline. No box: five
+     containers around five short texts would add enclosure to a band whose
+     argument is the text inside them (docs/21 § 10 — spacing before borders). */
   .objective {
-    padding-inline-start: var(--space-4);
-    border-inline-start: 2px solid var(--line-accent);
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-block-start: 1px solid var(--line-default);
+  }
+
+  .objective:last-child {
+    border-block-end: 1px solid var(--line-default);
+  }
+
+  .objective__number {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-accent);
   }
 
   .objective__name {
-    margin: 0 0 var(--space-2);
-    font-size: var(--text-lg);
+    margin: 0;
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
   }
 
   .objective__text {
     margin: 0;
+    max-inline-size: var(--measure-prose);
     color: var(--text-body);
+  }
+
+  /* At width the number sits in its own column and the name beside the text,
+     so the five read as an ordered set rather than as stacked paragraphs. */
+  @media (min-width: 64rem) {
+    .objective {
+      grid-template-columns: 4rem minmax(0, 18rem) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: baseline;
+      padding-block: var(--space-6);
+    }
   }
 
   .objects {

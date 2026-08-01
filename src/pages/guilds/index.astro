@@ -86,7 +86,7 @@ const guilds = [
 
   <Section labelledBy="guilds-heading" variant="subtle" reveal>
     <h2 id="guilds-heading">The ten guilds</h2>
-    <Grid min="17rem" gap={5} class="guilds">
+    <Grid min="17rem" gap={5} maxColumns={5} class="guilds">
       {
         guilds.map((guild) => (
           <article class="guild">

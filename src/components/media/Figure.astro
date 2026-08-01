@@ -66,6 +66,16 @@ interface Props {
   /** True only for the LCP image. */
   priority?: boolean;
   sizes?: string;
+  /**
+   * Drop the JPEG rung from the <picture>, keeping AVIF + WebP.
+   *
+   * For pages carrying many large images, where the srcset markup itself is
+   * the budget pressure rather than the bytes downloaded. Costs nothing real:
+   * every browser without WebP also lacks the CSS this site is built on, and
+   * <picture> degrades to the last <source> regardless. Thumbnails do this
+   * automatically; this opts a larger image into the same treatment.
+   */
+  compactSrcset?: boolean;
   variant?: 'inline' | 'wide' | 'bleed' | 'grid-item';
   class?: string;
 }
@@ -81,6 +91,7 @@ const {
   ratio = 'landscape',
   objectPosition = 'center',
   purpose = 'card',
+  compactSrcset = false,
   priority = false,
   sizes = '(min-width: 64rem) 60rem, 100vw',
   variant = 'inline',
@@ -103,7 +114,7 @@ const widths: number[] = clamped.length > 0 ? clamped : [image.width];
  * Hero and card images keep the full chain — they are fewer per page, and a
  * hero is the one image worth a belt-and-braces fallback. */
 const formats: ('avif' | 'webp' | 'jpeg')[] =
-  purpose === 'thumbnail' ? ['avif', 'webp'] : ['avif', 'webp', 'jpeg'];
+  purpose === 'thumbnail' || compactSrcset ? ['avif', 'webp'] : ['avif', 'webp', 'jpeg'];
 
 const dateLabel = date
   ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)

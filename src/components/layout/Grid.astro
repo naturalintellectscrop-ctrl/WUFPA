@@ -31,15 +31,28 @@ interface Props {
    */
   min?: string;
   gap?: SpaceToken;
+  /**
+   * Caps how far auto-fit may run, for wide displays.
+   *
+   * Without it, a 1856px band gives 14rem cards seven-plus columns — portraits
+   * become thumbnails and names wrap. Set this where a row has a natural
+   * maximum (a committee, a set of regions); leave it unset otherwise and the
+   * grid behaves exactly as before.
+   */
+  maxColumns?: number;
   as?: 'div' | 'ul' | 'ol';
   class?: string;
 }
 
-const { min, gap, as: Tag = 'div', class: className }: Props = Astro.props;
+const { min, gap, maxColumns, as: Tag = 'div', class: className }: Props = Astro.props;
 
+/* --grid-gap mirrors the gap so the column-cap calc in global.css can subtract
+   the gutters. Setting `gap` alone would leave that calc reading a default
+   that does not match what is actually rendered. */
 const styles = [
   min ? `--grid-min: ${min}` : null,
-  gap !== undefined ? `gap: var(--space-${gap})` : null,
+  gap !== undefined ? `gap: var(--space-${gap}); --grid-gap: var(--space-${gap})` : null,
+  maxColumns !== undefined ? `--grid-max-columns: ${maxColumns}` : null,
 ]
   .filter(Boolean)
   .join('; ');

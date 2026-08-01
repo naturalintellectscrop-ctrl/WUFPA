@@ -91,7 +91,7 @@ const reasons = [
 
   <Section labelledBy="needs-heading">
     <h2 id="needs-heading">What your support would fund</h2>
-    <Grid min="19rem" gap={6} class="needs">
+    <Grid min="19rem" gap={6} maxColumns={3} class="needs">
       {
         needs.map((need, index) => (
           <article class="need">
@@ -108,7 +108,7 @@ const reasons = [
 
   <Section labelledBy="why-heading" variant="subtle" reveal>
     <h2 id="why-heading">Why support WUFPA</h2>
-    <Grid min="19rem" gap={6} class="reasons">
+    <Grid min="19rem" gap={6} maxColumns={3} class="reasons">
       {
         reasons.map((reason) => (
           <article class="reason">

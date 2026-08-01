@@ -141,11 +141,20 @@ const albums = [
     crumbs={crumbs}
   />
 
-  <Section labelledBy="claim-heading" container="narrow">
+  {/* The provenance claim is the argument of this whole page, and it is a
+      claim almost no organisation can make. Set at display scale rather than
+      as an introductory paragraph, because a reader who reads only one
+      sentence here should read this one. */}
+  <Section labelledBy="claim-heading" spacing="loose">
     <h2 id="claim-heading" class="u-visually-hidden">About these photographs</h2>
-    <p class="claim">
-      Every photograph on this site was taken at a WUFPA activity. Where we know the date, the
-      place and the people, we say so. Where we do not, we say that too.
+    <div class="reveal reveal--letter">
+      <p class="claim">
+        Every photograph on this site was taken at a WUFPA activity.
+      </p>
+    </div>
+    <p class="claim__qualifier">
+      Where we know the date, the place and the people, we say so. Where we do not, we say that
+      too.
     </p>
   </Section>
 
@@ -171,11 +180,33 @@ const albums = [
         variant={index % 2 === 1 ? 'subtle' : 'default'}
         reveal
       >
-        <h2 id={`${album.id}-heading`}>{album.title}</h2>
-        <p class="standfirst">{album.intro}</p>
+        <div class="album-head">
+          <h2 id={`${album.id}-heading`}>{album.title}</h2>
+          <p class="standfirst">{album.intro}</p>
+        </div>
 
-        <Grid min="20rem" gap={6} class="album">
-          {album.images.map((photo) => (
+        {/* The first frame of each album leads at full width; the rest follow
+            as a grid. Eight albums set as eight identical grids made the page
+            one long uniform texture in which no album was distinguishable
+            from the next — the lead frame gives each one an opening image and
+            re-establishes the rhythm every time a new album begins. */}
+        {album.images[0] && (
+          <div class="album-lead reveal reveal--frame">
+            <Figure
+              image={album.images[0].image}
+              alt={album.images[0].alt}
+              purpose="card"
+              ratio="auto"
+              compactSrcset
+              sizes="(min-width: 90rem) 62rem, (min-width: 64rem) 70vw, 100vw"
+              {...(album.images[0].caption ? { caption: album.images[0].caption } : {})}
+              {...(album.images[0].dateNote ? { dateNote: album.images[0].dateNote } : {})}
+            />
+          </div>
+        )}
+
+        <Grid min="20rem" gap={6} maxColumns={4} class="album">
+          {album.images.slice(1).map((photo) => (
             <Figure
               image={photo.image}
               alt={photo.alt}
@@ -183,8 +214,8 @@ const albums = [
               ratio="auto"
               variant="grid-item"
               sizes="(min-width: 64rem) 26rem, 100vw"
-              {...photo.caption ? { caption: photo.caption } : {}}
-              {...photo.dateNote ? { dateNote: photo.dateNote } : {}}
+              {...(photo.caption ? { caption: photo.caption } : {})}
+              {...(photo.dateNote ? { dateNote: photo.dateNote } : {})}
             />
           ))}
         </Grid>
@@ -229,13 +260,42 @@ const albums = [
 </BaseLayout>
 
 <style>
+  /* The page's argument, at display scale. Capped in ch rather than by a
+     narrow container so it stays a headline shape on a wide screen instead of
+     stretching into a single long line. */
   .claim {
     margin: 0;
+    max-inline-size: 26ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-heading);
+  }
+
+  .claim__qualifier {
+    margin: var(--space-6) 0 0;
     max-inline-size: var(--measure-narrow);
     font-family: var(--font-body);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
-    color: var(--text-heading);
+    color: var(--text-secondary);
+  }
+
+  .album-head {
+    max-inline-size: var(--measure-narrow);
+  }
+
+  .album-lead {
+    margin-block-start: var(--space-7);
+  }
+
+  @media (min-width: 90rem) {
+    .album-lead {
+      max-inline-size: 62rem;
+    }
   }
 
   .album-nav {

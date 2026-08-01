@@ -51,7 +51,7 @@ const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b
 
   <Section labelledBy="regions-heading" variant="subtle" reveal>
     <h2 id="regions-heading">Find your sub-region</h2>
-    <Grid min="18rem" gap={5} class="regions">
+    <Grid min="18rem" gap={5} maxColumns={3} class="regions">
       {
         regions.map((region) => (
           <EntityCard
