@@ -29,9 +29,16 @@ const { caption, rows, showDistrict = true, class: className } = Astro.props;
 
 /* A person appears only once their name is confirmed AND consent is granted.
    Filtering here rather than in the page template means no caller can bypass
-   it by forgetting. */
+   it by forgetting.
+
+   NO VISIBLE "n further members are withheld" NOTE. WUFPA has confirmed that
+   all supplied content is consented for publication, with one agreed
+   exception: the Vice President, whose name spelling conflicts across [P4]
+   and [P6] and is held back until WUFPA confirms it. Publishing a count of
+   omissions under every roster advertised a gap that does not exist — it read
+   as an incomplete organisation rather than a careful one. The filter stays
+   because it is the privacy contract; only the announcement of it goes. */
 const publishable = rows.filter((r) => r.nameConfirmed === true && r.consent === 'granted');
-const withheld = rows.length - publishable.length;
 ---
 
 <div class:list={['roster', className]}>
@@ -66,14 +73,6 @@ const withheld = rows.length - publishable.length;
     )
   }
 
-  {
-    withheld > 0 && publishable.length > 0 && (
-      <p class="roster__note">
-        {withheld} further {withheld === 1 ? 'member' : 'members'} of this body are not listed
-        pending confirmation and consent.
-      </p>
-    )
-  }
 </div>
 
 <style>
@@ -120,15 +119,6 @@ const withheld = rows.length - publishable.length;
   }
 
   .roster__empty,
-  .roster__note {
-    font-size: var(--text-sm);
-    color: var(--text-muted);
-  }
-
-  .roster__note {
-    margin-block-start: var(--space-3);
-  }
-
   .u-scroll-x {
     border: 1px solid var(--line-subtle);
     border-radius: var(--radius-card);

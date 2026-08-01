@@ -31,10 +31,19 @@ import type { ImageMetadata } from 'astro';
  * ships all three formats to the same user.
  */
 
+/* Each ladder is clamped to the source's intrinsic width downstream, so a
+   wide rung never upscales a small original.
+
+   `card` and `portrait` gained a rung when the layout containers were raised
+   to 96/116rem: a half-column card inside an 1856px band is ~900 CSS px, which
+   on a 2x display asks for ~1800 device px. Capped at 960 the browser would
+   have taken the widest rung and stretched it, which is exactly the softness
+   the no-upscale guard exists to prevent — it just would have happened in the
+   browser instead of at build time, where the guard cannot see it. */
 const WIDTH_LADDERS = {
   hero: [640, 960, 1280, 1920, 2400],
-  card: [320, 480, 640, 960],
-  portrait: [240, 400, 600, 900],
+  card: [320, 480, 640, 960, 1280, 1600],
+  portrait: [240, 400, 600, 900, 1200],
   thumbnail: [320, 480, 640],
 } as const;
 

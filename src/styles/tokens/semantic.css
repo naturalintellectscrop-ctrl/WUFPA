@@ -151,6 +151,24 @@
 }
 
 /**
+ * THE WIDE BAND — --bp-2xl, 1536px.
+ *
+ * A fourth step, added when the layout containers were raised to 96/116rem.
+ * Without it a 1856px composition would have carried the same 64px gutter as
+ * a 1024px one, which reads as content pressed against the glass. Vertical
+ * rhythm opens with it: bands that are wider need to be taller to keep the
+ * same proportion, or a full-width page starts to feel like a filing cabinet.
+ */
+@media (min-width: 96rem) {
+  :root {
+    --section-spacing: var(--space-10);
+    --section-spacing-compact: var(--space-9);
+    --section-spacing-loose: var(--space-11);
+    --gutter: var(--space-9);
+  }
+}
+
+/**
  * DARK THEME — scaffolded, not shipped.
  *
  * Deliberately NOT activated via prefers-color-scheme. Enabling it would need:

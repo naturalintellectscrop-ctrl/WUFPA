@@ -57,7 +57,11 @@ const {
 ---
 
 <section class:list={['shot', className]} aria-labelledby={headingId}>
-  <div class="shot__media">
+  {/* The photograph eases back from a slight over-crop as it enters — a camera
+      settling, not an element appearing. The panel type is deliberately NOT
+      animated with it: text that moves under a scrim is harder to read, and
+      the scrim's contrast guarantee is measured against a settled position. */}
+  <div class="shot__media reveal reveal--frame">
     <Picture
       src={image}
       alt={alt}

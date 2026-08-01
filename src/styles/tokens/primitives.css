@@ -75,23 +75,32 @@
   --space-8: 4rem; /* 64px */
   --space-9: 6rem; /* 96px */
   --space-10: 8rem; /* 128px */
+  --space-11: 10rem; /* 160px — the widest band rhythm, --bp-2xl and above */
 
   /* ── TYPE SCALE ─────────────────────────────────────────────────────────
      Fluid between 360px and 1280px. Mobile ratio 1.25, desktop 1.333 — the
      wider desktop ratio gives display type presence without headlines
      swallowing a small screen.
      Body is 17px minimum, not 16px: the audience includes older office-holders
-     reading on phones in daylight, and the site carries long-form content.     */
+     reading on phones in daylight, and the site carries long-form content.
+
+     BODY STOPS GROWING AT 1280px; DISPLAY DOES NOT. When the layout containers
+     were raised to 96/116rem, headlines that stopped scaling at 1280px started
+     to look undersized against a 1856px band — the composition got wider but
+     its voice did not get louder. The display steps (2xl and up) therefore run
+     their clamps out to 1920px. Body, lead and caption sizes deliberately keep
+     their original ceilings: line length is capped by the measure containers,
+     and growing body text on a wide screen makes reading worse, not better.   */
   --text-2xs: 0.75rem; /* 12px — micro labels only, never body */
   --text-xs: 0.8125rem; /* 13px — captions, credits */
   --text-sm: 0.875rem; /* 14px — metadata, form hints */
   --text-base: clamp(1.0625rem, 1rem + 0.28vw, 1.125rem); /* 17 → 18 */
   --text-lg: clamp(1.1875rem, 1.09rem + 0.42vw, 1.3125rem); /* 19 → 21 */
   --text-xl: clamp(1.375rem, 1.2rem + 0.78vw, 1.75rem); /* 22 → 28 */
-  --text-2xl: clamp(1.625rem, 1.35rem + 1.22vw, 2.3125rem); /* 26 → 37 */
-  --text-3xl: clamp(1.9375rem, 1.5rem + 1.94vw, 3.0625rem); /* 31 → 49 */
-  --text-4xl: clamp(2.3125rem, 1.65rem + 2.94vw, 4.0625rem); /* 37 → 65 */
-  --text-hero: clamp(2.625rem, 1.7rem + 4.1vw, 5.375rem); /* 42 → 86 */
+  --text-2xl: clamp(1.625rem, 1.3654rem + 1.15vw, 2.75rem); /* 26 → 44 @1920 */
+  --text-3xl: clamp(1.9375rem, 1.5481rem + 1.73vw, 3.625rem); /* 31 → 58 @1920 */
+  --text-4xl: clamp(2.3125rem, 1.7212rem + 2.63vw, 4.875rem); /* 37 → 78 @1920 */
+  --text-hero: clamp(2.625rem, 1.7308rem + 3.97vw, 6.5rem); /* 42 → 104 @1920 */
 
   --weight-regular: 400;
   --weight-medium: 500;
@@ -158,11 +167,25 @@
   --bp-xl: 80rem; /* 1280px — max content width reached */
   --bp-2xl: 96rem; /* 1536px — wider gutters only */
 
-  /* ── CONTAINERS ─────────────────────────────────────────────────────── */
-  --container-prose: 45rem; /*  720px */
-  --container-narrow: 60rem; /*  960px */
-  --container-default: 75rem; /* 1200px */
-  --container-wide: 90rem; /* 1440px */
+  /* ── CONTAINERS ───────────────────────────────────────────────────────
+     Two families, and the distinction matters.
+
+     PROSE and NARROW are measure caps. They exist because a line of text
+     longer than roughly 75 characters is measurably harder to read — the eye
+     loses its place on the return sweep. These are NOT layout widths and must
+     never be widened to fill a screen; doing so damages the reading.
+
+     DEFAULT and WIDE are layout widths, and they were too timid. At 1200px a
+     composition on a 1920px display sat in a column with ~360px of dead space
+     either side, which reads as a template that has been dropped into a page
+     rather than a site that occupies its canvas. Photography suffered most:
+     an establishing shot is an establishing shot at 1600px and a postcard at
+     1200px. Raised so that large displays are used, while the measure caps
+     above continue to protect running text.                                  */
+  --container-prose: 45rem; /*  720px — measure cap, do not widen */
+  --container-narrow: 60rem; /*  960px — measure cap, do not widen */
+  --container-default: 96rem; /* 1536px — layout width */
+  --container-wide: 116rem; /* 1856px — layout width */
 
   /* ── RADIUS ─────────────────────────────────────────────────────────────
      Deliberately restrained. Heavily rounded interfaces read as consumer app,
@@ -202,6 +225,10 @@
   --duration-fast: 160ms;
   --duration-base: 240ms;
   --duration-slow: 360ms;
+  /* Photographic settle only — a frame easing back from an over-crop needs to
+     outlast the fade or the scale reads as a jolt. Never used on controls: at
+     this length a button would feel unresponsive. */
+  --duration-slower: 700ms;
 
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);

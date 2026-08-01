@@ -185,9 +185,13 @@ const regions = [
       <p class="statement__marker" aria-hidden="true">2017</p>
 
       <div class="statement__body">
-        <h2 id="who-we-are-heading" class="statement__heading">
-          We are the association Western Uganda’s filmmakers built for themselves
-        </h2>
+        {/* The one headline on the homepage that carries the whole argument,
+            so it gets the title-card rise rather than the standard band fade. */}
+        <div class="reveal reveal--letter">
+          <h2 id="who-we-are-heading" class="statement__heading">
+            We are the association Western Uganda’s filmmakers built for themselves
+          </h2>
+        </div>
 
         <p class="statement__lead">
           In 2017, fourteen production companies from Ankole and Kigezi registered an

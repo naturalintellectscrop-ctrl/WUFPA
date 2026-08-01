@@ -128,10 +128,78 @@ main:focus {
   translate: 0 0;
 }
 
+/* ── EDITORIAL MOTION VARIANTS ────────────────────────────────────────────
+   Three additions to the one reveal above, because a single fade-and-rise
+   applied to every band IS a template — the motion says the same thing about
+   a headline, a photograph and a list, which is to say it says nothing.
+
+   Each variant below opts in per element and inherits the same safety
+   contract: nothing is hidden unless `.js-reveal` is set by a script that
+   attached successfully, and everything collapses to "already visible" under
+   prefers-reduced-motion.
+
+   `reveal--letter` — display type rises from its own baseline with a slight
+   clip, the way a title card settles. For headlines only.
+
+   `reveal--frame` — a photograph scales back from a small over-crop as it
+   fades in. Reads as a camera settling rather than an element appearing.
+   Never applied to type: scaling text mid-transition reflows it.
+
+   `reveal--rule` — a hairline draws itself across. Used where a rule marks a
+   section start; it is the quietest motion here and the only one that runs on
+   a decorative element.                                                      */
+.js-reveal .reveal--letter {
+  clip-path: inset(0 0 -0.25em 0);
+}
+
+.js-reveal .reveal--letter > * {
+  translate: 0 0.5em;
+  opacity: 0;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    translate var(--duration-slow) var(--ease-out);
+}
+
+.js-reveal .reveal--letter.is-visible > * {
+  translate: 0 0;
+  opacity: 1;
+}
+
+.js-reveal .reveal--frame {
+  opacity: 0;
+  scale: 1.04;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    scale var(--duration-slower) var(--ease-out);
+}
+
+.js-reveal .reveal--frame.is-visible {
+  opacity: 1;
+  scale: 1;
+}
+
+.js-reveal .reveal--rule {
+  transform-origin: left center;
+  scale: 0 1;
+  transition: scale var(--duration-slow) var(--ease-out);
+}
+
+.js-reveal .reveal--rule.is-visible {
+  scale: 1 1;
+}
+
+/* One reset, covering every variant. A user who asks for reduced motion gets
+   the finished state immediately — not a faster animation. */
 @media (prefers-reduced-motion: reduce) {
-  .js-reveal .reveal {
+  .js-reveal .reveal,
+  .js-reveal .reveal--letter > *,
+  .js-reveal .reveal--frame,
+  .js-reveal .reveal--rule {
     opacity: 1;
     translate: 0 0;
+    scale: 1;
+    clip-path: none;
+    transition: none;
   }
 }
 

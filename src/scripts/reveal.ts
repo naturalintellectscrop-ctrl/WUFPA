@@ -72,7 +72,17 @@ export function initReveal(): void {
       seenPerParent.set(parent, index + 1);
       // Capped at 5 so a long list never becomes a queue.
       if (index > 0 && index < 5) {
-        el.style.transitionDelay = `${index * step}ms`;
+        const delay = `${index * step}ms`;
+        /* `reveal--letter` transitions its CHILDREN, not itself — the clip
+           lives on the wrapper so the type can rise out from under it. Setting
+           the delay on the wrapper would therefore delay nothing at all. */
+        if (el.classList.contains('reveal--letter')) {
+          for (const child of Array.from(el.children)) {
+            (child as HTMLElement).style.transitionDelay = delay;
+          }
+        } else {
+          el.style.transitionDelay = delay;
+        }
       }
     }
     observer.observe(el);
