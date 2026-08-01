@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
-import Hero from '../components/content/Hero.astro';
+import CinematicHero from '../components/content/CinematicHero.astro';
 import Ledger from '../components/content/Ledger.astro';
 import IndexList from '../components/content/IndexList.astro';
 import FrameSequence from '../components/content/FrameSequence.astro';
@@ -26,11 +26,18 @@ import type { Stat } from '../lib/types';
  * activity records the same visual weight and the same shape, so the page
  * read as three interchangeable card grids rather than as an argument.
  *
- * THE RHYTHM NOW RUNS: split hero → typographic ledger → editorial statement
- * → numbered index → full-bleed establishing shot → film strip → dark ask.
- * No two consecutive sections share a layout, a background treatment or a
- * height. Consistency comes from the type scale, the spacing scale and the
- * single accent — not from repeating one section shape (docs/21 § 12).
+ * THE RHYTHM NOW RUNS: cinematic hero → typographic ledger → editorial
+ * statement → numbered index → full-bleed establishing shot → film strip →
+ * dark ask. No two consecutive sections share a layout, a background treatment
+ * or a height. Consistency comes from the type scale, the spacing scale and
+ * the single accent — not from repeating one section shape (docs/21 § 12).
+ *
+ * The opening is a full-viewport photograph under a measured scrim, with the
+ * headline set into its lower third. That is the one arrangement a film
+ * association's homepage has to earn: the page shows a room full of members
+ * before it makes a claim about them. The ledger that follows sits tight
+ * beneath it with no background change, so the figures read as the hero's own
+ * footing rather than as the next section down.
  *
  * The three compositions that carry it are drawn from WUFPA's own material
  * rather than applied to it: the strip of dated frames is the film strip in
@@ -160,13 +167,20 @@ const regions = [
 ---
 
 <BaseLayout title={title} description={description}>
-  <Hero
+  {/* The homepage opens on the photograph at full viewport rather than beside
+      a text column. WUFPA is a film association; the first thing the page does
+      should be to show a room full of its members, at the size a film company
+      shows an image. The split Hero remains the right treatment for section
+      openings, where the job is to be read quickly rather than to establish. */}
+  <CinematicHero
+    eyebrow="Western Uganda Film Producers Association"
     headline="The film industry of Western Uganda has an address"
     standfirst="WUFPA unites more than 300 film production houses across Ankole, Kigezi, Rwenzori, Tooro, Bunyoro and Greater Bushenyi. We train filmmakers, defend their copyright, open markets for their work, and represent them where decisions are made."
     primaryCta={{ label: 'Become a member', href: '/membership/join/' }}
     secondaryCta={{ label: 'See what we do', href: '/programmes/' }}
     image={hero.image}
     alt={hero.alt}
+    objectPosition="center 35%"
   />
 
   {/* The ledger sits tight under the hero with no background change — it reads

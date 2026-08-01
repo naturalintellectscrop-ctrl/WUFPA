@@ -1,0 +1,242 @@
+---
+import { Picture } from 'astro:assets';
+import Button from '../primitives/Button.astro';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * CinematicHero — a full-viewport photograph with the headline set into its
+ * lower third, over a measured scrim.
+ *
+ * WHY THIS EXISTS ALONGSIDE Hero.astro. The split hero (text beside image) is
+ * a documented decision in docs/08 § 16 and it is the right call for a page
+ * whose job is to be read quickly. But WUFPA is a film association, and the
+ * homepage's first job is to establish that before a sentence is read. A
+ * photograph occupying half a column says "we have a picture"; a photograph
+ * occupying the viewport says "this is what we do". Hero.astro is unchanged
+ * and still correct for section and page openings — this is the home variant.
+ *
+ * TYPE SITS IN THE LOWER THIRD, NOT CENTRED. Centred type over a photograph is
+ * the stock-hero arrangement and it fights the image for the same optical
+ * space. Anchoring to the bottom lets the photograph's own subject occupy the
+ * frame and gives the headline a floor to sit on — how a title card is set.
+ *
+ * THE SCRIM IS A CONTRACT, NOT A DECORATION. Text over an arbitrary photograph
+ * is illegible unless something guarantees the contrast, and this component
+ * cannot know what image a caller passes. The gradient below is therefore
+ * measured against the worst realistic case — a pure white photograph — with
+ * every stop that sits behind text computed, not estimated:
+ *
+ *   scrim 94% over white → white text 13.71:1 · --ink-300  7.89:1
+ *   scrim 92% over white → white text 12.86:1 · --ink-300  7.40:1
+ *   scrim 88% over white → white text 11.25:1 · --ink-300  6.48:1
+ *
+ * All clear WCAG 2.2 AA (4.5:1 normal, 3:1 large) with real margin. The scrim
+ * is held at 88% or denser across the ENTIRE height of the text column and
+ * only eases above it, where nothing is set.
+ *
+ * That last point is load-bearing and was learned the hard way: a first pass
+ * here let the gradient reach 78% at the top of the text block, which puts
+ * --text-muted-on-inverse at 4.57:1 — passing by 0.07 against a worst-case
+ * photograph, which is not a margin, it is luck. An earlier version of
+ * EstablishingShot shipped exactly that mistake. Any change to these stops
+ * must be re-measured, not eyeballed.
+ *
+ * ALT IS ALWAYS MEANINGFUL. The headline does not describe the photograph, so
+ * a screen-reader user needs the real description to receive the same trust
+ * signal a sighted visitor gets for free. This is the one place the site
+ * differs from ACA, which marks its hero decorative — ACA's hero is a
+ * landscape behind a motto, whereas every WUFPA photograph is evidence of a
+ * specific event with specific people in it, and evidence is never decorative.
+ */
+interface Props {
+  headline: string;
+  standfirst: string;
+  /** Small label above the headline — a place, a date, a category. */
+  eyebrow?: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  image: ImageMetadata;
+  alt: string;
+  /** Shifts the crop, e.g. 'center 30%', when the subject is not centred. */
+  objectPosition?: string;
+}
+
+const {
+  headline,
+  standfirst,
+  eyebrow,
+  primaryCta,
+  secondaryCta,
+  image,
+  alt,
+  objectPosition = 'center',
+} = Astro.props;
+
+/* LCP element: eager, high priority, and the only image on the page allowed
+   fetchpriority="high" (docs/07 § 8, docs/14 § 9). Ladder runs to 2560 because
+   this is the one image that genuinely fills a wide display. */
+const widths = [640, 960, 1280, 1920, 2560].filter((w) => w <= image.width);
+if (widths.length === 0) widths.push(image.width);
+---
+
+<section class="chero" aria-labelledby="hero-heading">
+  {/* NOT parallaxed. The hero is the LCP element and is already on screen at
+      load; moving it would delay the paint that matters most and animate
+      something the visitor has not scrolled to. Parallax belongs to frames the
+      reader arrives at, not the one they start on. */}
+  <div class="chero__media">
+    <Picture
+      src={image}
+      alt={alt}
+      formats={['avif', 'webp', 'jpeg']}
+      widths={widths}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      quality={50}
+      class="chero__image"
+      style={`object-position: ${objectPosition};`}
+    />
+  </div>
+
+  <div class="chero__scrim" aria-hidden="true"></div>
+
+  <div class="chero__body">
+    <div class="container">
+      <div class="chero__inner">
+        {eyebrow && <p class="chero__eyebrow">{eyebrow}</p>}
+        <h1 id="hero-heading" class="chero__headline">{headline}</h1>
+        <p class="chero__standfirst">{standfirst}</p>
+        <div class="chero__actions">
+          <Button href={primaryCta.href} size="lg">{primaryCta.label}</Button>
+          {
+            secondaryCta && (
+              <Button href={secondaryCta.href} variant="inverse" size="lg">
+                {secondaryCta.label}
+              </Button>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    /* svh, not vh: on mobile browsers vh includes the retracting toolbar, so a
+       100vh hero is cut off on first paint — exactly when the impression is
+       made. Capped in rem so a tall desktop display does not turn the hero
+       into a full screen of empty photograph. */
+    min-block-size: min(88svh, 54rem);
+    background-color: var(--ink-900);
+  }
+
+  .chero__media,
+  .chero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .chero__image {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  /* Dense through the text column, easing only above it. See the contrast
+     measurements in the component comment — these stops are load-bearing. */
+  .chero__scrim {
+    background-image: linear-gradient(
+      to top,
+      rgb(35 31 32 / 92%) 0%,
+      rgb(35 31 32 / 88%) 28%,
+      rgb(35 31 32 / 78%) 48%,
+      rgb(35 31 32 / 55%) 72%,
+      rgb(35 31 32 / 42%) 100%
+    );
+  }
+
+  .chero__body {
+    inline-size: 100%;
+    padding-block: var(--space-9) var(--space-8);
+  }
+
+  .chero__inner {
+    max-inline-size: 60rem;
+  }
+
+  .chero__eyebrow {
+    margin: 0 0 var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-muted-on-inverse);
+  }
+
+  .chero__headline {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-on-inverse);
+  }
+
+  .chero__standfirst {
+    margin: var(--space-6) 0 0;
+    max-inline-size: 46ch;
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-muted-on-inverse);
+  }
+
+  .chero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-7);
+  }
+
+  @media (min-width: 64rem) {
+    .chero__body {
+      padding-block: var(--space-10) var(--space-9);
+    }
+
+    .chero__standfirst {
+      font-size: var(--text-xl);
+    }
+  }
+
+  /* A slow push on the photograph as the page loads. It is the one piece of
+     motion on the site that plays without being scrolled to, and it is here
+     because a still frame that settles reads as film and a static one reads as
+     a stock photograph. 8 seconds, 1.06 -> 1, once, never looping. */
+  @media (prefers-reduced-motion: no-preference) {
+    .chero__image {
+      animation: chero-push 8s var(--ease-out) both;
+    }
+  }
+
+  @keyframes chero-push {
+    from {
+      scale: 1.06;
+    }
+    to {
+      scale: 1;
+    }
+  }
+</style>

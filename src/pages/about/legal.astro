@@ -59,7 +59,12 @@ const facts: Fact[] = [
     crumbs={crumbs}
   />
 
-  <Section labelledBy="facts-heading" container="narrow">
+  {/* The registration record runs the full band. These facts ARE the page —
+      a funder checking whether WUFPA is a real registered body reads this and
+      nothing else — and confining them to a 60rem reading column on a wide
+      display made the association's own credentials look like a footnote. The
+      prose below stays narrow, because prose is read and a record is scanned. */}
+  <Section labelledBy="facts-heading" spacing="loose">
     <h2 id="facts-heading" class="u-visually-hidden">Registration details</h2>
     <KeyFacts facts={facts} />
   </Section>

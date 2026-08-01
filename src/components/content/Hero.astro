@@ -119,7 +119,10 @@ if (widths.length === 0) widths.push(image.width);
 
   .hero__standfirst {
     margin: 0;
-    max-inline-size: 42rem;
+    /* A reading measure, so this one deliberately does NOT grow with the wider
+       containers — 42rem was already about 65 characters of body serif. Stated
+       as the token so it tracks the type scale rather than drifting from it. */
+    max-inline-size: var(--measure-narrow);
     font-family: var(--font-body);
     font-size: var(--text-lg);
     line-height: var(--leading-relaxed);

@@ -61,18 +61,24 @@ const {
       settling, not an element appearing. The panel type is deliberately NOT
       animated with it: text that moves under a scrim is harder to read, and
       the scrim's contrast guarantee is measured against a settled position. */}
-  <div class="shot__media reveal reveal--frame">
-    <Picture
-      src={image}
-      alt={alt}
-      formats={['avif', 'webp']}
-      widths={[640, 960, 1280, 1920, 2400].filter((w) => w <= image.width)}
-      sizes="100vw"
-      loading="lazy"
-      decoding="async"
-      quality={50}
-      style={`object-position: ${objectPosition};`}
-    />
+  <div class="shot__media reveal reveal--frame" data-parallax="6">
+    {/* The inner div is what the parallax script transforms — it must be the
+        wrapper's first element child. It also gives the reveal's scale and the
+        parallax's translate separate elements to own, so neither overwrites
+        the other's transform. */}
+    <div class="shot__plate">
+      <Picture
+        src={image}
+        alt={alt}
+        formats={['avif', 'webp']}
+        widths={[640, 960, 1280, 1920, 2400].filter((w) => w <= image.width)}
+        sizes="100vw"
+        loading="lazy"
+        decoding="async"
+        quality={50}
+        style={`object-position: ${objectPosition};`}
+      />
+    </div>
   </div>
 
   <div class="shot__panel">
@@ -110,6 +116,11 @@ const {
     aspect-ratio: var(--ratio-landscape);
     overflow: hidden;
     background-color: var(--surface-muted);
+  }
+
+  .shot__plate {
+    inline-size: 100%;
+    block-size: 100%;
   }
 
   .shot__media :global(img) {
@@ -244,11 +255,19 @@ const {
     }
 
     /* Text is confined to the left column so it never crosses into the clear
-       part of the gradient, where contrast is not guaranteed. */
+       part of the gradient, where contrast is not guaranteed.
+
+       The bound is proportional, not a fixed 34rem. The gradient holds 86% or
+       denser to 46% of the band's width, so the safe zone grows with the band
+       — and once the containers reached 96/116rem a fixed 34rem left the panel
+       stranded in the left fifth of a wide screen while the guaranteed-dark
+       area extended far past it. 40% keeps a six-point margin inside the 46%
+       stop, and the ch cap below still holds the headline to a readable
+       measure so this never stretches into a single long line. */
     .shot__heading,
     .shot__standfirst,
     .shot__list {
-      max-inline-size: 34rem;
+      max-inline-size: min(40%, 46rem);
     }
 
     .shot__item {

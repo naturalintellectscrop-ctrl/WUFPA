@@ -8,3 +8,8 @@ dist
 # here before this rule existed. That commit has since been purged from
 # history; this line is what stops it recurring.
 client-archive
+
+# Design reference: contains fabricated WUFPA content (invented partners,
+# wrong sub-regions, fake contact details). Kept in client-archive/ for
+# creative reference only — it must never publish to the live site.
+public/reference.png
