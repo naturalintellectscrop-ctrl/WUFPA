@@ -46,14 +46,14 @@ const mapQuery = encodeURIComponent(
 const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" transition:persist="site-footer">
   <div class="container">
     <div class="site-footer__columns">
       {
         footerColumns.map((column) => {
           const headingId = `footer-heading-${column.heading.toLowerCase().replace(/\s+/g, '-')}`;
           return (
-            <nav aria-labelledby={headingId} class="site-footer__column">
+            <nav aria-labelledby={headingId} class="site-footer__column reveal">
               <h2 id={headingId} class="site-footer__heading">
                 {column.heading}
               </h2>
@@ -71,7 +71,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
         })
       }
 
-      <nav aria-labelledby="footer-heading-contact" class="site-footer__column">
+      <nav aria-labelledby="footer-heading-contact" class="site-footer__column reveal">
         <h2 id="footer-heading-contact" class="site-footer__heading">
           Contact
         </h2>
@@ -94,7 +94,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
       </nav>
     </div>
 
-    <div class="site-footer__identity">
+    <div class="site-footer__identity reveal">
       <div class="site-footer__logo-card">
         <img
           src="/wufpa_oficial_logo.jpeg"

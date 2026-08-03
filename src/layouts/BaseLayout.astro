@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import Seo from '../components/global/Seo.astro';
 import SkipLink from '../components/global/SkipLink.astro';
 import SiteHeader from '../components/global/SiteHeader.astro';
@@ -105,10 +106,40 @@ const {
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
+
+    {/* PAGE TRANSITIONS. A cross-fade between documents, so moving from one
+        page to the next reads as a cut within one continuous piece rather than
+        as the browser tearing down a document and building another. The header
+        and footer are marked `transition:persist` below: they do not
+        participate in the fade at all, they simply stay, which is what makes
+        the navigation feel like the page changing underneath fixed furniture.
+
+        THIS IS THE ONE PIECE OF THE MOTION SYSTEM THAT CHANGES HOW THE SITE
+        LOADS, so it is worth being explicit about the cost and the guarantees:
+
+        - It is progressive enhancement. Where the View Transition API is
+          unsupported Astro falls back to an ordinary full page load; nothing
+          is broken, the transition simply does not happen.
+        - It honours prefers-reduced-motion natively — Astro's own fallback
+          skips the animation under that setting without any rule from us.
+        - Every script in src/scripts/ was moved to `astro:page-load` for this,
+          and each one now tears its own listeners down first. A client router
+          means DOMContentLoaded fires once per SESSION rather than once per
+          page; without that change the whole reveal system would have gone
+          inert on the second page a visitor opened. */}
+    <ClientRouter />
   </head>
 
   <body class={bodyClass}>
     <SkipLink />
+
+    {/* Persisted across navigations — the directive lives on the <header>
+        element inside SiteHeader.astro, because `transition:persist` applies to
+        the element it is written on and a component tag is not one. The header
+        keeps its compact-or-not state and any open panel, and its DOM node is
+        never replaced, so nav.ts's listeners on it survive intact. A header
+        that re-mounted on every page would flash back to full height mid-scroll
+        on arrival. */}
     <SiteHeader />
 
     {/* tabindex="-1" so the skip link can move focus here reliably. */}
@@ -116,6 +147,11 @@ const {
       <slot />
     </main>
 
+    {/* Persisted for the same reason as the header, and declared in the same
+        place — on the <footer> element inside SiteFooter.astro. It also means
+        the footer's own reveal does not replay on every navigation: it is
+        chrome the reader has already seen, and re-animating it would draw
+        attention to furniture rather than to the page that just arrived. */}
     <SiteFooter />
 
     {/* WUFPA-068. Loaded here rather than per-page: the reveal was previously

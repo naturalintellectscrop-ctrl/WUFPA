@@ -26,7 +26,7 @@ const undated = entries.filter((e) => !e.dateLabel);
   <ol class="timeline__list" role="list">
     {
       dated.map((e) => (
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <div class="timeline__date">
             {e.date ? <time datetime={e.date}>{e.dateLabel}</time> : e.dateLabel}
           </div>
@@ -122,6 +122,51 @@ const undated = entries.filter((e) => !e.dateLabel);
   @media (min-width: 48rem) {
     .timeline__item {
       grid-template-columns: 9rem 1fr;
+    }
+
+    /* THE THREAD. From --bp-md the date column is fixed-width, which gives a
+       stable axis for a hairline to run down — so chronology reads as one
+       continuous line the reader travels rather than as unrelated rows that
+       happen to be stacked. It exists only where the two-column layout does;
+       on a single-column phone there is no axis for it to follow.
+
+       It draws itself per entry: each item's own segment scales from the top
+       as that item reveals, so the line advances WITH the reader instead of
+       being pre-drawn to a future they have not scrolled to yet. That is the
+       whole difference between a progress cue and a decoration. */
+    .timeline__item {
+      position: relative;
+    }
+
+    .timeline__item::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      /* Centred in the gap between the date column and the content column. */
+      inset-inline-start: calc(9rem - var(--space-5) / 2);
+      inline-size: 1px;
+      background-color: var(--line-accent);
+      transform-origin: top center;
+      scale: 1 0;
+    }
+
+    :global(html.js-reveal) .timeline__item::before {
+      transition: scale var(--duration-slower) var(--ease-out);
+    }
+
+    .timeline__item.is-visible::before,
+    :global(html:not(.js-reveal)) .timeline__item::before {
+      scale: 1 1;
+    }
+  }
+
+  /* The line is the one piece of this component that must not animate under
+     reduced motion — a scaling rule beside text is exactly the peripheral
+     movement the setting exists to remove. It is drawn, complete, immediately. */
+  @media (prefers-reduced-motion: reduce) {
+    .timeline__item::before {
+      scale: 1 1;
+      transition: none;
     }
   }
 </style>

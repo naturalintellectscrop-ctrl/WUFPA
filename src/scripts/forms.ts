@@ -91,8 +91,7 @@ export function initForms(): void {
   document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach(enhance);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initForms, { once: true });
-} else {
-  initForms();
-}
+/* Fires on the initial load and after every view transition — see the note in
+   reveal.ts. No teardown is needed here: every listener is bound to an element
+   inside the form itself, and the incoming page brings its own. */
+document.addEventListener('astro:page-load', initForms);

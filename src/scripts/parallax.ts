@@ -26,7 +26,16 @@
 
 const SELECTOR = '[data-parallax]';
 
+/* Torn down and rebuilt on every view transition. These are window- and
+   document-level listeners, so without an explicit teardown each navigation
+   would add another set on top of the last — by the fifth page five copies of
+   the same scroll handler would run on every frame. */
+let teardown: (() => void) | null = null;
+
 export function initParallax(): void {
+  teardown?.();
+  teardown = null;
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const wrappers = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
@@ -94,10 +103,18 @@ export function initParallax(): void {
   update();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+
+  teardown = () => {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+    observer.disconnect();
+    /* The transform is left as-is deliberately: these elements are about to be
+       replaced by the incoming page's own, and clearing it would make the
+       outgoing frame jump during the transition. */
+  };
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initParallax, { once: true });
-} else {
-  initParallax();
-}
+/* Re-attaches after every view transition — see the note in reveal.ts. The
+   listeners this adds are removed by the teardown below before each
+   navigation, so they never accumulate across pages. */
+document.addEventListener('astro:page-load', initParallax);

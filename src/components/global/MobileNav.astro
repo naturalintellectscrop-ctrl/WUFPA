@@ -94,6 +94,7 @@ function isActive(href: string): boolean {
                           class="mobile-nav__sublink"
                           href={child.href}
                           aria-current={currentPath === child.href ? 'page' : undefined}
+                          data-nav-current="exact"
                         >
                           {child.label}
                         </a>
@@ -108,6 +109,7 @@ function isActive(href: string): boolean {
                   class="mobile-nav__link"
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
+                  data-nav-current="section"
                 >
                   {item.label}
                 </a>

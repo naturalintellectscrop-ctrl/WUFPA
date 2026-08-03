@@ -30,7 +30,16 @@ function staggerMs(): number {
   return Number.isFinite(parsed) ? (raw.endsWith('ms') ? parsed : parsed * 1000) : 60;
 }
 
+/* Disconnected and rebuilt on every view transition. The observer holds
+   references to the outgoing page's elements, and a new one is created per
+   init — without this each navigation would leave the previous observer alive,
+   still watching nodes that are no longer in the document. */
+let observer: IntersectionObserver | null = null;
+
 export function initReveal(): void {
+  observer?.disconnect();
+  observer = null;
+
   // Respect the user's setting before doing anything at all.
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
@@ -60,13 +69,13 @@ export function initReveal(): void {
    * on the way in, but only re-hide once fully clear of the viewport
    * (rootMargin lets them leave completely first). Re-hiding at the same 10%
    * would make an element sitting near the fold flicker on small scrolls. */
-  const observer = new IntersectionObserver(
+  const active = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         const el = entry.target as HTMLElement;
         if (entry.isIntersecting) {
           el.classList.add('is-visible');
-          if (!el.hasAttribute('data-reveal-repeat')) observer.unobserve(el);
+          if (!el.hasAttribute('data-reveal-repeat')) active.unobserve(el);
         } else if (el.hasAttribute('data-reveal-repeat')) {
           el.classList.remove('is-visible');
         }
@@ -74,6 +83,7 @@ export function initReveal(): void {
     },
     { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
   );
+  observer = active;
 
   /* Stagger is counted WITHIN A PARENT, not across the document.
      A global index gives the fourth band on a long page a 180ms delay it has
@@ -105,12 +115,12 @@ export function initReveal(): void {
         }
       }
     }
-    observer.observe(el);
+    active.observe(el);
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initReveal, { once: true });
-} else {
-  initReveal();
-}
+/* `astro:page-load` fires on the initial load AND after every view transition,
+   so this re-attaches to the new document's elements. Without it the reveal
+   system would run once and then be inert for the rest of the session, since a
+   client-side navigation never fires DOMContentLoaded again. */
+document.addEventListener('astro:page-load', initReveal);

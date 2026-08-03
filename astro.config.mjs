@@ -115,6 +115,20 @@ export default defineConfig({
       // Surface budget regressions early rather than at the Phase 7 audit.
       // Budget: docs/14 section 9 — 100 KB JS on the homepage, compressed.
       chunkSizeWarningLimit: 100,
+
+      /* NEVER INLINE A SCRIPT INTO EVERY DOCUMENT. Vite inlines small assets by
+         default, which sounds like a saving and is the opposite of one here:
+         nav.ts and mobile-nav.ts are ~4.4 KB combined and they are needed on
+         all 35 pages, so inlining copied that into all 35 HTML files. It cost
+         the largest document (impact/) 2.7 KB of its 100 KB budget and — worse
+         — meant the same bytes were re-downloaded on every single navigation,
+         because markup embedded in a document cannot be cached separately from
+         it.
+
+         As external files they are fetched once and served from cache for the
+         rest of the visit, which on the metered 3G connection this site is
+         built for is the difference that actually matters. */
+      assetsInlineLimit: 0,
     },
   },
 });

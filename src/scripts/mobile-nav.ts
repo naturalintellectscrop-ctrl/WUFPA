@@ -28,7 +28,15 @@ const FOCUSABLE_SELECTOR = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
+/* Removes the window- and matchMedia-level listeners from the previous page
+   before this one attaches its own. Those two outlive a view transition even
+   though the elements they close over do not. */
+let teardown: (() => void) | null = null;
+
 function initMobileNav(): void {
+  teardown?.();
+  teardown = null;
+
   const trigger = document.querySelector<HTMLButtonElement>('[data-mobile-trigger]');
   const panel = document.querySelector<HTMLElement>('[data-mobile-panel]');
   const closeButton = document.querySelector<HTMLButtonElement>('[data-mobile-close]');
@@ -171,22 +179,33 @@ function initMobileNav(): void {
   // has no way to invoke `setOpen` again because the click that navigated
   // away never ran it. Forcing closed on every restore guarantees scroll and
   // focus are never left in a locked state the user can't escape.
-  window.addEventListener('pageshow', (event) => {
+  const onPageShow = (event: PageTransitionEvent) => {
     if (event.persisted) setOpen(false);
-  });
+  };
+  window.addEventListener('pageshow', onPageShow);
 
   // Crossing into the desktop layout (PrimaryNav's own --bp-lg, 64rem) while
   // this dialog is open would otherwise leave it fixed, full-screen and
   // scroll-locked behind/over the now-visible desktop nav, with no control
   // left on screen able to close it — a resize-triggered trap.
   const desktopQuery = window.matchMedia('(min-width: 64rem)');
-  desktopQuery.addEventListener('change', (event) => {
+  const onDesktop = (event: MediaQueryListEvent) => {
     if (event.matches) setOpen(false);
-  });
+  };
+  desktopQuery.addEventListener('change', onDesktop);
+
+  teardown = () => {
+    window.removeEventListener('pageshow', onPageShow);
+    desktopQuery.removeEventListener('change', onDesktop);
+    document.removeEventListener('keydown', onKeydown);
+    /* The scroll lock is released explicitly. If a reader taps a link inside
+       the open dialog, the navigation begins while `overflow: hidden` is still
+       on <body> — and under a client-side router that body element persists
+       into the next page, which would otherwise arrive unscrollable. */
+    unlockScroll();
+  };
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initMobileNav, { once: true });
-} else {
-  initMobileNav();
-}
+/* Fires on the initial load and after every view transition — see the note in
+   reveal.ts. */
+document.addEventListener('astro:page-load', initMobileNav);

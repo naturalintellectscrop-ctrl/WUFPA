@@ -76,9 +76,45 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' 
     transition:
       background-color var(--duration-fast) var(--ease-out),
       border-color var(--duration-fast) var(--ease-out),
-      color var(--duration-fast) var(--ease-out);
+      color var(--duration-fast) var(--ease-out),
+      scale var(--duration-instant) var(--ease-out);
     /* Guarantees a 44px hit area even where the visual height is smaller. */
     min-block-size: var(--target-min);
+  }
+
+  /* PRESS, NOT HOVER. The scale is on :active only — a button that grows under
+     the cursor is a startup gesture, but a button that gives under the finger
+     confirms the tap landed, which on a mid-range Android over slow data is
+     real information: it tells the user the press registered before the next
+     page has begun to load. --duration-instant, because feedback the user has
+     to wait for is not feedback.
+
+     0.98, and it must stay near that. Anything deeper reads as a toy, and on a
+     44px control a large scale visibly shifts the hit area under a finger that
+     is already committed to the press. */
+  .btn:active:not([aria-disabled='true']) {
+    scale: 0.98;
+  }
+
+  /* The icon leads by a hair on hover — direction, not decoration. Only where
+     an icon is actually present, and only 2px: enough to read as intent,
+     nowhere near enough to detach from the label. */
+  .btn :global(svg) {
+    transition: translate var(--duration-fast) var(--ease-out);
+  }
+
+  .btn:hover :global(svg) {
+    translate: 2px 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:active:not([aria-disabled='true']) {
+      scale: 1;
+    }
+
+    .btn:hover :global(svg) {
+      translate: 0 0;
+    }
   }
 
   /* Sizes */

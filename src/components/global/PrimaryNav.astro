@@ -40,6 +40,7 @@ function isActive(href: string): boolean {
                 class="primary-nav__link"
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
+                data-nav-current="section"
               >
                 {item.label}
               </a>
@@ -57,6 +58,8 @@ function isActive(href: string): boolean {
               aria-expanded="false"
               aria-controls={panelId}
               aria-current={active ? 'page' : undefined}
+              data-nav-current="section"
+              data-nav-href={item.href}
               data-nav-trigger
             >
               {item.label}
@@ -71,6 +74,7 @@ function isActive(href: string): boolean {
                       class="primary-nav__panel-link"
                       href={child.href}
                       aria-current={currentPath === child.href ? 'page' : undefined}
+                      data-nav-current="exact"
                     >
                       {child.label}
                     </a>
@@ -127,6 +131,35 @@ function isActive(href: string): boolean {
     border-block-end: 2px solid transparent;
   }
 
+  /* The underline draws itself from the left rather than appearing — the same
+     `--line-accent` cue used for the current-page state, so hover previews the
+     page's own "you are here" mark instead of a foreign hover effect. Sits on
+     the link's own border-block-end (already reserved for aria-current) via a
+     ::after so the two never fight over the same box. */
+  .primary-nav__link {
+    position: relative;
+  }
+
+  .primary-nav__link::after {
+    content: '';
+    position: absolute;
+    inset-inline: var(--space-3);
+    inset-block-end: 0;
+    block-size: 2px;
+    background-color: var(--line-accent);
+    transform-origin: left center;
+    scale: 0 1;
+    transition: scale var(--duration-base) var(--ease-out);
+  }
+
+  .primary-nav__link:hover::after {
+    scale: 1 1;
+  }
+
+  .primary-nav__link[aria-current='page']::after {
+    scale: 0 1;
+  }
+
   .primary-nav__link:hover {
     color: var(--text-accent);
   }
@@ -144,6 +177,11 @@ function isActive(href: string): boolean {
     rotate: 180deg;
   }
 
+  /* Settles in rather than snapping — a small rise-and-fade so the panel
+     reads as unfolding from its trigger. `[hidden]` is still the a11y switch
+     (nav.ts toggles it); `.is-open` is applied one frame later purely to
+     start the transition, mirroring the reveal script's own `.is-visible`
+     pattern so there is one convention for "hidden → shown" across the site. */
   .primary-nav__panel {
     position: absolute;
     inset-block-start: 100%;
@@ -160,6 +198,37 @@ function isActive(href: string): boolean {
 
   .primary-nav__panel[hidden] {
     display: none;
+  }
+
+  /* Gated on `.js` (set inline in <head>, before first paint) so the starting
+     opacity:0 can only ever apply where script is running to remove it. With
+     JavaScript off the panel is never unhidden in the first place, and with
+     `.js` absent it would still render at full opacity if it were. */
+  :global(html.js) .primary-nav__panel {
+    opacity: 0;
+    translate: 0 calc(var(--reveal-distance) * -1);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out);
+  }
+
+  :global(html.js) .primary-nav__panel.is-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* Reduced motion gets the finished state immediately, never a faster
+     animation — the same rule base/a11y.css applies to every reveal variant. */
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.js) .primary-nav__panel {
+      opacity: 1;
+      translate: 0 0;
+      transition: none;
+    }
+
+    .primary-nav__link::after {
+      transition: none;
+    }
   }
 
   .primary-nav__panel-list {

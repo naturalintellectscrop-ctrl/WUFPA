@@ -170,6 +170,49 @@ const { frames, label, class: className } = Astro.props;
     color: var(--text-body);
   }
 
+  /* THE FRAME YOU ARE ON. A strip of six frames gives no cue about position
+     within it — the reader can see three and has no idea whether two remain or
+     twenty. Rather than add a scrollbar, a counter or arrows (all of which put
+     interface on top of the content), the frames themselves carry it: the ones
+     at the edges of the scroll port sit back slightly, and the one the reader
+     has scrolled to is at full presence. The strip reads as film passing a
+     gate, which is the thing it is a picture of.
+
+     `animation-timeline: view()` — scroll-driven, no script, no scroll listener,
+     and it runs off the compositor. Where it is unsupported (`@supports`
+     absent) nothing is ever dimmed: the animation simply does not apply and
+     every frame stays at its finished state, which is the same
+     visible-by-default contract the reveal system holds to. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .frame-cell__media {
+        animation: frame-gate linear both;
+        animation-timeline: view(inline);
+      }
+    }
+  }
+
+  /* Opacity and scale only — both compositor properties, neither reflows.
+     The range is deliberately narrow: 0.55 reads as depth at the edge of the
+     port, and the frame spends the middle of its pass (35%–65%) at full
+     presence rather than continuously changing, so this settles rather than
+     pulses. */
+  @keyframes frame-gate {
+    0% {
+      opacity: 0.55;
+      scale: 0.96;
+    }
+    35%,
+    65% {
+      opacity: 1;
+      scale: 1;
+    }
+    100% {
+      opacity: 0.55;
+      scale: 0.96;
+    }
+  }
+
   /* Scroll-snap can trap a reader who scrolls by keyboard in small steps.
      Turning it off where motion is unwelcome also removes the snap. */
   @media (prefers-reduced-motion: reduce) {
