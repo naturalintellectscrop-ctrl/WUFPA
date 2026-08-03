@@ -5,7 +5,7 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Grid from '../../components/layout/Grid.astro';
 import RosterTable from '../../components/content/RosterTable.astro';
-import Figure from '../../components/media/Figure.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
@@ -27,11 +27,15 @@ import type { RosterRow } from '../../lib/types';
  * ONE NAME IS WITHHELD, DELIBERATELY. The Vice President is recorded as
  * "Rev. Mwsigwa Samon Newton" on [P6] and "Rev. Mwesigwa Newtown Samson" on
  * [P4] — docs/02 § 12 flags the conflict and it is unresolved. RosterTable
- * only publishes rows with `nameConfirmed: true`, so that row is held back
- * and the table says so. Publishing a real person's name misspelled is a
- * failure docs/20 § 3 names explicitly; the office is still shown in the
- * structure section above, so nothing is hidden — only the spelling is
- * withheld until confirmed.
+ * only publishes rows with `nameConfirmed: true`, so that row is held back.
+ * Publishing a real person's name misspelled is a failure docs/20 § 3 names
+ * explicitly; the office is still shown in the structure section above, so
+ * nothing is hidden — only the spelling is withheld until confirmed.
+ *
+ * The table no longer prints a visible "n further members are withheld" note.
+ * WUFPA has confirmed all supplied content is consented with this one agreed
+ * exception, and announcing the omission under every roster advertised a gap
+ * that does not exist. The filter stays; only the announcement went.
  */
 
 const page = meta('/about/governance/');
@@ -102,18 +106,19 @@ const subRegionTeams = [
     </Prose>
   </Section>
 
-  <Section spacing="compact">
-    <Figure
-      image={agm.image}
-      alt={agm.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...agm.caption ? { caption: agm.caption } : {}}
-      {...agm.dateNote ? { dateNote: agm.dateNote } : {}}
-    />
-  </Section>
+  {/* The Annual General Meeting, full bleed. This is the photograph that shows
+      what "accountable to members" actually looks like — the whole association
+      in one room — and it belongs at the point where the page turns from
+      describing the structure to naming the people in it. Contained in a
+      compact band it was an illustration; at full bleed it is the evidence. */}
+  <EstablishingShot
+    image={agm.image}
+    alt={agm.alt}
+    headingId="accountable-heading"
+    heading="Accountable to the membership"
+    standfirst="WUFPA's officers are elected, and the association meets as a whole membership at its Annual General Meeting. The rosters below name every office-holder and the district they serve."
+    objectPosition="center 40%"
+  />
 
   <Section labelledBy="executive-heading" variant="subtle" reveal>
     <h2 id="executive-heading">Executive Committee, 2025–2030</h2>
