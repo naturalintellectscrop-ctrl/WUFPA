@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
+import Creed from '../../components/content/Creed.astro';
 import IndexList from '../../components/content/IndexList.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import { meta } from '../../lib/page-meta';
@@ -41,23 +42,19 @@ const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b
       the shape it does, and it is the sentence a funder or a filmmaker should
       leave the page having read. */}
   <Section labelledBy="why-heading" spacing="loose">
-    <div class="creed">
-      <h2 id="why-heading" class="creed__label">Why we organise by sub-region</h2>
-      <div>
-        <div class="reveal reveal--letter">
-          <p class="creed__statement">
-            Uganda’s film industry has always been concentrated in Kampala.
-          </p>
-        </div>
-        <Prose class="creed__body">
-          <p>
-            WUFPA’s answer was not to open one office and hope people travelled to it, but to
-            build leadership in every sub-region. Sub-regional committees were introduced
-            specifically to decentralise governance and deliver programmes efficiently.
-          </p>
-        </Prose>
-      </div>
-    </div>
+    <Creed
+      label="Why we organise by sub-region"
+      labelId="why-heading"
+      statement="Uganda’s film industry has always been concentrated in Kampala."
+    >
+      <Prose>
+        <p>
+          WUFPA’s answer was not to open one office and hope people travelled to it, but to
+          build leadership in every sub-region. Sub-regional committees were introduced
+          specifically to decentralise governance and deliver programmes efficiently.
+        </p>
+      </Prose>
+    </Creed>
   </Section>
 
   {/* An index, not six cards. Six equal boxes told a filmmaker in Kanungu that
@@ -108,46 +105,6 @@ const regions = (await getCollection('regions')).sort((a, b) => a.data.order - b
 </BaseLayout>
 
 <style>
-  .creed {
-    display: grid;
-    gap: var(--space-5);
-  }
-
-  .creed__label {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--text-accent);
-  }
-
-  .creed__statement {
-    margin: 0;
-    max-inline-size: 22ch;
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
-    text-wrap: balance;
-    color: var(--text-heading);
-  }
-
-  .creed__body {
-    margin-block-start: var(--space-6);
-    max-inline-size: var(--measure-prose);
-  }
-
-  @media (min-width: 64rem) {
-    .creed {
-      grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-      gap: var(--space-8);
-      align-items: start;
-    }
-  }
-
   .band-note {
     margin: var(--space-3) 0 0;
     max-inline-size: var(--measure-narrow);

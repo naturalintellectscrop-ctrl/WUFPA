@@ -1,0 +1,118 @@
+---
+/**
+ * Creed — a small label beside one sentence set at display scale, with the
+ * supporting prose beneath it.
+ *
+ * WHY THIS IS A COMPONENT. Three pages independently grew the same
+ * arrangement: /about/ for the vision, /regions/ for why WUFPA organises by
+ * sub-region, /sacco/ for why the fund exists. Each had its own copy of the
+ * same forty lines of CSS, which is how two of them end up at different
+ * display sizes after one edit. The pattern is now named once.
+ *
+ * WHAT IT IS FOR. Pages usually have one sentence that carries their whole
+ * argument — "Film costs money before it earns money", "Uganda's film industry
+ * has always been concentrated in Kampala". Set as the first line of a prose
+ * block, that sentence is the least visible thing on the page. Set at display
+ * scale with a quiet label beside it, it is the thing a reader leaves with.
+ *
+ * THE LABEL IS DELIBERATELY SMALL. It is a section heading and must stay in
+ * the document outline, but a heading at heading size competing with a
+ * display-scale statement makes the reader choose which to read first. Set as
+ * an uppercase eyebrow in the accent, it names the section without arguing
+ * with it.
+ *
+ * MEASURED IN ch, NOT rem. The statement stays a headline shape on a wide
+ * display instead of stretching into one long line — the failure mode a
+ * container-width cap produces once the layout runs to 1856px.
+ */
+interface Props {
+  /** The section heading. Rendered small; still a real heading. */
+  label: string;
+  /** Must match the parent Section's `labelledBy`. */
+  labelId: string;
+  /** The one sentence. Kept short — this is a statement, not a paragraph. */
+  statement: string;
+  /** Heading level, so this never breaks a page's outline. */
+  headingLevel?: 2 | 3;
+  /**
+   * Runs the statement a step smaller, for a longer sentence or where a page
+   * already carries a larger statement above it.
+   */
+  size?: 'default' | 'sm';
+  class?: string;
+}
+
+const {
+  label,
+  labelId,
+  statement,
+  headingLevel = 2,
+  size = 'default',
+  class: className,
+} = Astro.props;
+
+const Heading = `h${headingLevel}` as const;
+---
+
+<div class:list={['creed', className]}>
+  <Heading id={labelId} class="creed__label">{label}</Heading>
+  <div class="creed__col">
+    {/* The title-card rise. The wrapper carries the clip; the script moves the
+        child, which is why the statement is nested rather than classed. */}
+    <div class="reveal reveal--letter">
+      <p class:list={['creed__statement', size === 'sm' && 'creed__statement--sm']}>
+        {statement}
+      </p>
+    </div>
+    <div class="creed__body"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .creed {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .creed__label {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-accent);
+  }
+
+  .creed__statement {
+    margin: 0;
+    max-inline-size: 24ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-heading);
+  }
+
+  .creed__statement--sm {
+    max-inline-size: 34ch;
+    font-size: var(--text-2xl);
+  }
+
+  /* Empty when the caller passes no slot content, so a Creed used purely as a
+     statement does not leave a gap under itself. */
+  .creed__body:not(:empty) {
+    margin-block-start: var(--space-6);
+    max-inline-size: var(--measure-prose);
+  }
+
+  @media (min-width: 64rem) {
+    .creed {
+      grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+</style>

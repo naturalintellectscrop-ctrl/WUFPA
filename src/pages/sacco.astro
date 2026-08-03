@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import PageHeader from '../components/layout/PageHeader.astro';
+import Creed from '../components/content/Creed.astro';
 import Prose from '../components/layout/Prose.astro';
 import Figure from '../components/media/Figure.astro';
 import RelatedLinks from '../components/content/RelatedLinks.astro';
@@ -41,23 +42,29 @@ const handover = getPhoto('sacco/wufm-sacco-certificate-commercial-officer-2025.
     crumbs={crumbs}
   />
 
-  <Section labelledBy="why-heading" container="narrow">
-    <h2 id="why-heading">Why a SACCO</h2>
-    <Prose>
-      <p>
-        Film costs money before it earns money. For an emerging filmmaker in Western Uganda,
-        that gap has usually meant the film does not get made.
-      </p>
-      <p>
-        WUFPA established the Western Uganda Filmmakers SACCO to close it — to offer
-        low-interest loans and grants to young and emerging filmmakers, and small grants for
-        local film projects and talent development.
-      </p>
-      <p>
-        Establishing a fund to support members’ welfare and to invest in members’ development
-        activities has been one of the association’s constitutional objects since 2017.
-      </p>
-    </Prose>
+  {/* The problem the SACCO exists to solve, stated once at display scale. Six
+      words carry this entire page's argument — every filmmaker reading it has
+      lived the gap — and burying them as the first line of a prose block made
+      the strongest sentence on the page the least visible thing on it. */}
+  <Section labelledBy="why-heading" spacing="loose">
+    <Creed label="Why a SACCO" labelId="why-heading" statement="Film costs money before it earns money.">
+      <Prose>
+        <p>
+          For an emerging filmmaker in Western Uganda, that gap has usually meant the film
+          does not get made.
+        </p>
+        <p>
+          WUFPA established the Western Uganda Filmmakers SACCO to close it — to offer
+          low-interest loans and grants to young and emerging filmmakers, and small grants
+          for local film projects and talent development.
+        </p>
+        <p>
+          Establishing a fund to support members’ welfare and to invest in members’
+          development activities has been one of the association’s constitutional objects
+          since 2017.
+        </p>
+      </Prose>
+    </Creed>
   </Section>
 
   <Section labelledBy="status-heading" variant="sacco" reveal>

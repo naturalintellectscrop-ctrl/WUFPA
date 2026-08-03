@@ -235,6 +235,11 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
   --reveal-distance: 16px;
+  /* Horizontal travel for the directional entrances. Twice the vertical
+     distance because sideways movement at the same distance is less legible —
+     and still short enough that nothing reads as having flown in from
+     off-screen, which is the clearest marker of a template. */
+  --reveal-shift: 32px;
   --stagger: 60ms;
 
   /* ── ASPECT RATIOS ──────────────────────────────────────────────────────

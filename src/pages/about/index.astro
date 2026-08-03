@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
+import Creed from '../../components/content/Creed.astro';
 import Sidebar from '../../components/layout/Sidebar.astro';
 import Stack from '../../components/layout/Stack.astro';
 import KeyFacts from '../../components/content/KeyFacts.astro';
@@ -134,40 +135,29 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About WUFPA' }];
       are now composed differently from each other: the vision as a statement,
       the mission as a spread with its detail alongside. */}
   <Section labelledBy="vision-heading" variant="subtle" spacing="loose" reveal>
-    <div class="creed">
-      <h2 id="vision-heading" class="creed__label">Our vision</h2>
-      <div class="reveal reveal--letter">
-        <blockquote class="creed__quote">
-          <p>
-            To be a leading regional force in empowering filmmakers and using film as a medium
-            for social transformation, cultural preservation, and economic development in
-            Western Uganda.
-          </p>
-        </blockquote>
-      </div>
-    </div>
+    <Creed
+      label="Our vision"
+      labelId="vision-heading"
+      statement="To be a leading regional force in empowering filmmakers and using film as a medium for social transformation, cultural preservation, and economic development in Western Uganda."
+      size="sm"
+    />
   </Section>
 
   <Section labelledBy="mission-heading" spacing="loose" reveal>
-    <div class="creed creed--split">
-      <h2 id="mission-heading" class="creed__label">Our mission</h2>
-      <div>
-        <blockquote class="creed__quote creed__quote--sm">
-          <p>
-            To unite, train, and support film producers and creatives in Western Uganda to
-            create high-quality films that address key social issues, promote cultural
-            heritage, and contribute to sustainable community development.
-          </p>
-        </blockquote>
-        <Prose class="mission-detail">
-          <p>
-            We nurture filmmakers capable of writing, directing, producing and acting in
-            socially impactful and culturally rooted films, using cinema as a tool for
-            education, cultural tourism and community development.
-          </p>
-        </Prose>
-      </div>
-    </div>
+    <Creed
+      label="Our mission"
+      labelId="mission-heading"
+      statement="To unite, train, and support film producers and creatives in Western Uganda to create high-quality films that address key social issues, promote cultural heritage, and contribute to sustainable community development."
+      size="sm"
+    >
+      <Prose>
+        <p>
+          We nurture filmmakers capable of writing, directing, producing and acting in
+          socially impactful and culturally rooted films, using cinema as a tool for
+          education, cultural tourism and community development.
+        </p>
+      </Prose>
+    </Creed>
   </Section>
 
   <Section labelledBy="objectives-heading" variant="subtle" reveal>
@@ -236,63 +226,9 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About WUFPA' }];
      the site describing WUFPA. No quotation marks: the <blockquote> carries the
      semantics and decorative glyphs would be exactly the ornament docs/21 § 2.4
      rules out. */
-  /* The label is set small and quiet so the statement beside it carries the
-     band. A heading at heading size competing with a display-scale quotation
-     would make the reader choose which to read first. */
-  .creed {
-    display: grid;
-    gap: var(--space-5);
-  }
-
-  .creed__label {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--text-accent);
-  }
-
-  .creed__quote {
-    margin: 0;
-    max-inline-size: 24ch;
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
-    text-wrap: balance;
-    color: var(--text-heading);
-  }
-
-  /* The mission is the longer statement and sits beside its detail, so it runs
-     a step down from the vision — same family, different weight in the page. */
-  .creed__quote--sm {
-    max-inline-size: var(--measure-narrow);
-    font-size: var(--text-2xl);
-  }
-
-  .creed__quote p {
-    margin: 0;
-  }
-
-  @media (min-width: 64rem) {
-    .creed {
-      grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
-      gap: var(--space-8);
-      align-items: start;
-    }
-
-    .creed--split .creed__quote {
-      max-inline-size: 40ch;
-    }
-  }
-
-  .mission-detail {
-    margin-block-start: var(--space-6);
-    max-inline-size: var(--measure-prose);
-  }
+  /* Vision and mission now use the shared Creed component — the label, the
+     display-scale statement and the prose beneath it live there, so the three
+     pages carrying this pattern cannot drift to different sizes. */
 
   .objectives {
     display: grid;

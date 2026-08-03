@@ -188,13 +188,55 @@ main:focus {
   scale: 1 1;
 }
 
+/* ── DIRECTIONAL ENTRANCES ────────────────────────────────────────────────
+   An element arrives from the side it belongs to. On an alternating editorial
+   spread the photograph sits left and the text right, so moving each in from
+   its own edge makes the composition assemble itself as the reader arrives at
+   it — the page reads as laid out rather than as stacked.
+
+   TRAVEL IS SMALL AND HORIZONTAL ONLY. --reveal-shift is 32px, twice the
+   vertical reveal's 16px because horizontal movement at the same distance is
+   less legible, and nowhere near far enough to imply the element flew in from
+   off-screen. A long slide is the single clearest marker of a template.
+
+   NO OPACITY ON THE WAY OUT WITHOUT MOVEMENT, AND NEVER ON A LARGE BLOCK OF
+   TEXT. These are paired with `data-reveal-repeat` on photographs and short
+   headings; body copy keeps the once-only fade, because re-hiding a paragraph
+   a reader scrolled back to re-read fights them.
+
+   translate, not `transform`, so these compose with the parallax script's
+   own transform on a different element without either overwriting the other. */
+.js-reveal .reveal--left,
+.js-reveal .reveal--right {
+  opacity: 0;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    translate var(--duration-slow) var(--ease-out);
+}
+
+.js-reveal .reveal--left {
+  translate: calc(var(--reveal-shift) * -1) 0;
+}
+
+.js-reveal .reveal--right {
+  translate: var(--reveal-shift) 0;
+}
+
+.js-reveal .reveal--left.is-visible,
+.js-reveal .reveal--right.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
 /* One reset, covering every variant. A user who asks for reduced motion gets
    the finished state immediately — not a faster animation. */
 @media (prefers-reduced-motion: reduce) {
   .js-reveal .reveal,
   .js-reveal .reveal--letter > *,
   .js-reveal .reveal--frame,
-  .js-reveal .reveal--rule {
+  .js-reveal .reveal--rule,
+  .js-reveal .reveal--left,
+  .js-reveal .reveal--right {
     opacity: 1;
     translate: 0 0;
     scale: 1;

@@ -43,13 +43,33 @@ export function initReveal(): void {
   // Only now is it safe to let CSS hide anything.
   document.documentElement.classList.add('js-reveal');
 
+  /* Two behaviours, and which one an element gets is the caller's choice.
+   *
+   * DEFAULT — reveal once, then unobserve. Nothing re-animates on scroll-up.
+   * This is right for a band of body copy: re-hiding text a reader has already
+   * read, because they scrolled up to re-read it, actively fights them.
+   *
+   * `data-reveal-repeat` — the element re-hides when it leaves the viewport
+   * and re-enters when it returns. Used for the directional slides, where the
+   * movement is the composition rather than an entrance: a photograph that
+   * slid in from the left should slide back out the way it came, or the effect
+   * only exists on the first pass down a page and the page feels inert on the
+   * way back up.
+   *
+   * The threshold is deliberately asymmetric. Elements become visible at 10%
+   * on the way in, but only re-hide once fully clear of the viewport
+   * (rootMargin lets them leave completely first). Re-hiding at the same 10%
+   * would make an element sitting near the fold flicker on small scrolls. */
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-visible');
-        // Reveal once, then stop observing. Nothing re-animates on scroll-up.
-        observer.unobserve(entry.target);
+        const el = entry.target as HTMLElement;
+        if (entry.isIntersecting) {
+          el.classList.add('is-visible');
+          if (!el.hasAttribute('data-reveal-repeat')) observer.unobserve(el);
+        } else if (el.hasAttribute('data-reveal-repeat')) {
+          el.classList.remove('is-visible');
+        }
       }
     },
     { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },

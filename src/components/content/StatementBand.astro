@@ -1,0 +1,106 @@
+---
+/**
+ * StatementBand — a dark full-bleed band carrying one line of type and nothing
+ * else.
+ *
+ * WHAT IT IS FOR. A long page needs somewhere for the eye to stop. Every other
+ * band on this site asks the reader to do something — read a list, scan a
+ * record, look at a photograph, follow a link. This one asks for nothing. It
+ * is the pause between movements, and it works precisely because it is the
+ * only band on the page with no second element in it.
+ *
+ * THE DARKNESS IS THE MECHANISM. Dropping to the inverse surface between two
+ * light sections resets the reader's eye and marks a division that no amount
+ * of white space can. It is the visual equivalent of a cut to black, and it is
+ * used sparingly for that reason: once on a page, never twice.
+ *
+ * NO QUOTATION MARKS, NO ATTRIBUTION FLOURISH. The line is set large and the
+ * source is set small beneath it. Decorative quote glyphs at display scale are
+ * the single most common way an institutional site announces that it is about
+ * to say something profound, and they undercut whatever follows.
+ *
+ * NEVER PUT WORDS IN WUFPA'S MOUTH HERE. This component renders a `source`
+ * because everything it displays must be traceable to a supplied document —
+ * the strapline from [P3], an objective from [P1]. It exists to give WUFPA's
+ * own words scale, not to generate a headline that sounds like them.
+ */
+interface Props {
+  /** One line. If it needs two sentences, it is not a statement band. */
+  statement: string;
+  /** Who or what this is from — rendered, not merely recorded. */
+  source?: string;
+  /** Must match the parent's labelling if the band is a titled section. */
+  headingId?: string;
+  /** Screen-reader-only heading, so the band is a named landmark. */
+  label?: string;
+  class?: string;
+}
+
+const { statement, source, headingId, label, class: className } = Astro.props;
+---
+
+<section
+  class:list={['band', className]}
+  aria-labelledby={headingId}
+  data-variant="inverse"
+>
+  <div class="container">
+    {label && headingId && <h2 id={headingId} class="u-visually-hidden">{label}</h2>}
+
+    {/* Repeats on scroll: this band is a beat in the page's rhythm rather than
+        an entrance, so it should land again on the way back up. */}
+    <div class="reveal reveal--letter" data-reveal-repeat>
+      <p class="band__statement">{statement}</p>
+    </div>
+
+    {source && <p class="band__source">{source}</p>}
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: var(--space-10);
+    background-color: var(--surface-inverse);
+    color: var(--text-on-inverse);
+    text-align: center;
+  }
+
+  @media (min-width: 96rem) {
+    .band {
+      padding-block: var(--space-11);
+    }
+  }
+
+  /* Capped in ch so the line stays a headline shape on a wide display rather
+     than stretching into one long ruler of text. */
+  .band__statement {
+    margin: 0 auto;
+    max-inline-size: 26ch;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+    color: var(--text-on-inverse);
+  }
+
+  @media (min-width: 64rem) {
+    .band__statement {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  /* --text-muted-on-inverse is --ink-300 on --ink-900: 9.38:1, well clear of
+     the 4.5:1 minimum. (The statement itself is white on --ink-900: 16.30:1.)
+     Measured, not assumed. */
+  .band__source {
+    margin: var(--space-6) 0 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-muted-on-inverse);
+  }
+</style>

@@ -6,8 +6,10 @@ import Ledger from '../components/content/Ledger.astro';
 import IndexList from '../components/content/IndexList.astro';
 import FrameSequence from '../components/content/FrameSequence.astro';
 import EstablishingShot from '../components/content/EstablishingShot.astro';
+import StatementBand from '../components/content/StatementBand.astro';
 import Button from '../components/primitives/Button.astro';
 import { getPhoto } from '../lib/photos';
+import { site } from '../lib/site-config';
 import { meta } from '../lib/page-meta';
 import type { Stat } from '../lib/types';
 
@@ -28,8 +30,8 @@ import type { Stat } from '../lib/types';
  *
  * THE RHYTHM NOW RUNS: cinematic hero → typographic ledger → editorial
  * statement → numbered index → full-bleed establishing shot → film strip →
- * dark ask. No two consecutive sections share a layout, a background treatment
- * or a height. Consistency comes from the type scale, the spacing scale and
+ * dark statement band → partner roll → dark ask. No two consecutive sections
+ * share a layout, a background treatment or a height. Consistency comes from the type scale, the spacing scale and
  * the single accent — not from repeating one section shape (docs/21 § 12).
  *
  * The opening is a full-viewport photograph under a measured scrim, with the
@@ -269,6 +271,19 @@ const regions = [
       <Button href="/impact/" variant="tertiary">See our impact</Button>
     </p>
   </Section>
+
+  {/* The pause. After the record — six dated frames of evidence — the page
+      stops and says the one thing WUFPA says about itself, then goes on. Dark,
+      centred, nothing else in the band: a cut to black between movements.
+      Used once on this page and nowhere else on it. The line is WUFPA's own
+      organisational strapline from [P3], not a headline written to sound
+      like one. */}
+  <StatementBand
+    statement={site.strapline}
+    source="The WUFPA strapline"
+    headingId="strapline-heading"
+    label="What WUFPA stands for"
+  />
 
   {/* PARTNERS — a typographic roll. Names at scale, no boxes, no logos
       (⟦Q10⟧ — written permission not yet obtained). */}

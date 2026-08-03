@@ -73,9 +73,22 @@ const Heading = `h${headingLevel}` as const;
     className,
   ]}
 >
+  {/* Each half arrives from the side it occupies, so the spread assembles
+      itself as the reader reaches it rather than fading in as one block. The
+      photograph and the text move in opposite directions, and `reversed` flips
+      both — the motion follows the composition instead of being applied on top
+      of it. `data-reveal-repeat` lets them slide back out the way they came,
+      so the effect exists on the way up the page as well as down. */}
   {
     image && alt && (
-      <div class="feature__media">
+      <div
+        class:list={[
+          'feature__media',
+          'reveal',
+          reversed ? 'reveal--right' : 'reveal--left',
+        ]}
+        data-reveal-repeat
+      >
         <Picture
           src={image}
           alt={alt}
@@ -90,7 +103,16 @@ const Heading = `h${headingLevel}` as const;
     )
   }
 
-  <div class="feature__body">
+  <div
+    class:list={[
+      'feature__body',
+      'reveal',
+      /* A text-only entry is centred and has no side to belong to, so it takes
+         the plain vertical reveal rather than sliding in from nowhere. */
+      image && (reversed ? 'reveal--left' : 'reveal--right'),
+    ]}
+    data-reveal-repeat={image ? '' : undefined}
+  >
     <p class="feature__number u-tabular" aria-hidden="true">{number}</p>
     <Heading class="feature__title">
       {href ? <a href={href}>{title}</a> : title}

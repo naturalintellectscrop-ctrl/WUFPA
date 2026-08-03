@@ -4,7 +4,7 @@ import Section from '../../components/layout/Section.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Timeline from '../../components/content/Timeline.astro';
-import Figure from '../../components/media/Figure.astro';
+import EstablishingShot from '../../components/content/EstablishingShot.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
@@ -220,27 +220,26 @@ const entries: TimelineEntry[] = [
     crumbs={crumbs}
   />
 
-  <Section spacing="compact">
-    <Figure
-      image={pioneers.image}
-      alt={pioneers.alt}
-      purpose="hero"
-      ratio="auto"
-      variant="wide"
-      sizes="(min-width: 64rem) 60rem, 100vw"
-      {...pioneers.caption ? { caption: pioneers.caption } : {}}
-      {...pioneers.dateNote ? { dateNote: pioneers.dateNote } : {}}
-    />
-  </Section>
+  {/* The founding photograph carries this page, so it opens the page at full
+      bleed with the origin stated over it rather than sitting in a contained
+      band above a heading. This is the one image on the site that shows the
+      fourteen people the whole association grew from. */}
+  <EstablishingShot
+    image={pioneers.image}
+    alt={pioneers.alt}
+    headingId="beginning-heading"
+    heading="Fourteen companies, 2017"
+    standfirst="In 2017, fourteen film production companies and groups from Ankole and Kigezi registered WUFPA with the Uganda Registration Services Bureau."
+    objectPosition="center 40%"
+  />
 
-  <Section labelledBy="beginning-heading" container="narrow" reveal>
-    <h2 id="beginning-heading">How it started</h2>
+  <Section labelledBy="why-heading" container="narrow" spacing="loose" reveal>
+    <h2 id="why-heading">Why they did it</h2>
     <Prose>
       <p>
-        In 2017, fourteen film production companies and groups from Ankole and Kigezi
-        registered WUFPA with the Uganda Registration Services Bureau. They were working in an
-        industry whose training, funding, buyers and policy conversations all happened in
-        Kampala — and watching their films copied and sold without permission.
+        They were working in an industry whose training, funding, buyers and policy
+        conversations all happened in Kampala — and watching their films copied and sold
+        without permission.
       </p>
       <p>
         Both of the association’s founding officers remain involved today, serving on the
