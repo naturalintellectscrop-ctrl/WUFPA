@@ -44,8 +44,14 @@ export default defineConfig({
   },
 
   image: {
-    // Sharp drives the AVIF/WebP/JPEG derivative pipeline (WUFPA-060).
-    service: { entrypoint: 'astro/assets/services/sharp' },
+    // Sharp drives the AVIF/WebP/JPEG derivative pipeline (WUFPA-060), wrapped
+    // so each format gets its OWN quality value. Astro's <Picture> takes one
+    // `quality` for the whole element and passes it unchanged to every format,
+    // but the formats do not share a scale: the site's single quality={50} was
+    // an AVIF number, and it left JPEG at ~27 dB PSNR — below the threshold
+    // where artefacts show on faces, which is most of this archive.
+    // See src/lib/image-quality.ts for the measurements.
+    service: { entrypoint: './src/lib/image-service.ts' },
   },
 
   integrations: [

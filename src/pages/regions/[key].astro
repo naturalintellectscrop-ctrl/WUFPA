@@ -80,7 +80,7 @@ const photo = photoFile ? getPhoto(photoFile) : null;
     crumbs={crumbs}
   />
 
-  <Section labelledBy="opening-heading" container="narrow">
+  <Section labelledBy="opening-heading" container="reading">
     <h2 id="opening-heading" class="u-visually-hidden">About this sub-region</h2>
     <p class="opening">{region.data.opening}</p>
     <Prose>
@@ -112,7 +112,7 @@ const photo = photoFile ? getPhoto(photoFile) : null;
     </ul>
   </Section>
 
-  <Section labelledBy="team-heading" container="narrow" reveal>
+  <Section labelledBy="team-heading" container="reading" reveal>
     <h2 id="team-heading">Your coordination team</h2>
     <Prose>
       <p>
@@ -131,7 +131,7 @@ const photo = photoFile ? getPhoto(photoFile) : null;
     </div>
   </Section>
 
-  <Section labelledBy="related-heading" variant="subtle" container="narrow" reveal>
+  <Section labelledBy="related-heading" variant="subtle" container="reading" reveal>
     <h2 id="related-heading" class="u-visually-hidden">Where to go next</h2>
     <RelatedLinks
       heading="Elsewhere on this site"

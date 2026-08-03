@@ -22,13 +22,17 @@ import type { ImageMetadata } from 'astro';
  * upscale if asked to, so the clamp here is what makes the no-upscale rule
  * hold even before scripts/check-no-upscale.mjs re-checks the built output.
  *
- * `quality={50}` targets docs/12 section 5.5's AVIF budget (~50, hero
- * ≤120KB). Astro's `<Picture>` applies one quality value across every
- * requested format rather than a value per format, so WebP and JPEG come out
- * lighter than their own documented targets (~78/~80) too — a known,
- * deliberate simplification: hitting the AVIF budget matters most since
- * that is what most visitors' browsers actually request, and no browser
- * ships all three formats to the same user.
+ * QUALITY IS NO LONGER SET HERE. It comes from the custom image service
+ * (src/lib/image-service.ts), which applies docs/12 section 5.5's per-format
+ * targets — ~50 AVIF, ~78 WebP, ~80 JPEG.
+ *
+ * This component used to pass `quality={50}` and a comment here described the
+ * result as a deliberate simplification, on the reasoning that AVIF is what
+ * most browsers request. That reasoning was wrong in a way worth recording:
+ * the visitors who fall through to WebP or JPEG are precisely the ones on
+ * older devices, and they were served 27 dB PSNR — visible blocking on the
+ * faces in every group photograph — while the person checking the site on a
+ * current browser saw clean AVIF and no problem at all.
  */
 
 /* Each ladder is clamped to the source's intrinsic width downstream, so a
@@ -139,7 +143,6 @@ const hasCaption = Boolean(caption || metaParts.length || credit);
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
       fetchpriority={priority ? 'high' : undefined}
-      quality={50}
     />
   </div>
 

@@ -14,7 +14,27 @@ interface Props {
   /** `sacco` is WUFM SACCO only — docs/03 § 8.6 restricts that blue to
    *  SACCO pages and sections. */
   variant?: 'default' | 'subtle' | 'muted' | 'inverse' | 'accent' | 'sacco' | 'bleed';
-  container?: 'prose' | 'narrow' | 'default' | 'wide' | 'full';
+  /**
+   * How wide the band's CONTENT BOX is.
+   *
+   * `prose` and `narrow` cap the entire band, heading included. That is right
+   * for an article or a form — a page whose whole job is to be read — and
+   * wrong for a section of a wider page, where it strands the heading in the
+   * middle of the screen with dead space either side. Once the layout
+   * containers reached 96/116rem that stranding became the dominant visual
+   * problem on the site: individual bands looked like a 960px template
+   * dropped into a 1856px page.
+   *
+   * `reading` is the fix. The band runs the full default width — headings,
+   * rules and backgrounds all reach the gutters — while the text inside is
+   * held to its own measure by Prose or by a `max-inline-size` on the
+   * paragraph. Line length is protected without the section shrinking.
+   *
+   * Prefer `reading` for any band that sits inside a longer page. Keep
+   * `narrow` only where the entire route is one piece of running text:
+   * /legal/*, /news/[slug], /events/[slug], the join form.
+   */
+  container?: 'prose' | 'narrow' | 'reading' | 'default' | 'wide' | 'full';
   spacing?: 'compact' | 'default' | 'loose';
   /** id of the heading that names this section. Omit for unnamed bands. */
   labelledBy?: string;
@@ -57,10 +77,44 @@ const Wrapper = labelledBy ? 'section' : 'div';
   data-spacing={spacing === 'default' ? undefined : spacing}
   aria-labelledby={labelledBy}
 >
+  {/* `reading` resolves to the default container width — the band is full
+      width and the measure is enforced on the text inside it, not on the
+      band. It is a distinct prop value rather than an alias so that a future
+      reader can see which bands were deliberately made full width. */}
   <div
-    class:list={['container', reveal && 'reveal']}
-    data-width={container === 'default' ? undefined : container}
+    class:list={['container', 'container--' + container, reveal && 'reveal']}
+    data-width={container === 'default' || container === 'reading' ? undefined : container}
   >
     <slot />
   </div>
 </Wrapper>
+
+<style>
+  /* THE MEASURE SAFETY NET FOR `reading` BANDS.
+   *
+   * A `reading` band is full width, so its running text needs its own cap or
+   * lines stretch to 1856px and become unreadable — the failure the narrow
+   * container was preventing before it also shrank the heading.
+   *
+   * Most content already caps itself: Prose sets --measure-prose, and the
+   * page-level .lead / .statement / .opening classes set their own. This rule
+   * catches the rest — a bare <p>, <ul> or <ol> dropped straight into a band —
+   * so a page cannot silently ship 200-character lines.
+   *
+   * DIRECT CHILDREN ONLY. `>` is load-bearing: a paragraph inside a Grid cell,
+   * a card, a split column or a Figure caption is already constrained by its
+   * own container and must not be capped again, or every multi-column layout
+   * inside a reading band collapses to one narrow column of text.
+   *
+   * Headings are deliberately NOT capped here. They carry `text-wrap: balance`
+   * from the base typography and are short enough that the measure does not
+   * apply; capping them is what stranded them mid-screen in the first place.
+   *
+   * `:global()` on the child is required: the content comes through <slot/>
+   * from the calling page, so it carries that page's scope hash, not this
+   * component's. Without it the rule compiles to a selector that matches
+   * nothing and the safety net silently does nothing at all. */
+  .container--reading > :global(:is(p, ul, ol, dl)) {
+    max-inline-size: var(--measure-prose);
+  }
+</style>
