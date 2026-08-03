@@ -70,26 +70,30 @@ const handover = getPhoto('sacco/wufm-sacco-certificate-commercial-officer-2025.
   <Section labelledBy="status-heading" variant="sacco" reveal>
     <h2 id="status-heading">Where the SACCO stands</h2>
     <div class="split">
-      <Prose>
-        <p>
-          On 24 October 2025, WUFPA members received the WUFM SACCO certificate, with the
-          Mbarara City Commercial Officer.
-        </p>
-        <p>
-          Membership terms, savings products and lending criteria are being finalised. If you
-          are a WUFPA member and want to be told when the SACCO opens to savers, contact the
-          association and we will add you to the list.
-        </p>
-      </Prose>
-      <Figure
-        image={certificate.image}
-        alt={certificate.alt}
-        purpose="card"
-        ratio="landscape"
-        sizes="(min-width: 64rem) 28rem, 100vw"
-        {...certificate.caption ? { caption: certificate.caption } : {}}
-        {...certificate.dateNote ? { dateNote: certificate.dateNote } : {}}
-      />
+      <div class="reveal reveal--left" data-reveal-repeat>
+        <Prose>
+          <p>
+            On 24 October 2025, WUFPA members received the WUFM SACCO certificate, with the
+            Mbarara City Commercial Officer.
+          </p>
+          <p>
+            Membership terms, savings products and lending criteria are being finalised. If you
+            are a WUFPA member and want to be told when the SACCO opens to savers, contact the
+            association and we will add you to the list.
+          </p>
+        </Prose>
+      </div>
+      <div class="reveal reveal--right" data-reveal-repeat>
+        <Figure
+          image={certificate.image}
+          alt={certificate.alt}
+          purpose="card"
+          ratio="landscape"
+          sizes="(min-width: 64rem) 28rem, 100vw"
+          {...(certificate.caption ? { caption: certificate.caption } : {})}
+          {...(certificate.dateNote ? { dateNote: certificate.dateNote } : {})}
+        />
+      </div>
     </div>
   </Section>
 

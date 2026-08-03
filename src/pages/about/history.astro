@@ -5,6 +5,7 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Prose from '../../components/layout/Prose.astro';
 import Timeline from '../../components/content/Timeline.astro';
 import EstablishingShot from '../../components/content/EstablishingShot.astro';
+import StatementBand from '../../components/content/StatementBand.astro';
 import RelatedLinks from '../../components/content/RelatedLinks.astro';
 import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
@@ -247,6 +248,17 @@ const entries: TimelineEntry[] = [
       </p>
     </Prose>
   </Section>
+
+  {/* The arc of the whole page in one line, set dark between the origin and
+      the record. Both figures are from [P1] and appear verbatim elsewhere on
+      the site; nothing here is a new claim, it is the existing claim given the
+      scale the story earns. */}
+  <StatementBand
+    statement="Fourteen companies in 2017. More than three hundred production houses today."
+    source="WUFPA association profile"
+    headingId="growth-heading"
+    label="How WUFPA grew"
+  />
 
   <Section labelledBy="timeline-heading" variant="subtle" reveal>
     <h2 id="timeline-heading">The record</h2>

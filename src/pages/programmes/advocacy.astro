@@ -149,8 +149,9 @@ const sensitisation = [
 
   <Section labelledBy="representation-heading" reveal>
     <h2 id="representation-heading">Representation</h2>
+    {/* Text and photograph arrive from the sides they occupy. */}
     <div class="split">
-      <div>
+      <div class="reveal reveal--left" data-reveal-repeat>
         <p class="lead">
           Representing filmmakers’ interests on national and regional platforms is one of
           WUFPA’s five core objectives.
@@ -163,15 +164,17 @@ const sensitisation = [
           </p>
         </Prose>
       </div>
-      <Figure
-        image={representation.image}
-        alt={representation.alt}
-        purpose="card"
-        ratio="landscape"
-        sizes="(min-width: 56rem) 30rem, 100vw"
-        {...representation.caption ? { caption: representation.caption } : {}}
-        {...representation.dateNote ? { dateNote: representation.dateNote } : {}}
-      />
+      <div class="reveal reveal--right" data-reveal-repeat>
+        <Figure
+          image={representation.image}
+          alt={representation.alt}
+          purpose="card"
+          ratio="landscape"
+          sizes="(min-width: 56rem) 30rem, 100vw"
+          {...(representation.caption ? { caption: representation.caption } : {})}
+          {...(representation.dateNote ? { dateNote: representation.dateNote } : {})}
+        />
+      </div>
     </div>
   </Section>
 

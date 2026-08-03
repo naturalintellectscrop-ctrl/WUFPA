@@ -99,7 +99,7 @@ const broadcasters = [
   <Section labelledBy="group-heading" variant="subtle" reveal>
     <h2 id="group-heading">The Film Distributors Group</h2>
     <div class="split">
-      <div>
+      <div class="reveal reveal--left" data-reveal-repeat>
         <p class="lead">
           WUFPA organised Western Uganda’s film distributors and librarians to buy and promote
           local film content.
@@ -112,15 +112,17 @@ const broadcasters = [
           </p>
         </Prose>
       </div>
-      <Figure
-        image={distributors.image}
-        alt={distributors.alt}
-        purpose="card"
-        ratio="landscape"
-        sizes="(min-width: 56rem) 30rem, 100vw"
-        {...distributors.caption ? { caption: distributors.caption } : {}}
-        {...distributors.dateNote ? { dateNote: distributors.dateNote } : {}}
-      />
+      <div class="reveal reveal--right" data-reveal-repeat>
+        <Figure
+          image={distributors.image}
+          alt={distributors.alt}
+          purpose="card"
+          ratio="landscape"
+          sizes="(min-width: 56rem) 30rem, 100vw"
+          {...(distributors.caption ? { caption: distributors.caption } : {})}
+          {...(distributors.dateNote ? { dateNote: distributors.dateNote } : {})}
+        />
+      </div>
     </div>
   </Section>
 
