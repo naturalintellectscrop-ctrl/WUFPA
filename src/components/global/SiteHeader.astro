@@ -78,17 +78,18 @@ import { site } from '../../lib/site-config';
     z-index: var(--z-sticky);
     /* Shorter than the desktop bar. At 72px on a 360px-wide screen the header
        claims a disproportionate slice of the first viewport before any
-       content has been seen; 60px is still well clear of the 44px hit-area
+       content has been seen; 64px is still well clear of the 44px hit-area
        floor and reads as a considered mobile bar rather than a shrunk
-       desktop one. */
-    block-size: 60px;
+       desktop one. Raised from 60px to keep real margin around the larger
+       52px logo rather than the two nearly touching the header's edges. */
+    block-size: 64px;
     background-color: var(--surface-page);
     border-block-end: 1px solid var(--line-subtle);
     transition: block-size var(--duration-base) var(--ease-out);
   }
 
   .site-header.is-compact {
-    block-size: 52px;
+    block-size: 56px;
   }
 
   .site-header__bar {
@@ -106,13 +107,13 @@ import { site } from '../../lib/site-config';
   }
 
   .site-header__logo-img {
-    block-size: 46px;
+    block-size: 52px;
     inline-size: auto;
     transition: block-size var(--duration-base) var(--ease-out);
   }
 
   .is-compact .site-header__logo-img {
-    block-size: 40px;
+    block-size: 44px;
   }
 
   .site-header__actions {
@@ -127,11 +128,11 @@ import { site } from '../../lib/site-config';
 
   @media (min-width: 48rem) {
     .site-header {
-      block-size: 72px;
+      block-size: 76px;
     }
 
     .site-header.is-compact {
-      block-size: 60px;
+      block-size: 64px;
     }
 
     .site-header__bar {
@@ -139,11 +140,11 @@ import { site } from '../../lib/site-config';
     }
 
     .site-header__logo-img {
-      block-size: 56px;
+      block-size: 60px;
     }
 
     .is-compact .site-header__logo-img {
-      block-size: 50px;
+      block-size: 52px;
     }
   }
 
