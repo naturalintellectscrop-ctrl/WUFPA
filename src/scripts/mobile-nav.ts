@@ -40,8 +40,6 @@ function initMobileNav(): void {
   const trigger = document.querySelector<HTMLButtonElement>('[data-mobile-trigger]');
   const panel = document.querySelector<HTMLElement>('[data-mobile-panel]');
   const closeButton = document.querySelector<HTMLButtonElement>('[data-mobile-close]');
-  const iconOpen = document.querySelector<HTMLElement>('[data-mobile-icon-open]');
-  const iconClose = document.querySelector<HTMLElement>('[data-mobile-icon-close]');
   const label = document.querySelector<HTMLElement>('[data-mobile-trigger-label]');
   if (!trigger || !panel) return;
 
@@ -107,9 +105,11 @@ function initMobileNav(): void {
   }
 
   function setOpen(open: boolean): void {
+    // The one attribute driving both the semantics and the bar-to-X morph:
+    // MobileNav.astro's CSS reads this same `aria-expanded` value to animate
+    // the trigger's SVG, so there is exactly one flag for "is this open"
+    // rather than a class the script sets in parallel with the attribute.
     trigger?.setAttribute('aria-expanded', String(open));
-    iconOpen?.toggleAttribute('hidden', open);
-    iconClose?.toggleAttribute('hidden', !open);
     if (label) label.textContent = open ? 'Close menu' : 'Open menu';
 
     // The open panel is `position: fixed; inset: 0` at --z-modal, which

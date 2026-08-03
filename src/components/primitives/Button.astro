@@ -43,7 +43,19 @@ const {
 } = Astro.props;
 
 const Tag = href ? 'a' : 'button';
-const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' : '', className]
+/* Primary and inverse get the sweep-and-reveal treatment (see .btn__sweep
+   below); secondary and tertiary stay as plain colour-swap controls, since a
+   bordered or inline control filling with a solid dot reads as it becoming a
+   different kind of control rather than responding to the cursor. */
+const sweeps = variant === 'primary' || variant === 'inverse';
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  `btn--${size}`,
+  block ? 'btn--block' : '',
+  sweeps ? 'btn--sweep' : '',
+  className,
+]
   .filter(Boolean)
   .join(' ');
 ---
@@ -55,8 +67,19 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' 
   aria-disabled={disabled ? 'true' : undefined}
   {...rest}
 >
-  <span class="btn__label"><slot /></span>
-  {icon && <Icon name={icon} />}
+  {
+    sweeps && (
+      <>
+        <span class="btn__sweep" aria-hidden="true" />
+        <span class="btn__face btn__face--reveal" aria-hidden="true">
+          <slot />
+          <Icon name="arrow-right" />
+        </span>
+      </>
+    )
+  }
+  <span class="btn__label btn__face"><slot /></span>
+  {!sweeps && icon && <Icon name={icon} />}
 </Tag>
 
 <style>
@@ -125,14 +148,17 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' 
     scale: 0.98;
   }
 
-  /* The icon leads by a hair on hover — direction, not decoration. Only where
+  /* The icon leads by a hair on hover: direction, not decoration. Only where
      an icon is actually present, and only 2px: enough to read as intent,
-     nowhere near enough to detach from the label. */
-  .btn :global(svg) {
+     nowhere near enough to detach from the label. Scoped off `.btn--sweep`,
+     whose reveal face already carries its own arrow into the button on a
+     different transform (see .btn__face--reveal above); stacking this on
+     top of that one would move the arrow twice. */
+  .btn:not(.btn--sweep) :global(svg) {
     transition: translate var(--duration-fast) var(--ease-out);
   }
 
-  .btn:hover :global(svg) {
+  .btn:not(.btn--sweep):hover :global(svg) {
     translate: 2px 0;
   }
 
@@ -211,6 +237,106 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' 
   .btn--inverse:hover {
     background-color: var(--action-inverse-bg-hover);
     color: var(--action-inverse-text);
+  }
+
+  /* ── Sweep-and-reveal (primary + inverse) ─────────────────────────────
+     On hover: the plain label slides out and fades, a second label-plus-
+     arrow face slides in from the same edge to take its place, and a small
+     dot grows from that edge to cover the button, which is what gives the
+     incoming face's own colour (it sits above the dot in paint order). The
+     button's OWN background-colour hover transition still runs underneath,
+     so a slow click or a device that ignores the dot (forced-colors mode,
+     for instance) still gets the plain, already-shipped colour-swap. */
+  .btn--sweep {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .btn__face {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .btn--sweep .btn__label {
+    transition:
+      translate var(--duration-base) var(--ease-out),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  .btn--sweep:hover .btn__label {
+    translate: 0.75rem 0;
+    opacity: 0;
+  }
+
+  .btn__face--reveal {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    translate: -0.75rem 0;
+    opacity: 0;
+    color: inherit;
+    transition:
+      translate var(--duration-base) var(--ease-out),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  .btn--sweep:hover .btn__face--reveal {
+    translate: 0 0;
+    opacity: 1;
+  }
+
+  /* The growing dot. Starts as a small circle tucked in the leading corner,
+     the same corner the reveal face arrives from, and scales up past the
+     button's own diagonal so it fully covers the corners, not just the
+     inscribed circle. transform-origin stays put at that corner throughout,
+     so it reads as unfurling FROM the edge rather than growing from the
+     centre outward. */
+  .btn__sweep {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    translate: -50% -50%;
+    scale: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--action-primary-bg-active);
+    transition: scale var(--duration-base) var(--ease-out);
+  }
+
+  .btn--inverse .btn__sweep {
+    background-color: var(--action-inverse-bg-hover);
+  }
+
+  .btn--sweep:hover .btn__sweep {
+    scale: 20;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn--sweep .btn__label,
+    .btn__face--reveal,
+    .btn__sweep {
+      transition: none;
+    }
+
+    /* Reduced motion loses the sweep and the crossfade, not the outcome: the
+       reveal face and its arrow are still what the reader sees on hover,
+       appearing and disappearing instantly rather than sliding. */
+    .btn--sweep:hover .btn__label {
+      opacity: 0;
+    }
+
+    .btn--sweep:hover .btn__face--reveal {
+      opacity: 1;
+    }
+
+    .btn--sweep:hover .btn__sweep {
+      scale: 20;
+    }
   }
 
   /* aria-disabled rather than the disabled attribute: the control keeps its

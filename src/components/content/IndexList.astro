@@ -46,7 +46,7 @@ const { items, class: className } = Astro.props;
 <ol class:list={['index-list', className]} role="list">
   {
     items.map((item, i) => (
-      <li class="index-row reveal">
+      <li class:list={['index-row', 'reveal', i % 2 === 0 ? 'reveal--left' : 'reveal--right']}>
         <span class="index-row__number u-tabular" aria-hidden="true">
           {String(i + 1).padStart(2, '0')}
         </span>
@@ -90,6 +90,7 @@ const { items, class: className } = Astro.props;
     /* Optical alignment: the numeral's cap height sits with the title's,
        which a raw baseline match does not achieve at differing sizes. */
     padding-block-start: 0.08em;
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .index-row__title {
@@ -115,11 +116,21 @@ const { items, class: className } = Astro.props;
     background-color: var(--surface-subtle);
   }
 
+  .index-row:hover .index-row__number {
+    color: var(--text-accent);
+  }
+
   .index-row:hover .index-row__title a,
   .index-row__title a:focus-visible {
     color: var(--text-accent);
     text-decoration: underline;
     text-underline-offset: 0.15em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index-row__number {
+      transition: none;
+    }
   }
 
   .index-row__description {

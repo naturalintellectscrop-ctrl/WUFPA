@@ -56,8 +56,28 @@ function isActive(href: string): boolean {
   data-mobile-trigger
   hidden
 >
-  <span data-mobile-icon-open><Icon name="menu" /></span>
-  <span data-mobile-icon-close hidden><Icon name="close" /></span>
+  {/* One 3-line glyph that morphs into an X rather than swapping two separate
+      icons: the top and bottom bars rotate and slide to their crossed
+      position and the middle bar rotates in place, all keyed off the same
+      `aria-expanded` the button already carries for its accessible state, so
+      there is exactly one source of truth for "is this open" driving both
+      the semantics and the animation. */}
+  <svg
+    class="mobile-trigger__glyph"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path class="mobile-trigger__bar mobile-trigger__bar--top" d="M4 7h16" />
+    <path class="mobile-trigger__bar mobile-trigger__bar--mid" d="M4 12h16" />
+    <path class="mobile-trigger__bar mobile-trigger__bar--bottom" d="M4 17h16" />
+  </svg>
   <span class="u-visually-hidden" data-mobile-trigger-label>Open menu</span>
 </button>
 
@@ -147,9 +167,48 @@ function isActive(href: string): boolean {
     display: none !important;
   }
 
-  .mobile-trigger :global(svg) {
+  .mobile-trigger__glyph {
     width: 24px;
     height: 24px;
+    pointer-events: none;
+  }
+
+  /* Each bar rotates and slides to its half of the X independently, on its
+     own transform-origin, rather than the whole glyph rotating as one unit:
+     that keeps the crossing point fixed at the icon's own centre regardless
+     of stroke width. Two of the three easings deliberately overshoot past
+     their final angle before settling (a cubic-bezier with a y-value above
+     1), which is what makes the open state read as a snap into place rather
+     than a linear rotation. */
+  .mobile-trigger__bar {
+    transform-origin: center;
+    transition:
+      translate var(--duration-base) cubic-bezier(0.5, 0.85, 0.25, 1.1),
+      rotate var(--duration-base) cubic-bezier(0.5, 0.85, 0.25, 1.1);
+  }
+
+  .mobile-trigger__bar--mid {
+    transition-timing-function: cubic-bezier(0.5, 0.85, 0.25, 1.8);
+  }
+
+  .mobile-trigger[aria-expanded='true'] .mobile-trigger__bar--top {
+    translate: 0 5px;
+    rotate: 315deg;
+  }
+
+  .mobile-trigger[aria-expanded='true'] .mobile-trigger__bar--mid {
+    rotate: 45deg;
+  }
+
+  .mobile-trigger[aria-expanded='true'] .mobile-trigger__bar--bottom {
+    translate: 0 -5px;
+    rotate: 135deg;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-trigger__bar {
+      transition: none;
+    }
   }
 
   @media (min-width: 64rem) {

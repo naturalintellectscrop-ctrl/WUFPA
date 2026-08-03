@@ -57,7 +57,8 @@ const { frames, label, class: className } = Astro.props;
 
 <div class:list={['strip-wrap', className]} data-frame-sequence>
   <div class="strip" role="region" aria-label={label} tabindex="0" data-strip-track>
-    <ol class="strip__track" role="list">
+   <div class="strip__rail">
+    <ol class="strip__track" role="list" data-strip-original>
       {
         frames.map((frame, index) => (
           <li class:list={['frame-cell', index % 2 === 1 && 'frame-cell--wide']} data-frame-cell>
@@ -78,6 +79,42 @@ const { frames, label, class: className } = Astro.props;
         ))
       }
     </ol>
+    {/* A second, aria-hidden copy of the same frames, immediately after the
+        first. Continuous forward autoplay needs somewhere to scroll INTO once
+        it reaches the real last frame; without this duplicate the only way to
+        keep advancing is to jump backward to frame one, which reads as the
+        strip stopping and resetting rather than moving infinitely. The script
+        snaps the scroll position back to the equivalent point in the first
+        copy the instant the duplicate's own first frame is reached, so the
+        loop point is never visible. Screen readers and keyboard users only
+        ever reach the first copy: `aria-hidden` and `tabindex="-1"` remove the
+        clone from both the accessibility tree and the tab order. */}
+    <ol class="strip__track strip__track--clone" role="list" aria-hidden="true" data-strip-clone>
+      {
+        frames.map((frame, index) => (
+          <li
+            class:list={['frame-cell', index % 2 === 1 && 'frame-cell--wide']}
+            data-frame-cell-clone
+            tabindex="-1"
+          >
+            <div class="frame-cell__media">
+              <Picture
+                src={frame.image}
+                alt=""
+                formats={['avif', 'webp']}
+                widths={[400, 640, 900].filter((w) => w <= frame.image.width)}
+                sizes="(min-width: 64rem) 34rem, 78vw"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <p class="frame-cell__date">{frame.date}</p>
+            <p class="frame-cell__copy">{frame.copy}</p>
+          </li>
+        ))
+      }
+    </ol>
+   </div>
   </div>
 
   <div class="strip__controls">
@@ -143,6 +180,15 @@ const { frames, label, class: className } = Astro.props;
     background-repeat: no-repeat;
   }
 
+  /* Scroll-snap fights a continuously-scrolling marquee: the browser keeps
+     trying to snap the nearest frame back to the start of the port on every
+     frame, which turns smooth autoplay into a stutter. Set once
+     frame-sequence.ts confirms the marquee has actually started, so a
+     visitor without JavaScript keeps the plain snap-scroll behaviour. */
+  .strip.is-marquee {
+    scroll-snap-type: none;
+  }
+
   .strip::-webkit-scrollbar {
     display: none;
   }
@@ -154,12 +200,28 @@ const { frames, label, class: className } = Astro.props;
     outline-offset: 4px;
   }
 
+  /* Holds the real track and its clone side by side. This is the element
+     autoplay actually scrolls; .strip only clips and paints the sprocket
+     background. */
+  .strip__rail {
+    display: flex;
+  }
+
   .strip__track {
     display: flex;
+    flex: none;
     gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  /* The gap between the real track's last frame and the clone's first must
+     match the gap between any two frames, or the loop point shows as a visible
+     seam. Applied to the rail rather than baked into the clone's own margin so
+     it stays correct if --space-5 ever changes. */
+  .strip__track + .strip__track {
+    margin-inline-start: var(--space-5);
   }
 
   .frame-cell {
