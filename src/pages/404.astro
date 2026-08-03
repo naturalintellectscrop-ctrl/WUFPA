@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 
 /**
- * 404 — copy verbatim from docs/04 § 1.5.
+ * 404: copy verbatim from docs/04 § 1.5.
  *
  * WHY THIS IS AN SEO PAGE
  *
@@ -15,7 +15,7 @@ import Section from '../components/layout/Section.astro';
  * `noindex` is deliberate and is the one case where it is correct: the page
  * must be reachable and useful, but a search engine indexing "This page isn't
  * here" under WUFPA's brand would be actively harmful. The static host returns
- * a real HTTP 404 for this file — a soft 404 (200 with error copy) is what
+ * a real HTTP 404 for this file: a soft 404 (200 with error copy) is what
  * gets error pages indexed.
  *
  * The search route is deliberately absent from the recovery list: docs/04 § 1.5
@@ -25,7 +25,7 @@ import Section from '../components/layout/Section.astro';
 ---
 
 <BaseLayout
-  title="Page not found — WUFPA"
+  title="Page not found: WUFPA"
   description="The page you were looking for has moved or never existed. Find your sub-region, become a member, or return to the WUFPA homepage."
   noindex={true}
 >

@@ -1,7 +1,7 @@
 ---
 title: Accessibility statement
 standfirst: How accessible this website is, what we have done, what we know is not yet right, and how to tell us when something does not work for you.
-description: WUFPA's accessibility statement — our commitment, current conformance with WCAG 2.2 Level AA, known limitations and how to report a problem.
+description: WUFPA's accessibility statement, our commitment, current conformance with WCAG 2.2 Level AA, known limitations and how to report a problem.
 updated: 2026-07-27
 ---
 
@@ -14,8 +14,8 @@ turned off.
 This matters to us for three reasons.
 
 Our members use this site on small phones, in bright daylight, over slow and expensive mobile
-data. The work that makes a site accessible — real contrast, large touch targets, keyboard
-operability, pages that work without JavaScript — is the same work that makes it usable in
+data. The work that makes a site accessible (real contrast, large touch targets, keyboard
+operability, pages that work without JavaScript) is the same work that makes it usable in
 those conditions.
 
 WUFPA also seeks support from UNESCO's national commission, diplomatic missions and
@@ -27,7 +27,7 @@ cannot publish a website that excludes disabled people.
 ## The standard we are working to
 
 We are working to **WCAG 2.2 Level AA**, and we have adopted several Level AAA measures where
-they matter for our audience — including a minimum touch target of 44 by 44 pixels, body text
+they matter for our audience, including a minimum touch target of 44 by 44 pixels, body text
 of at least 17 pixels, and plain language, since English is a second or third language for many
 of our members.
 
@@ -35,7 +35,7 @@ of our members.
 
 ⟦WUFPA-075: this website is still being built, and the full manual accessibility audit has not
 yet been carried out. The conformance claim below must be written after that audit, and it must
-state the measured position — "fully conformant", or "partially conformant" with each exception
+state the measured position: "fully conformant", or "partially conformant" with each exception
 named. Do not publish a conformance claim that has not been tested. A candid statement is
 better than a false one, and a false one is checkable.
 
@@ -87,14 +87,14 @@ video without them.
 ## How we tested
 
 Automated accessibility checks run against every change to this website, and they cover the
-mechanical parts of the standard — heading order, missing alternative text, missing form
+mechanical parts of the standard: heading order, missing alternative text, missing form
 labels, contrast, and so on.
 
 We are conscious that **automated tools find roughly a third of accessibility problems**. They
 cannot tell us whether alternative text is actually helpful, whether the focus order makes
 sense, or whether a label means anything out of context. The manual testing planned before
-launch — keyboard-only navigation, screen readers on Windows, macOS, iOS and Android, 200% and
-400% zoom, high-contrast mode, and browsing with JavaScript disabled — is where conformance
+launch (keyboard-only navigation, screen readers on Windows, macOS, iOS and Android, 200% and
+400% zoom, high-contrast mode, and browsing with JavaScript disabled) is where conformance
 will actually be established.
 
 ⟦WUFPA-075: record the date the manual audit was carried out, and by whom, once it is done.⟧
@@ -102,10 +102,10 @@ will actually be established.
 ## Telling us about a problem
 
 If any part of this website does not work for you, we want to know. You do not need to explain
-the technical reason — just tell us the page and what happened.
+the technical reason, just tell us the page and what happened.
 
 ⟦Q3: WUFPA to supply the association email address for accessibility reports, and to commit to
-a response time — for example "we will reply within five working days". A statement that
+a response time, for example "we will reply within five working days". A statement that
 invites reports without giving a route to send them is not a statement, and a response
 commitment WUFPA cannot keep is worse than a longer one it can.⟧
 
@@ -113,7 +113,7 @@ You can also reach us at our head office on Mbaguta Street, Mbarara Shopping Mar
 City, Uganda.
 
 If you contact us about an accessibility problem and are not satisfied with our response,
-please tell us — we would rather hear it directly.
+please tell us: we would rather hear it directly.
 
 ## Review
 

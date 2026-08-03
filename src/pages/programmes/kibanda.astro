@@ -8,7 +8,7 @@ import Button from '../../components/primitives/Button.astro';
 import { meta } from '../../lib/page-meta';
 
 /**
- * /programmes/kibanda/ — docs/04 § 6.4, verbatim.
+ * /programmes/kibanda/: docs/04 § 6.4, verbatim.
  *
  * THE SHORTEST PROGRAMME PAGE, DELIBERATELY. docs/04 § 6.4 carries an explicit
  * instruction: the screening schedule, locations and how to host a screening
@@ -16,7 +16,7 @@ import { meta } from '../../lib/page-meta';
  * written. So this page states what is documented and stops.
  *
  * It does NOT pad the gap with a decorative band, a stock photograph or a
- * "coming soon" panel — docs/21 § 2.4 rules out all three, and docs/20's
+ * "coming soon" panel: docs/21 § 2.4 rules out all three, and docs/20's
  * first principle rules out inventing the missing content. A short page that
  * is entirely true is the correct output here.
  *
@@ -27,8 +27,8 @@ import { meta } from '../../lib/page-meta';
  * ART DIRECTION FOR A PAGE WITH NO PHOTOGRAPHS. Every other programme page is
  * carried by its archive; this one has none, and the honest response is to let
  * typography and white space do the work rather than to disguise the absence.
- * The initiative's governing sentence — films made in Western Uganda should be
- * watched in Western Uganda — is set at display scale as a standalone
+ * The initiative's governing sentence (films made in Western Uganda should be
+ * watched in Western Uganda) is set at display scale as a standalone
  * statement, because it is the whole argument and it is strong enough to hold
  * a band on its own. That is a deliberate composition, not a fallback: a short
  * page set confidently reads as considered, while the same page padded with
@@ -46,12 +46,12 @@ const crumbs = [
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
   <PageHeader
     title="The WUFPA Kibanda Initiative"
-    standfirst="A community film screening project bringing local films to towns, schools and rural communities across Western Uganda — promoting access, education and engagement."
+    standfirst="A community film screening project bringing local films to towns, schools and rural communities across Western Uganda, promoting access, education and engagement."
     crumbs={crumbs}
   />
 
   {/* The argument, set as a statement. No photograph exists for this
-      programme, so the type carries the band alone — at a scale that says
+      programme, so the type carries the band alone, at a scale that says
       this was a choice. */}
   <Section labelledBy="about-heading" container="reading" spacing="loose">
     <h2 id="about-heading" class="u-visually-hidden">About the initiative</h2>
@@ -108,7 +108,7 @@ const crumbs = [
 </BaseLayout>
 
 <style>
-  /* Display scale, tight leading, negative tracking — the page's one piece of
+  /* Display scale, tight leading, negative tracking: the page's one piece of
      typographic weight, standing in for the photograph it does not have. */
   .statement {
     margin: 0;

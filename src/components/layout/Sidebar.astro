@@ -1,18 +1,18 @@
 ---
 /**
- * Sidebar — a fixed-ish rail beside a fluid main column, collapsing on a
+ * Sidebar: a fixed-ish rail beside a fluid main column, collapsing on a
  * CONTENT-DRIVEN threshold rather than a viewport breakpoint.
  *
  * The collapse happens when the main column would drop below
- * --sidebar-content-min of the shared row — i.e. when the CONTENT stops
+ * --sidebar-content-min of the shared row, i.e. when the CONTENT stops
  * fitting, not when the screen crosses an arbitrary number. That is the
  * distinction WUFPA-015's acceptance criteria call out, and it is what lets the
  * same component sit inside a prose container and a full-width band without
  * either being special-cased.
  *
  * This is the primitive docs/21 section 12 leans on hardest. The /about/ page's
- * recomposition at 1280 — KeyFacts moving from interrupting the narrative to
- * accompanying it in a persistent rail — is a Sidebar, and nothing about it is
+ * recomposition at 1280 (KeyFacts moving from interrupting the narrative to
+ * accompanying it in a persistent rail) is a Sidebar, and nothing about it is
  * a media query.
  *
  * DOM ORDER IS READING ORDER. The rail is whichever slot is written first, so a

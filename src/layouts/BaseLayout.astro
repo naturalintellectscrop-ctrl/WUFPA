@@ -9,19 +9,19 @@ import { site } from '../lib/site-config';
 import type { JsonLd, CrumbInput, PageType } from '../lib/structured-data';
 
 /**
- * BaseLayout — the document shell every page renders inside.
+ * BaseLayout: the document shell every page renders inside.
  *
- * SkipLink, SiteHeader and SiteFooter are wired in for every page here — the
+ * SkipLink, SiteHeader and SiteFooter are wired in for every page here, the
  * global chrome trio (WUFPA-018 to 020) is now complete. SEO metadata and
  * structured data are handled by <Seo>, which this layout renders for every
- * route — so a page cannot omit them by forgetting, only by explicitly
+ * route, so a page cannot omit them by forgetting, only by explicitly
  * passing `noindex`.
  *
  * Source: docs/14_TECHNICAL_ARCHITECTURE.md section 4 · WUFPA-018 to 066
  */
 
 /* `| undefined` is explicit because tsconfig sets
-   `exactOptionalPropertyTypes` — see the note in Seo.astro. */
+   `exactOptionalPropertyTypes`, see the note in Seo.astro. */
 interface Props {
   title: string;
   description: string;
@@ -69,12 +69,12 @@ const {
         screen. Source Serif 4 is deliberately NOT preloaded: it sets article
         body copy, it is the larger of the two files, and body text rendering in
         the metric-matched Georgia fallback for a few hundred milliseconds is
-        not a problem — the fallback is tuned so nothing moves when it swaps.
+        not a problem: the fallback is tuned so nothing moves when it swaps.
         Preloading both would put them in competition for the same early
         bandwidth on a metered 3G connection, which is the audience this site is
         actually built for.
 
-        latin only. The latin-ext face must NOT be preloaded — it is fetched on
+        latin only. The latin-ext face must NOT be preloaded: it is fetched on
         demand via unicode-range and preloading it would spend 32 KB on almost
         every page to serve a character that appears on almost none. */}
     <link
@@ -100,7 +100,7 @@ const {
     />
 
     {/* Marks JavaScript as available. Set in <head> so there is no flash.
-        Note this does NOT gate the reveal animation — that uses `.js-reveal`,
+        Note this does NOT gate the reveal animation: that uses `.js-reveal`,
         applied by the reveal script only once its observer is attached, so a
         script failure can never leave content invisible. */}
     <script is:inline>
@@ -120,7 +120,7 @@ const {
         - It is progressive enhancement. Where the View Transition API is
           unsupported Astro falls back to an ordinary full page load; nothing
           is broken, the transition simply does not happen.
-        - It honours prefers-reduced-motion natively — Astro's own fallback
+        - It honours prefers-reduced-motion natively: Astro's own fallback
           skips the animation under that setting without any rule from us.
         - Every script in src/scripts/ was moved to `astro:page-load` for this,
           and each one now tears its own listeners down first. A client router
@@ -133,7 +133,7 @@ const {
   <body class={bodyClass}>
     <SkipLink />
 
-    {/* Persisted across navigations — the directive lives on the <header>
+    {/* Persisted across navigations: the directive lives on the <header>
         element inside SiteHeader.astro, because `transition:persist` applies to
         the element it is written on and a component tag is not one. The header
         keeps its compact-or-not state and any open panel, and its DOM node is
@@ -148,7 +148,7 @@ const {
     </main>
 
     {/* Persisted for the same reason as the header, and declared in the same
-        place — on the <footer> element inside SiteFooter.astro. It also means
+        place, on the <footer> element inside SiteFooter.astro. It also means
         the footer's own reveal does not replay on every navigation: it is
         chrome the reader has already seen, and re-animating it would draw
         attention to furniture rather than to the page that just arrived. */}
@@ -158,7 +158,7 @@ const {
         imported only by the component gallery, so on every real route the CSS
         in base/a11y.css animated nothing and the whole system was inert.
 
-        Costs nothing on pages that do not use it — initReveal() returns early
+        Costs nothing on pages that do not use it: initReveal() returns early
         when it finds no `.reveal` targets, before adding the class that lets
         CSS hide anything. `is:inline` is deliberately NOT used: this must be a
         deferred module, never render-blocking, on a metered connection. */}

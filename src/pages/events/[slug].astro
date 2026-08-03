@@ -13,7 +13,7 @@ import { eventSchema } from '../../lib/structured-data';
 import { derive, formatDates, machineDate } from '../../lib/events';
 
 /**
- * Event detail — a shareable URL per event, with Event structured data.
+ * Event detail: a shareable URL per event, with Event structured data.
  *
  * A cancelled event KEEPS this page. Deleting it breaks inbound links, and the
  * record of what was planned is itself worth publishing (docs/09 § 9.2).
@@ -48,7 +48,7 @@ const status = derive(event.data);
 const dateLabel = formatDates(event.data);
 
 /* The description states what and when, which is what a result snippet needs
-   to be useful for an event. Built from real fields only — an event with no
+   to be useful for an event. Built from real fields only: an event with no
    date says so rather than implying one. */
 const summary = `${event.data.title}${event.data.venue ? ` at ${event.data.venue}` : ''}. ${dateLabel}.`;
 const { title, description } = fromEntry(event.data.title, summary);
@@ -97,7 +97,7 @@ const startMachine = machineDate(event.data.startDate);
   />
 
   <Section container="prose">
-    {/* Status is never colour alone — the badge carries text (docs/16 § 8.1,
+    {/* Status is never colour alone: the badge carries text (docs/16 § 8.1,
         criterion 1.4.1). */}
     {
       /* `outline` for cancelled/postponed rather than an alert colour: the

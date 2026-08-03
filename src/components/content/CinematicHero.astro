@@ -4,7 +4,7 @@ import Button from '../primitives/Button.astro';
 import type { ImageMetadata } from 'astro';
 
 /**
- * CinematicHero — a full-viewport photograph with the headline set into its
+ * CinematicHero: a full-viewport photograph with the headline set into its
  * lower third, over a measured scrim.
  *
  * WHY THIS EXISTS ALONGSIDE Hero.astro. The split hero (text beside image) is
@@ -13,17 +13,17 @@ import type { ImageMetadata } from 'astro';
  * homepage's first job is to establish that before a sentence is read. A
  * photograph occupying half a column says "we have a picture"; a photograph
  * occupying the viewport says "this is what we do". Hero.astro is unchanged
- * and still correct for section and page openings — this is the home variant.
+ * and still correct for section and page openings; this is the home variant.
  *
  * TYPE SITS IN THE LOWER THIRD, NOT CENTRED. Centred type over a photograph is
  * the stock-hero arrangement and it fights the image for the same optical
  * space. Anchoring to the bottom lets the photograph's own subject occupy the
- * frame and gives the headline a floor to sit on — how a title card is set.
+ * frame and gives the headline a floor to sit on, the way a title card is set.
  *
  * THE SCRIM IS A CONTRACT, NOT A DECORATION. Text over an arbitrary photograph
  * is illegible unless something guarantees the contrast, and this component
  * cannot know what image a caller passes. The gradient below is therefore
- * measured against the worst realistic case — a pure white photograph — with
+ * measured against the worst realistic case (a pure white photograph), with
  * every stop that sits behind text computed, not estimated:
  *
  *   scrim 94% over white → white text 13.71:1 · --ink-300  7.89:1
@@ -36,7 +36,7 @@ import type { ImageMetadata } from 'astro';
  *
  * That last point is load-bearing and was learned the hard way: a first pass
  * here let the gradient reach 78% at the top of the text block, which puts
- * --text-muted-on-inverse at 4.57:1 — passing by 0.07 against a worst-case
+ * --text-muted-on-inverse at 4.57:1, passing by 0.07 against a worst-case
  * photograph, which is not a margin, it is luck. An earlier version of
  * EstablishingShot shipped exactly that mistake. Any change to these stops
  * must be re-measured, not eyeballed.
@@ -44,14 +44,14 @@ import type { ImageMetadata } from 'astro';
  * ALT IS ALWAYS MEANINGFUL. The headline does not describe the photograph, so
  * a screen-reader user needs the real description to receive the same trust
  * signal a sighted visitor gets for free. This is the one place the site
- * differs from ACA, which marks its hero decorative — ACA's hero is a
+ * differs from ACA, which marks its hero decorative: ACA's hero is a
  * landscape behind a motto, whereas every WUFPA photograph is evidence of a
  * specific event with specific people in it, and evidence is never decorative.
  */
 interface Props {
   headline: string;
   standfirst: string;
-  /** Small label above the headline — a place, a date, a category. */
+  /** Small label above the headline: a place, a date, a category. */
   eyebrow?: string;
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
@@ -131,11 +131,28 @@ if (widths.length === 0) widths.push(image.width);
     justify-content: flex-end;
     overflow: hidden;
     /* svh, not vh: on mobile browsers vh includes the retracting toolbar, so a
-       100vh hero is cut off on first paint — exactly when the impression is
-       made. Capped in rem so a tall desktop display does not turn the hero
-       into a full screen of empty photograph. */
-    min-block-size: min(88svh, 54rem);
+       100vh hero is cut off on first paint, exactly when the impression is
+       made. Held below full height on a phone: at a true 100svh the headline
+       sits so far down the screen that the reading order becomes photograph,
+       long scroll, then text: the opposite of a title card. 82svh leaves the
+       next section's heading peeking in as a promise of what follows, which
+       is the cinematic cue a full-bleed poster does not give on its own.
+       Capped in rem so a tall desktop display does not turn the hero into a
+       full screen of empty photograph. */
+    min-block-size: min(82svh, 54rem);
     background-color: var(--ink-900);
+  }
+
+  @media (min-width: 30rem) {
+    .chero {
+      min-block-size: min(86svh, 54rem);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .chero {
+      min-block-size: min(88svh, 54rem);
+    }
   }
 
   .chero__media,
@@ -152,7 +169,7 @@ if (widths.length === 0) widths.push(image.width);
   }
 
   /* Dense through the text column, easing only above it. See the contrast
-     measurements in the component comment — these stops are load-bearing. */
+     measurements in the component comment; these stops are load-bearing. */
   .chero__scrim {
     background-image: linear-gradient(
       to top,
@@ -166,19 +183,26 @@ if (widths.length === 0) widths.push(image.width);
 
   .chero__body {
     inline-size: 100%;
-    padding-block: var(--space-9) var(--space-8);
+    /* Comfortable, asymmetric margins: less air above the text than below it,
+       so the block reads as resting on a floor rather than centred in a gap. */
+    padding-block: var(--space-6) var(--space-7);
   }
 
   .chero__inner {
     max-inline-size: 60rem;
   }
 
+  /* A dedicated mobile scale, not the desktop sizes turned down. The eyebrow
+     drops out of uppercase tracking below --bp-sm; wide letter-spacing on a
+     360px line is what causes the label to wrap into two short lines and
+     read as clutter above the headline. */
   .chero__eyebrow {
-    margin: 0 0 var(--space-4);
+    margin: 0 0 var(--space-3);
+    max-inline-size: 24ch;
     font-family: var(--font-ui);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: var(--tracking-normal);
     text-transform: uppercase;
     color: var(--text-muted-on-inverse);
   }
@@ -186,7 +210,12 @@ if (widths.length === 0) widths.push(image.width);
   .chero__headline {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-hero);
+    /* Own clamp rather than --text-hero: the token's floor (42px) wraps a
+       long headline onto four or five lines on a 360px phone, which reads as
+       a paragraph rather than a title card. Held low enough here that a
+       ~50-character sentence sets in three lines at the narrowest supported
+       width. */
+    font-size: clamp(1.5rem, 1.1rem + 3.6vw, 2rem);
     font-weight: var(--weight-bold);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
@@ -195,19 +224,43 @@ if (widths.length === 0) widths.push(image.width);
   }
 
   .chero__standfirst {
-    margin: var(--space-6) 0 0;
-    max-inline-size: 46ch;
+    margin: var(--space-4) 0 0;
+    max-inline-size: 42ch;
     font-family: var(--font-body);
-    font-size: var(--text-lg);
-    line-height: var(--leading-relaxed);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
     color: var(--text-muted-on-inverse);
   }
 
   .chero__actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-7);
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-block-start: var(--space-6);
+  }
+
+  .chero__actions :global(.btn) {
+    inline-size: 100%;
+  }
+
+  @media (min-width: 30rem) {
+    .chero__headline {
+      font-size: clamp(2.75rem, 2rem + 3vw, 3.25rem);
+    }
+
+    .chero__standfirst {
+      font-size: var(--text-lg);
+      max-inline-size: 46ch;
+    }
+
+    .chero__actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .chero__actions :global(.btn) {
+      inline-size: auto;
+    }
   }
 
   @media (min-width: 64rem) {
@@ -215,8 +268,23 @@ if (widths.length === 0) widths.push(image.width);
       padding-block: var(--space-10) var(--space-9);
     }
 
+    .chero__eyebrow {
+      max-inline-size: none;
+      font-size: var(--text-sm);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .chero__headline {
+      font-size: var(--text-hero);
+    }
+
     .chero__standfirst {
       font-size: var(--text-xl);
+    }
+
+    .chero__actions {
+      gap: var(--space-4);
+      margin-block-start: var(--space-7);
     }
   }
 

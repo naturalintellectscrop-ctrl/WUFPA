@@ -33,26 +33,40 @@ interface Props {
 const { stats, note, class: className } = Astro.props;
 ---
 
-<div class:list={['ledger', className]}>
+<div class:list={['ledger', className]} data-ledger>
   <ul class="ledger__list" role="list">
     {
-      stats.map((stat) => (
-        <li class="ledger__row">
-          <span class="ledger__figure u-tabular" aria-hidden="true">
-            {stat.figure}
-          </span>
-          <span class="ledger__label" aria-hidden="true">
-            {stat.label}
-          </span>
-          <span class="u-visually-hidden">
-            {stat.figure} {stat.label}
-          </span>
-        </li>
-      ))
+      stats.map((stat) => {
+        // Only a bare integer string is a genuine count to animate from
+        // zero — "300+" carries a suffix a rising number would strip
+        // mid-animation, and a non-numeric figure has nothing to count.
+        const isCountable = /^\d+$/.test(stat.figure);
+        return (
+          <li class="ledger__row">
+            <span
+              class="ledger__figure u-tabular"
+              aria-hidden="true"
+              data-ledger-figure={isCountable ? stat.figure : undefined}
+            >
+              {isCountable ? '0' : stat.figure}
+            </span>
+            <span class="ledger__label" aria-hidden="true">
+              {stat.label}
+            </span>
+            <span class="u-visually-hidden">
+              {stat.figure} {stat.label}
+            </span>
+          </li>
+        );
+      })
     }
   </ul>
   {note && <p class="ledger__note">{note}</p>}
 </div>
+
+<script>
+  import '../../scripts/counter';
+</script>
 
 <style>
   /* Base: a stacked ledger, each figure on its own line with a hairline above.

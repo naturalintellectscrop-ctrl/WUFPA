@@ -1,6 +1,6 @@
 {
   "$comment": [
-    "THE SANCTIONED BREAKPOINT LADDER — the single source of truth for every",
+    "THE SANCTIONED BREAKPOINT LADDER: the single source of truth for every",
     "media-query threshold in this codebase.",
     "",
     "Why this file exists: a CSS custom property cannot appear in a media query",
@@ -13,7 +13,7 @@
     "scripts/check-framework.mjs (WUFPA-084, guard #3) reads this file and fails",
     "the build on any @media threshold not listed in `sanctioned` or",
     "`transitional`. Keep this file, src/styles/tokens/primitives.css and",
-    "docs/07 section 5.1 in step — changing one without the others is exactly the",
+    "docs/07 section 5.1 in step, changing one without the others is exactly the",
     "drift this file exists to stop."
   ],
 
@@ -34,7 +34,7 @@
         "src/pages/events/index.astro",
         "src/pages/news/[...page].astro"
       ],
-      "why": "All three are card grids going one-up to two-up. They should not be media queries at all — the intrinsic `.grid` primitive in global.css (repeat(auto-fit, minmax(...))) already does this by available space rather than viewport, which is what docs/21 section 12 means by 'recompose, don't resize'. Left in place deliberately: refactoring them belongs to WUFPA-015 (with the page-level ones owned by WUFPA-050 and WUFPA-052), not to WUFPA-080, and silently rewriting three components under a token task would blur exactly the boundaries this queue keeps sharp.",
+      "why": "All three are card grids going one-up to two-up. They should not be media queries at all: the intrinsic `.grid` primitive in global.css (repeat(auto-fit, minmax(...))) already does this by available space rather than viewport, which is what docs/21 section 12 means by 'recompose, don't resize'. Left in place deliberately: refactoring them belongs to WUFPA-015 (with the page-level ones owned by WUFPA-050 and WUFPA-052), not to WUFPA-080, and silently rewriting three components under a token task would blur exactly the boundaries this queue keeps sharp.",
       "removeUnder": "WUFPA-015",
       "expected": "empty"
     }
@@ -42,6 +42,6 @@
 
   "notes": {
     "unusedButSanctioned": "--bp-xl and --bp-2xl currently have no call sites. That is fine and is NOT drift: the ladder is a sanctioned vocabulary, not a usage record. The guard errors on unsanctioned values, never on unused sanctioned ones.",
-    "maxWidthQueries": "docs/07 section 5.1 states mobile-first, min-width only. Two max-width queries exist (Breadcrumb.astro truncation, Button.astro block-at-small) — both are genuine narrow-viewport exceptions rather than a desktop-first layout, and both use sanctioned values."
+    "maxWidthQueries": "docs/07 section 5.1 states mobile-first, min-width only. Two max-width queries exist (Breadcrumb.astro truncation, Button.astro block-at-small); both are genuine narrow-viewport exceptions rather than a desktop-first layout, and both use sanctioned values."
   }
 }

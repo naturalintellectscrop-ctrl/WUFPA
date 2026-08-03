@@ -18,6 +18,6 @@ source:
 WUFPA was registered in 2017 by fourteen production companies from Ankole and Kigezi, and the
 association's head office remains on Mbaguta Street in Mbarara City.
 
-Sensitisation meetings across the Ankole districts — Ibanda, Kazo, Kiruhura, Kamwengye and
-Kitagwenda — are part of how the association grew from those fourteen companies to more than
+Sensitisation meetings across the Ankole districts (Ibanda, Kazo, Kiruhura, Kamwengye and
+Kitagwenda) are part of how the association grew from those fourteen companies to more than
 three hundred.

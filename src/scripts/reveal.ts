@@ -100,8 +100,10 @@ export function initReveal(): void {
     if (parent) {
       const index = seenPerParent.get(parent) ?? 0;
       seenPerParent.set(parent, index + 1);
-      // Capped at 5 so a long list never becomes a queue.
-      if (index > 0 && index < 5) {
+      // Capped at 6 so a long list never becomes a queue. Raised from 5 to 6
+      // for IndexList's six programme rows (WUFPA-093) — a cap that clipped
+      // the last of exactly six items read as an off-by-one, not a limit.
+      if (index > 0 && index < 6) {
         const delay = `${index * step}ms`;
         /* `reveal--letter` transitions its CHILDREN, not itself — the clip
            lives on the wrapper so the type can rise out from under it. Setting

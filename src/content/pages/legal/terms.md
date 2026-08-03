@@ -1,7 +1,7 @@
 ---
 title: Terms of use
 standfirst: The terms on which WUFPA offers this website, what you may do with what you find here, and the limits of what we can promise.
-description: The terms of use for the Western Uganda Film Producers Association website — permitted use, copyright, accuracy and the limits of our liability.
+description: The terms of use for the Western Uganda Film Producers Association website, permitted use, copyright, accuracy and the limits of our liability.
 updated: 2026-07-27
 ---
 
@@ -21,7 +21,7 @@ Uganda can take part.
 
 It is an **information and enquiry** site. It has no user accounts, no login, no payment
 facility and no online shop. Nothing on this site is an offer to sell anything, and no
-membership is granted by this website — a membership application is an enquiry, and it is
+membership is granted by this website: a membership application is an enquiry, and it is
 answered by a person.
 
 ## Using this website
@@ -51,8 +51,8 @@ of our association at WUFPA events.
 
 Please do not reuse a photograph of a person from this site without asking us first. Consent
 to appear on WUFPA's own website is not consent to appear anywhere else, and we hold that
-permission on behalf of our members. If you would like to use an image — for a news article,
-a funding application or a report — contact us and we will tell you whether we are able to
+permission on behalf of our members. If you would like to use an image (for a news article,
+a funding application or a report), contact us and we will tell you whether we are able to
 grant it.
 
 Logos and names of other organisations shown on this site belong to those organisations and
@@ -74,7 +74,7 @@ than leave it standing.
 
 ## Links to other websites
 
-We link to other organisations — partners, funders, festivals, broadcasters and regulators —
+We link to other organisations (partners, funders, festivals, broadcasters and regulators)
 where it is useful to do so. We do not control those websites and we are not responsible for
 their content, their accuracy or their privacy practices. A link is not an endorsement of
 everything that organisation does.

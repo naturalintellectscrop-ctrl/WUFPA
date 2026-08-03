@@ -85,9 +85,9 @@ a court or a regulator.
 
 ## How long we keep it
 
-⟦Q3: WUFPA to confirm a retention period. State it as a definite period — for example
+⟦Q3: WUFPA to confirm a retention period. State it as a definite period, for example
 "membership enquiries are kept for 24 months from your last contact with us, and then
-deleted" — and make sure it matches what actually happens in practice. Do not publish a
+deleted", and make sure it matches what actually happens in practice. Do not publish a
 period WUFPA cannot keep to.⟧
 
 Where you ask us to delete your details, we will do so as described below, unless we are
@@ -101,7 +101,7 @@ There are no advertising pixels, no session recording, no heatmaps and no third-
 marketing tags anywhere on this site.
 
 ⟦Q3/WUFPA-012: if a cookieless analytics service is added before launch, name it here and
-state plainly what it measures — page views and referring sites, no personal data and no
+state plainly what it measures: page views and referring sites, no personal data and no
 cookies. If WUFPA later requires an analytics tool that does set cookies, this notice must be
 updated and a consent banner added before that tool goes live.⟧
 
@@ -121,7 +121,7 @@ Exercising any of these rights is free, and we will not treat you differently fo
 
 ## How to ask us to delete your data
 
-⟦Q3: WUFPA to supply the named route for data requests — an association email address, and
+⟦Q3: WUFPA to supply the named route for data requests: an association email address, and
 the role of the person responsible for answering them. This is a requirement of the Act, not
 a convenience: a privacy notice that does not tell people how to exercise their rights does
 not do its job.
@@ -145,7 +145,7 @@ delete it.
 
 ## Links to other websites
 
-Some pages link to other organisations — partners, funders, festivals and regulators. Those
+Some pages link to other organisations (partners, funders, festivals and regulators). Those
 websites have their own privacy notices, and we are not responsible for how they handle your
 data.
 
@@ -159,5 +159,5 @@ at the top of this page. Where a change is significant, we will say so.
 > **This is a draft prepared from WUFPA's own documentation. It must be reviewed and approved
 > by WUFPA, and checked by a Ugandan legal advisor familiar with the Data Protection and
 > Privacy Act, 2019, before it is relied upon or before any form on this site goes live.**
-> The ⟦Q3⟧ items above are unanswered questions, not oversights — each one names what WUFPA
+> The ⟦Q3⟧ items above are unanswered questions, not oversights: each one names what WUFPA
 > needs to decide.

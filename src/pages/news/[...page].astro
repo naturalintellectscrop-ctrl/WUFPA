@@ -67,7 +67,7 @@ const schemas = page.data.map((article) =>
    indexable because it IS the /news/ landing page. */
 const isFirstPage = page.currentPage === 1;
 
-const pageTitle = isFirstPage ? title : `News — page ${page.currentPage} — WUFPA`;
+const pageTitle = isFirstPage ? title : `News, page ${page.currentPage} · WUFPA`;
 ---
 
 <BaseLayout
@@ -80,7 +80,7 @@ const pageTitle = isFirstPage ? title : `News — page ${page.currentPage} — W
 >
   <PageHeader
     title="News"
-    standfirst="Updates from WUFPA — programmes, partnerships, competitions and members."
+    standfirst="Updates from WUFPA: programmes, partnerships, competitions and members."
     crumbs={[{ label: 'News' }]}
   />
 

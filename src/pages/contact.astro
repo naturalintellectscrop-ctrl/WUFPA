@@ -12,22 +12,22 @@ import { site } from '../lib/site-config';
 import type { SelectOption } from '../lib/types';
 
 /**
- * /contact/ — docs/04 § 15, form spec at § 15.1.
+ * /contact/: docs/04 § 15, form spec at § 15.1.
  *
  * Experience intent (docs/21 § 2.3): "Supported · Comfortable reaching out ·
  * Connected to a real organisation." The mechanism is the head office
- * address and the routing select — a visitor can see there is a physical
+ * address and the routing select: a visitor can see there is a physical
  * place and that their message will reach a specific person rather than an
  * inbox.
  *
- * ⟦Q3⟧ — NO EMAIL, NO TELEPHONE. The profile lists an address and a number,
+ * ⟦Q3⟧: NO EMAIL, NO TELEPHONE. The profile lists an address and a number,
  * but docs/02 § 4 records that number as the President's personal mobile.
  * Publishing it would expose an individual (docs/01 § 7, C5) and Uganda's
  * Data Protection and Privacy Act, 2019 applies. The form is therefore the
  * published contact route, which is what a contact form is for; the postal
  * address is published because it is the association's own.
  *
- * ⟦Q9⟧ — no "Follow us" section. The profile names Facebook, WhatsApp and
+ * ⟦Q9⟧: no "Follow us" section. The profile names Facebook, WhatsApp and
  * YouTube but supplies no URLs, and dead social icons are worse than none
  * (docs/08 § 5's SocialLinks contract: renders nothing when no URL is
  * configured).
@@ -40,7 +40,7 @@ const subRegions: SelectOption[] = [
   ...site.subRegions.map((region) => ({ value: region.key, label: region.name })),
 ];
 
-/* docs/04 § 15.1 — the five routing options. */
+/* docs/04 § 15.1: the five routing options. */
 const topics: SelectOption[] = [
   { value: 'membership', label: 'Membership' },
   { value: 'partnership', label: 'Partnership' },
@@ -58,7 +58,7 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs} pageType="ContactPage">
   <PageHeader
     title="Contact WUFPA"
-    standfirst="Send us a message and it will reach the right person — a coordinator, the membership officer, or the executive, depending on what you are writing about."
+    standfirst="Send us a message and it will reach the right person: a coordinator, the membership officer, or the executive, depending on what you are writing about."
     crumbs={crumbs}
   />
 

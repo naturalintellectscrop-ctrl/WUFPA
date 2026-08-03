@@ -5,20 +5,20 @@
  *
  * Two families, two jobs: Archivo carries the interface and display type,
  * Source Serif 4 carries long-form reading. The site has two genuinely
- * different reading modes — scanning an interface, and reading 800 words about
- * copyright advocacy — and one typeface optimised for both is a compromise in
+ * different reading modes: scanning an interface, and reading 800 words about
+ * copyright advocacy, and one typeface optimised for both is a compromise in
  * both.
  *
  * ── SELF-HOSTED, ZERO THIRD-PARTY (WUFPA-014) ──────────────────────────────
  *
  * Both families are variable WOFF2, served from this origin. Nothing is
- * requested from fonts.googleapis.com or fonts.gstatic.com — that would be a
+ * requested from fonts.googleapis.com or fonts.gstatic.com, as that would be a
  * render-blocking cross-origin request on a metered mobile connection (R9,
  * constraint C1) and a privacy exposure for the reader.
  *
  * WHAT ACTUALLY DOWNLOADS. Four files exist; two load. The latin-ext faces
  * carry U+0100–024F and are fetched ONLY if a character in that range appears
- * on the page — that is what unicode-range is for. Baseline cost is therefore
+ * on the page: that is what unicode-range is for. Baseline cost is therefore
  * Archivo latin (34.1 KB) + Source Serif 4 latin (49.6 KB) = 83.7 KB, inside
  * the 90 KB budget, and latin-ext is available at no cost until something
  * needs it. It is kept because Luganda's ŋ (U+014B) sits in Latin Extended-A;
@@ -38,7 +38,7 @@
 
 /* ── FALLBACK METRIC OVERRIDES ────────────────────────────────────────────
    These two faces are what make font-display: swap safe. Without them the swap
-   reflows every line box on the page and CLS is charged for it — which is why
+   reflows every line box on the page and CLS is charged for it, which is why
    WUFPA-014's acceptance criteria name "CLS from font swap = 0" specifically.
 
    EVERY NUMBER BELOW WAS MEASURED, not looked up. Extracted from the actual
@@ -59,7 +59,7 @@
      Source Serif  asc 1.036 / 0.98670 = 105.00%  desc 0.335 / 0.98670 = 33.95%
 
    ⚠ MEASURED AGAINST DESKTOP WINDOWS FACES ONLY. The primary audience is a
-   mid-range Android, where the real fallback is Roboto — which was not present
+   mid-range Android, where the real fallback is Roboto, which was not present
    on the build machine and so was NOT measured. It is not tuned here and must
    not be claimed as such. The mismatch is expected to be small (Archivo's
    x-height of 0.526 em is close to Roboto's), but "expected to be small" is an
@@ -87,7 +87,7 @@
 /* ── THE REAL FACES ──────────────────────────────────────────────────────
    One @font-face per family per unicode-range. font-weight carries the full
    variable axis, so 400/500/600/700/900 all come from one file and
-   font-synthesis-weight: none below is finally telling the truth — before
+   font-synthesis-weight: none below is finally telling the truth: before
    WUFPA-014 it suppressed synthesis for a font that was not there, which meant
    weight requests silently snapped to whatever static weights the system face
    happened to ship. */
@@ -277,7 +277,7 @@ table,
   margin-block-start: var(--space-2);
 }
 
-/* Eyebrow label — the only permitted use of all-caps.
+/* Eyebrow label, the only permitted use of all-caps.
    Caps reduce legibility and are announced letter-by-letter by some screen
    readers, so they never appear in body copy. */
 .eyebrow {

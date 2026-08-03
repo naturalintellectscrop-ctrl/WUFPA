@@ -34,7 +34,7 @@ export const site = {
   legalName: 'Western Uganda Film Producers Association Limited',
   shortName: 'WUFPA',
   /** Appended to every page title except the homepage. */
-  titleSuffix: ' — WUFPA',
+  titleSuffix: ' · WUFPA',
   /** Organisational strapline [P3]. NOT the logo tagline — see docs/03 section 4. */
   strapline: 'Telling our stories that transform our communities.',
 

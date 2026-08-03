@@ -9,11 +9,11 @@ import { eventSchema } from '../../lib/structured-data';
 import { derive, formatDates, sortForDisplay } from '../../lib/events';
 
 /**
- * Events index — upcoming and past, split by date-derived status.
+ * Events index: upcoming and past, split by date-derived status.
  *
  * PAST EVENTS ARE AN ASSET, NOT CLUTTER (docs/09 § 9.4). They stay published
  * permanently: they are the evidence base for the programme pages, and an
- * association that deletes its past looks younger than it is — WUFPA's age is
+ * association that deletes its past looks younger than it is: WUFPA's age is
  * one of its strongest arguments.
  *
  * Nothing here reads a hand-typed status. Everything comes from `derive()`, so
@@ -83,7 +83,7 @@ const card = (event: (typeof upcoming)[number]) => {
     {
       upcoming.length === 0 ? (
         /* Verbatim from docs/04 § 13.3. Honest, and does not make the site
-           look abandoned — which "No events" alone would. */
+           look abandoned, which "No events" alone would. */
         <p class="empty">
           No events are scheduled at the moment. Past events are below, and new events are
           announced in our <a href="/news/">news</a>.
@@ -105,7 +105,7 @@ const card = (event: (typeof upcoming)[number]) => {
       <Section variant="subtle" labelledBy="past-heading">
         <h2 id="past-heading">Past events</h2>
         <p class="section-note">
-          WUFPA's events stay published permanently — they are the record of what the
+          WUFPA's events stay published permanently: they are the record of what the
           association has done.
         </p>
 

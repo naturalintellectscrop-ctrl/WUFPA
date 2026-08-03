@@ -25,7 +25,7 @@ export const GET: APIRoute = () => {
   const manifest = {
     name: site.name,
     short_name: site.shortName,
-    description: `${site.legalName} — training, copyright advocacy, distribution and finance for filmmakers across ${site.regionName}.`,
+    description: `${site.legalName}: training, copyright advocacy, distribution and finance for filmmakers across ${site.regionName}.`,
     start_url: '/',
     scope: '/',
     // Deliberately not `standalone`: this is a website, and hiding the URL bar

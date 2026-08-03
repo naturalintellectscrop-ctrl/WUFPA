@@ -5,7 +5,7 @@ import Disclosure from '../content/Disclosure.astro';
 import { primaryNav, becomeAMember } from '../../lib/nav-config';
 
 /**
- * MobileNav — full navigation on small screens (docs/08 section 4).
+ * MobileNav: full navigation on small screens (docs/08 section 4).
  *
  * Self-contained: renders both its own trigger and its own panel, per the
  * component's documented anatomy ("Trigger button → full-screen panel →
@@ -14,28 +14,28 @@ import { primaryNav, becomeAMember } from '../../lib/nav-config';
  *
  * The prototype's mobile menu had no accessible name (a bare "☰"), no
  * aria-expanded, no aria-controls, no focus trap, no Escape handling and no
- * focus return — unusable by keyboard, confusing by screen reader (X22).
+ * focus return, unusable by keyboard, confusing by screen reader (X22).
  * Every one of those is addressed here or in src/scripts/mobile-nav.ts.
  *
- * VISIBLE BY DEFAULT, JS OPTS IN TO THE DIALOG BEHAVIOUR — the same contract
+ * VISIBLE BY DEFAULT, JS OPTS IN TO THE DIALOG BEHAVIOUR: the same contract
  * src/scripts/reveal.ts establishes: "Content is visible by default. This
- * script opts in to [hiding it] — and only AFTER [it] has successfully
+ * script opts in to [hiding it], and only AFTER [it] has successfully
  * attached." Concretely: the panel here has no `hidden` attribute and no
  * `role="dialog"`/`aria-modal` in the server-rendered markup, and the
- * trigger button itself starts `hidden` — there being no javascript-free way
+ * trigger button itself starts `hidden`, there being no javascript-free way
  * to open a closed panel, a trigger that does nothing is worse than no
  * trigger (the exact class of dead-control failure this component exists to
  * fix). `src/scripts/mobile-nav.ts` promotes the panel to a real modal
  * dialog, hides it, and reveals the trigger, ONLY once it has found both
  * elements and wired every listener. A user with JavaScript disabled or
- * blocked simply sees the full navigation as a plain, always-visible list —
+ * blocked simply sees the full navigation as a plain, always-visible list,
  * strictly more usable than a hamburger that opens nothing.
  *
  * ACCORDION, NOT ALWAYS-EXPANDED. Items with children (About, Programmes)
- * render through Disclosure (docs/08 section 21) — native <details>/
+ * render through Disclosure (docs/08 section 21): native <details>/
  * <summary>, so open/close state, keyboard support and screen-reader
  * semantics come for free and it works with JavaScript disabled regardless
- * of the dialog upgrade above. One level only, per docs/08 section 4 —
+ * of the dialog upgrade above. One level only, per docs/08 section 4:
  * Disclosure's own children are plain links, never a second Disclosure.
  *
  * Source: docs/08 section 4 · WUFPA-019
@@ -65,13 +65,13 @@ function isActive(href: string): boolean {
   {/*
     A close control INSIDE the panel, not just the header's trigger. The
     panel is `position: fixed; inset: 0` at `--z-modal` once open, which
-    paints over the sticky header at `--z-sticky` underneath it — the
+    paints over the sticky header at `--z-sticky` underneath it, the
     header's own trigger button is still in the DOM and still reachable by
     keyboard, but is not visible or tappable, which is a real bug a first
     version of this component shipped with (WUFPA-019 follow-up, caught by
     testing the actual rendered page rather than only the built HTML). This
     button starts `hidden` and is revealed by mobile-nav.ts alongside the
-    trigger, for the same reason the trigger itself starts hidden — nothing
+    trigger, for the same reason the trigger itself starts hidden: nothing
     to close before JS has wired up how to close it.
   */}
   <button type="button" class="mobile-nav__close" data-mobile-close hidden>
@@ -158,7 +158,7 @@ function isActive(href: string): boolean {
     }
   }
 
-  /* Default (no-JS) state: a plain in-flow block, visible, not an overlay —
+  /* Default (no-JS) state: a plain in-flow block, visible, not an overlay,
      see the component comment above. */
   .mobile-nav {
     padding: var(--space-6) var(--gutter);
@@ -175,12 +175,12 @@ function isActive(href: string): boolean {
   }
 
   /* Upgraded to a full-screen dialog only once mobile-nav.ts has confirmed
-     it can drive open/close — see the component comment above for why this
+     it can drive open/close, see the component comment above for why this
      is gated on a script-set class rather than the page-wide `.js` flag
      BaseLayout sets (that only proves an inline script ran, not that this
      module has loaded and wired its listeners yet). Two rows: the
-     scrollable link list, and the CTA pinned as a non-shrinking flex child —
-     not `position: sticky` inside the scroll container — so it is reachable
+     scrollable link list, and the CTA pinned as a non-shrinking flex child,
+     not `position: sticky` inside the scroll container, so it is reachable
      without scrolling regardless of how long the link list ever grows
      (docs/08 section 4). */
   :global(html.js-mobile-nav) .mobile-nav {
@@ -226,15 +226,26 @@ function isActive(href: string): boolean {
   .mobile-nav__list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 0;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  /* Disclosure draws its own border-block-end, so the rule here only targets
+     the plain-link rows to avoid a doubled line between accordion items. */
+  .mobile-nav__list > li:has(> .mobile-nav__link) {
+    border-block-end: 1px solid var(--line-subtle);
+  }
+
+  .mobile-nav__list > li:first-child {
+    border-block-start: 1px solid var(--line-subtle);
+  }
+
   .mobile-nav__link {
-    display: block;
-    padding-block: var(--space-3);
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-4);
     font-family: var(--font-ui);
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);

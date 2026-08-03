@@ -4,11 +4,11 @@ import { footerColumns, legalLinks } from '../../lib/nav-config';
 import { site } from '../../lib/site-config';
 
 /**
- * SiteFooter — secondary navigation, legal identity, contact, social
+ * SiteFooter: secondary navigation, legal identity, contact, social
  * (docs/08 section 5).
  *
  * FOR MANY VISITORS ON A LONG PAGE THE FOOTER IS CLOSER THAN THE HEADER, so
- * it is a real navigation surface, not a formality — docs/05 section 3.4.
+ * it is a real navigation surface, not a formality: docs/05 section 3.4.
  * Carries the legal line on every page: "Registered in Uganda on
  * {foundingDate} as a company limited by guarantee" is one of WUFPA's
  * strongest trust signals and costs nothing to repeat.
@@ -16,11 +16,11 @@ import { site } from '../../lib/site-config';
  * The prototype's footer used inline onmouseover/onmouseout colour changes
  * with no keyboard equivalent, and skipped from <h2> to <h4>. Neither
  * happens here: column headings are real <h2> elements (styled small, but
- * semantically real — Breadcrumb and PageHeader follow the same rule), and
+ * semantically real, Breadcrumb and PageHeader follow the same rule), and
  * every hover state is a plain CSS :hover rule.
  *
- * NO EMAIL, NO TELEPHONE. `⟦Q3⟧` is unanswered — src/lib/site-config.ts
- * holds both as `null` — so Column 4 has an address and a map link (built
+ * NO EMAIL, NO TELEPHONE. `⟦Q3⟧` is unanswered; src/lib/site-config.ts
+ * holds both as `null`, so Column 4 has an address and a map link (built
  * from the approved address text, not the unconfirmed `⟦Q14⟧` coordinates)
  * and nothing else. Social links are omitted for the same reason (`⟦Q9⟧`,
  * `site.sameAs` is empty) rather than rendering dead icons; a full
@@ -28,7 +28,7 @@ import { site } from '../../lib/site-config';
  *
  * LOGO ON A DARK GROUND. `wufpa_oficial_logo.jpeg` is a real supplied file
  * with a white background baked into the JPEG itself (docs/03 section 5.2:
- * "white is the brand's ground") — there is no transparent version. Framed
+ * "white is the brand's ground"), there is no transparent version. Framed
  * here in a small white card rather than placed directly on
  * `--surface-inverse`, which is a deliberate, ordinary treatment (a logo on
  * its own safe ground within a dark section), not a visual accident.

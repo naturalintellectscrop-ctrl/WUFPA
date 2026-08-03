@@ -3,7 +3,7 @@
  *
  * Derived from Lucide (ISC licence) and inlined at build, so only the icons
  * actually used ever ship. docs/14 section 11.1: no dependency without a
- * written reason — a whole icon package is not justified by ten icons.
+ * written reason: a whole icon package is not justified by ten icons.
  *
  * Icons support text; they never replace it (docs/03 section 9).
  */
@@ -18,7 +18,9 @@ export type IconName =
   | 'search'
   | 'alert'
   | 'check'
-  | 'info';
+  | 'info'
+  | 'pause'
+  | 'play';
 
 export const ICON_PATHS: Record<IconName, string> = {
   'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
@@ -32,4 +34,6 @@ export const ICON_PATHS: Record<IconName, string> = {
   alert: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
   info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  pause: '<rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/>',
+  play: '<path d="M6 4v16l14-8z"/>',
 };

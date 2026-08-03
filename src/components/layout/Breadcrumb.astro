@@ -1,6 +1,6 @@
 ---
 /**
- * Breadcrumb — location in the hierarchy and a one-click route up.
+ * Breadcrumb: location in the hierarchy and a one-click route up.
  *
  * Matters more than usual here: many visitors arrive on a deep page directly
  * from search or a shared WhatsApp link, with no sense of where they are.
@@ -9,7 +9,7 @@
  *
  * This component previously wrote its own BreadcrumbList <script>. Since
  * WUFPA-066 the trail is emitted by <Seo> inside the page's single @graph, so
- * doing it here too would publish the list twice — and the two copies could
+ * doing it here too would publish the list twice, and the two copies could
  * disagree, which is worse than either alone.
  *
  * Pass the SAME array to both: `crumbs` here for the visible trail, and

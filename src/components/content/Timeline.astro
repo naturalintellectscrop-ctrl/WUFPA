@@ -124,6 +124,16 @@ const undated = entries.filter((e) => !e.dateLabel);
       grid-template-columns: 9rem 1fr;
     }
 
+    /* Undated items render only `.timeline__content` — no `.timeline__date`
+       sibling — so with the two-column template above, grid auto-placement
+       drops that single child into the FIRST track (9rem) rather than the
+       1fr one, and every undated heading and paragraph wraps at 9rem instead
+       of running the content width. There is no date column here, so there
+       is nothing to hold a fixed width for. */
+    .timeline__item--undated {
+      grid-template-columns: 1fr;
+    }
+
     /* THE THREAD. From --bp-md the date column is fixed-width, which gives a
        stable axis for a hairline to run down — so chronology reads as one
        continuous line the reader travels rather than as unrelated rows that
@@ -134,11 +144,14 @@ const undated = entries.filter((e) => !e.dateLabel);
        as that item reveals, so the line advances WITH the reader instead of
        being pre-drawn to a future they have not scrolled to yet. That is the
        whole difference between a progress cue and a decoration. */
-    .timeline__item {
+    /* Undated items have no date column for the thread to run beside — see
+       the note above — so they are excluded from `::before` entirely rather
+       than drawing a line at a 9rem mark that no longer means anything. */
+    .timeline__item:not(.timeline__item--undated) {
       position: relative;
     }
 
-    .timeline__item::before {
+    .timeline__item:not(.timeline__item--undated)::before {
       content: '';
       position: absolute;
       inset-block: 0;
@@ -150,7 +163,7 @@ const undated = entries.filter((e) => !e.dateLabel);
       scale: 1 0;
     }
 
-    :global(html.js-reveal) .timeline__item::before {
+    :global(html.js-reveal) .timeline__item:not(.timeline__item--undated)::before {
       transition: scale var(--duration-slower) var(--ease-out);
     }
 

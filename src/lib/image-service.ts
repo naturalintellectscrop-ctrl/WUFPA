@@ -9,7 +9,7 @@ import { IMAGE_QUALITY } from './image-quality';
  * WHY THIS IS NEEDED. Astro's `<Picture>` takes one `quality` for the whole
  * element and passes it unchanged to every format it emits. AVIF, WebP and
  * JPEG do not share a quality scale, so a single number cannot be correct for
- * all three — and the number the site was using (50) was chosen for AVIF,
+ * all three, and the number the site was using (50) was chosen for AVIF,
  * which left JPEG at roughly 27 dB PSNR. That is below the ~30 dB threshold
  * where compression artefacts become visible on faces, which is most of what
  * this archive contains. See src/lib/image-quality.ts for the measurements.
@@ -21,7 +21,7 @@ import { IMAGE_QUALITY } from './image-quality';
  *
  * WHAT THIS DOES NOT DO. It does not resize anything. Width ladders, the
  * no-upscale clamp and `withoutEnlargement` all remain exactly as the built-in
- * service handles them — this only intercepts the quality value on its way to
+ * service handles them: this only intercepts the quality value on its way to
  * the encoder. A component that explicitly passes a quality still wins, so a
  * caller can opt out for one image without editing this file.
  */

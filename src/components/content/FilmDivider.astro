@@ -1,0 +1,57 @@
+---
+/**
+ * FilmDivider — a decorative sprocket-strip rule between two sections.
+ *
+ * WUFPA's mark is a film reel feeding a strip of frames (see FrameSequence's
+ * own component comment). This reuses that vocabulary at the scale of a
+ * section boundary rather than inventing a second decorative language for
+ * the page: a thin strip of perforations, drawn in CSS the same way
+ * FrameSequence draws its sprocket holes, with a hairline running behind it.
+ *
+ * PURELY DECORATIVE. `aria-hidden`, no text, no information conveyed that
+ * isn't already in the section headings either side of it — this exists to
+ * give the page a visual pulse between long reading sections, not to convey
+ * anything a screen reader needs to announce.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['film-divider', className]} aria-hidden="true">
+  <span class="film-divider__line"></span>
+</div>
+
+<style>
+  .film-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    block-size: 1.5rem;
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .film-divider__line {
+    position: relative;
+    inline-size: 100%;
+    block-size: 6px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--line-default) 0 10px,
+      transparent 10px 26px
+    );
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .film-divider__line::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    block-size: 1px;
+    background-color: var(--line-subtle);
+  }
+</style>

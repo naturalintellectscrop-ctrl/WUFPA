@@ -3,11 +3,11 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 /**
- * EstablishingShot — a full-bleed photograph carrying a heading and a list.
+ * EstablishingShot: a full-bleed photograph carrying a heading and a list.
  *
  * WHY THIS EXISTS. The archive is dominated by group photographs of twenty to
  * a hundred real people. That scale is the single most persuasive thing WUFPA
- * owns, and rendering those images at 30rem inside grid cards throws it away —
+ * owns, and rendering those images at 30rem inside grid cards throws it away:
  * a crowd shrunk to a thumbnail reads as a texture, not as three hundred
  * production houses. This component lets one photograph run the full width of
  * the viewport at its own proportions, which is the documentary convention
@@ -29,7 +29,7 @@ import type { ImageMetadata } from 'astro';
  *     Small screens are where an overlay is least readable and where this
  *     audience actually is (constraint C1).
  *
- * The image is `loading="lazy"` — this component never carries the LCP
+ * The image is `loading="lazy"`; this component never carries the LCP
  * element, which belongs to the hero.
  */
 interface Props {
@@ -57,12 +57,12 @@ const {
 ---
 
 <section class:list={['shot', className]} aria-labelledby={headingId}>
-  {/* The photograph eases back from a slight over-crop as it enters — a camera
+  {/* The photograph eases back from a slight over-crop as it enters: a camera
       settling, not an element appearing. The panel type is deliberately NOT
       animated with it: text that moves under a scrim is harder to read, and
       the scrim's contrast guarantee is measured against a settled position. */}
   <div class="shot__media reveal reveal--frame" data-parallax="6">
-    {/* The inner div is what the parallax script transforms — it must be the
+    {/* The inner div is what the parallax script transforms; it must be the
         wrapper's first element child. It also gives the reveal's scale and the
         parallax's translate separate elements to own, so neither overwrites
         the other's transform. */}
@@ -191,7 +191,7 @@ const {
      is fully opaque where the text sits and clears entirely by the midpoint,
      so the open half of the frame is never obscured. */
   @media (min-width: 64rem) {
-    /* Callers may raise this — the membership shot closes the homepage and
+    /* Callers may raise this: the membership shot closes the homepage and
        takes more height than the regions shot mid-page. Declared as a token
        so the override is a value, not a duplicated rule. */
     .shot {
@@ -212,8 +212,8 @@ const {
       display: flex;
       align-items: center;
       padding-block: var(--space-8);
-      /* The dense stops are held to 46% — past the 34rem text column on every
-         viewport this overlay applies to — so no text ever sits on the
+      /* The dense stops are held to 46%, past the 34rem text column on every
+         viewport this overlay applies to, so no text ever sits on the
          falloff.
 
          MEASURED against the worst case, a pure-white photograph showing
@@ -224,7 +224,7 @@ const {
          muted-on-inv    6.48:1   6.05:1   (AA, comfortably)
 
          An earlier version let the second stop fall to 78%, which put the
-         muted standfirst at 4.57:1 — passing AA, but with no margin left for
+         muted standfirst at 4.57:1, passing AA, but with no margin left for
          a bright frame. */
       background-image: linear-gradient(
         to right,
@@ -257,8 +257,8 @@ const {
        part of the gradient, where contrast is not guaranteed.
 
        The bound is proportional, not a fixed 34rem. The gradient holds 86% or
-       denser to 46% of the band's width, so the safe zone grows with the band
-       — and once the containers reached 96/116rem a fixed 34rem left the panel
+       denser to 46% of the band's width, so the safe zone grows with the band,
+       and once the containers reached 96/116rem a fixed 34rem left the panel
        stranded in the left fifth of a wide screen while the guaranteed-dark
        area extended far past it. 40% keeps a six-point margin inside the 46%
        stop, and the ch cap below still holds the headline to a readable

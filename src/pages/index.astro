@@ -7,6 +7,7 @@ import IndexList from '../components/content/IndexList.astro';
 import FrameSequence from '../components/content/FrameSequence.astro';
 import EstablishingShot from '../components/content/EstablishingShot.astro';
 import StatementBand from '../components/content/StatementBand.astro';
+import FilmDivider from '../components/content/FilmDivider.astro';
 import Button from '../components/primitives/Button.astro';
 import { getPhoto } from '../lib/photos';
 import { site } from '../lib/site-config';
@@ -14,7 +15,7 @@ import { meta } from '../lib/page-meta';
 import type { Stat } from '../lib/types';
 
 /**
- * Homepage — docs/04 § 3.
+ * Homepage: docs/04 § 3.
  *
  * ART DIRECTION NOTE, because the composition here is deliberate and a future
  * editor should know what it is protecting.
@@ -22,8 +23,8 @@ import type { Stat } from '../lib/types';
  * An earlier pass rendered all seven bands identically: heading, standfirst,
  * grid of cards, tertiary button, on an alternating light/tinted background.
  * That is the arrangement every site template produces, and it failed WUFPA
- * on two specific counts. It made the group photographs — twenty to a hundred
- * real people, the most persuasive asset the association owns — into 30rem
+ * on two specific counts. It made the group photographs (twenty to a hundred
+ * real people, the most persuasive asset the association owns) into 30rem
  * thumbnails. And it gave the six programmes, six sub-regions and six
  * activity records the same visual weight and the same shape, so the page
  * read as three interchangeable card grids rather than as an argument.
@@ -32,7 +33,7 @@ import type { Stat } from '../lib/types';
  * statement → numbered index → full-bleed establishing shot → film strip →
  * dark statement band → partner roll → dark ask. No two consecutive sections
  * share a layout, a background treatment or a height. Consistency comes from the type scale, the spacing scale and
- * the single accent — not from repeating one section shape (docs/21 § 12).
+ * the single accent, not from repeating one section shape (docs/21 § 12).
  *
  * The opening is a full-viewport photograph under a measured scrim, with the
  * headline set into its lower third. That is the one arrangement a film
@@ -62,7 +63,7 @@ const hero = getPhoto('regions/tooro/sensitisation-workshop-tooro-obukama-bwa-to
    sub-region structure the section is about. */
 const regionsShot = getPhoto('regions/bunyoro/sensitisation-workshop-bunyoro-2022-banner.jpeg');
 
-/* The membership ask sits over the AGM photograph — the whole association in
+/* The membership ask sits over the AGM photograph: the whole association in
    one frame, which is the argument the section is making. */
 const membershipShot = getPhoto('governance/wufpa-agm-2023.jpeg');
 
@@ -76,13 +77,13 @@ const stats: Stat[] = [
   { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
 ];
 
-// docs/04 § 6.1 — the six programme cards, copy verbatim.
+// docs/04 § 6.1: the six programme cards, copy verbatim.
 const programmes = [
   {
     title: 'Training & Capacity Building',
     href: '/programmes/training/',
     description:
-      'Workshops, master classes and mentorship in screenwriting, directing, acting, cinematography, editing and production — delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
+      'Workshops, master classes and mentorship in screenwriting, directing, acting, cinematography, editing and production, delivered with UCC, UNESCO’s national commission, US Mission Uganda and others.',
   },
   {
     title: 'Advocacy, Rights & Anti-Piracy',
@@ -116,7 +117,7 @@ const programmes = [
   },
 ];
 
-/* docs/04 § 3.6 — "Not a summary — the work itself." Six dated items, each
+/* docs/04 § 3.6: "Not a summary, the work itself." Six dated items, each
    with the photograph of that specific event. The undated march is last and
    says so rather than being given a guessed date. */
 const evidence = [
@@ -155,7 +156,7 @@ const evidence = [
   return { date: item.date, copy: item.copy, image: photo.image, alt: photo.alt };
 });
 
-/* docs/04 § 7.1 — the per-region opening lines are the only region-specific
+/* docs/04 § 7.1: the per-region opening lines are the only region-specific
    prose on the site. Reused as the establishing shot's list so the homepage
    and the region pages cannot drift apart. */
 const regions = [
@@ -185,14 +186,14 @@ const regions = [
     objectPosition="center 35%"
   />
 
-  {/* The ledger sits tight under the hero with no background change — it reads
+  {/* The ledger sits tight under the hero with no background change: it reads
       as the hero's own footing rather than as a separate band. */}
   <Section labelledBy="proof-heading" spacing="compact">
     <h2 id="proof-heading" class="u-visually-hidden">WUFPA in figures</h2>
     <Ledger stats={stats} note="Figures as recorded in the WUFPA association profile, 2025." />
   </Section>
 
-  {/* WHO WE ARE — an editorial statement, not a prose block in a tinted box.
+  {/* WHO WE ARE: an editorial statement, not a prose block in a tinted box.
       The founding year is set as a graphic date marker at display scale and
       the narrative runs beside it, so the section has a composition of its own
       rather than the site's default centred column. */}
@@ -212,7 +213,7 @@ const regions = [
         <p class="statement__lead">
           In 2017, fourteen production companies from Ankole and Kigezi registered an
           association. They were tired of an industry whose training, funding, buyers and
-          policy conversations all happened in Kampala — and of watching their films copied
+          policy conversations all happened in Kampala, and of watching their films copied
           and sold without permission.
         </p>
 
@@ -234,7 +235,7 @@ const regions = [
     </div>
   </Section>
 
-  {/* WHAT WE DO — a numbered index, not six cards. */}
+  {/* WHAT WE DO: a numbered index, not six cards. */}
   <Section labelledBy="what-we-do-heading" variant="subtle" reveal>
     <div class="band-head">
       <h2 id="what-we-do-heading">Six ways we work for our members</h2>
@@ -246,7 +247,7 @@ const regions = [
     </p>
   </Section>
 
-  {/* WHERE WE WORK — full-bleed. The photograph is the section; the six names
+  {/* WHERE WE WORK: full-bleed. The photograph is the section; the six names
       sit over it at width and beneath it on a phone. */}
   <EstablishingShot
     image={regionsShot.image}
@@ -256,15 +257,21 @@ const regions = [
     standfirst="WUFPA covers the six sub-regions of Western Uganda. Each has its own coordinator, secretary and treasurer, and district coordinators working alongside them."
     items={regions}
     objectPosition="center 40%"
+    class="regions-shot"
   >
-    <Button href="/regions/" variant="inverse">Find your sub-region</Button>
+    {/* Same repaint as the membership ask below: see .membership__cta-secondary. */}
+    <Button href="/regions/" variant="inverse" class="regions-shot__cta">
+      Find your sub-region
+    </Button>
   </EstablishingShot>
 
-  {/* EVIDENCE — the film strip. This is the page's signature composition. */}
+  <FilmDivider />
+
+  {/* EVIDENCE: the film strip. This is the page's signature composition. */}
   <Section labelledBy="evidence-heading" spacing="loose" reveal>
     <div class="band-head">
       <h2 id="evidence-heading">Eight years on the record</h2>
-      <p class="band-head__note">Not a summary — the work itself.</p>
+      <p class="band-head__note">Not a summary, the work itself.</p>
     </div>
     <FrameSequence frames={evidence} label="WUFPA activity record, 2022 to 2025" />
     <p class="band-action">
@@ -272,7 +279,7 @@ const regions = [
     </p>
   </Section>
 
-  {/* The pause. After the record — six dated frames of evidence — the page
+  {/* The pause. After the record (six dated frames of evidence) the page
       stops and says the one thing WUFPA says about itself, then goes on. Dark,
       centred, nothing else in the band: a cut to black between movements.
       Used once on this page and nowhere else on it. The line is WUFPA's own
@@ -319,13 +326,21 @@ const regions = [
     alt={membershipShot.alt}
     headingId="membership-heading"
     heading="If you make films in Western Uganda, this is your association"
-    standfirst="Membership is open to production companies, community film groups, guilds and individual creatives — writers, directors, actors, editors, camera operators, sound recordists, animators, costume and make-up artists, and gaffers."
+    standfirst="Membership is open to production companies, community film groups, guilds and individual creatives: writers, directors, actors, editors, camera operators, sound recordists, animators, costume and make-up artists, and gaffers."
     objectPosition="center 35%"
     class="membership-shot"
   >
     <div class="membership__ctas">
       <Button href="/membership/join/" size="lg">Become a member</Button>
-      <Button href="/membership/" variant="inverse" size="lg">What members get</Button>
+      {/* variant="inverse" is correct once EstablishingShot's dark overlay
+          exists (--bp-lg and up). Below that the overlay is dropped entirely
+          (component docs: "the overlay is abandoned entirely") and this
+          button sits on the plain white surface, where inverse's white-on-
+          white fill has no visible boundary — repainted to the secondary
+          treatment below --bp-lg in this section's own <style>. */}
+      <Button href="/membership/" variant="inverse" size="lg" class="membership__cta-secondary">
+        What members get
+      </Button>
     </div>
   </EstablishingShot>
 </BaseLayout>
@@ -361,13 +376,16 @@ const regions = [
      tells a screen-reader user nothing new. */
   .statement {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   .statement__marker {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
+    /* A dedicated mobile ceiling. --text-4xl's own clamp still reaches nearly
+       40px at 360px width, which on a phone competes with the heading right
+       beneath it rather than quietly dating the entry above it. */
+    font-size: clamp(1.75rem, 1.4rem + 2.5vw, 2.5rem);
     font-weight: var(--weight-black);
     line-height: 0.9;
     letter-spacing: var(--tracking-tight);
@@ -377,9 +395,19 @@ const regions = [
   .statement__heading {
     margin: 0 0 var(--space-5);
     max-inline-size: 20ch;
-    font-size: var(--text-3xl);
+    font-size: clamp(1.625rem, 1.35rem + 2vw, 2rem);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
+  }
+
+  @media (min-width: 30rem) {
+    .statement__marker {
+      font-size: var(--text-4xl);
+    }
+
+    .statement__heading {
+      font-size: var(--text-3xl);
+    }
   }
 
   /* The opening paragraph is set larger and in the body serif — it is the
@@ -389,9 +417,15 @@ const regions = [
     margin: 0;
     max-inline-size: var(--measure-narrow);
     font-family: var(--font-body);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
     color: var(--text-heading);
+  }
+
+  @media (min-width: 30rem) {
+    .statement__lead {
+      font-size: var(--text-xl);
+    }
   }
 
   .statement__rest {
@@ -508,6 +542,33 @@ const regions = [
     }
   }
 
+  /* ── Regions ──────────────────────────────────────────────────────────
+     Same fix as the membership ask below: the inverse button has no dark
+     overlay to sit on until --bp-lg. */
+  .regions-shot__cta {
+    background-color: transparent;
+    color: var(--action-secondary-text);
+    border-color: var(--action-secondary-border);
+  }
+
+  .regions-shot__cta:hover {
+    background-color: var(--action-secondary-bg-hover);
+    color: var(--action-secondary-text);
+  }
+
+  @media (min-width: 64rem) {
+    .regions-shot__cta {
+      background-color: var(--action-inverse-bg);
+      color: var(--action-inverse-text);
+      border-color: transparent;
+    }
+
+    .regions-shot__cta:hover {
+      background-color: var(--action-inverse-bg-hover);
+      color: var(--action-inverse-text);
+    }
+  }
+
   /* ── Membership ───────────────────────────────────────────────────────
      A little more height than the regions shot: this is the page's closing
      frame and the last thing a visitor sees before the footer. */
@@ -517,7 +578,48 @@ const regions = [
 
   .membership__ctas {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: var(--space-3);
+  }
+
+  .membership__ctas :global(.btn) {
+    inline-size: 100%;
+  }
+
+  /* Repaints the inverse button as a bordered dark-on-light control while it
+     sits on the plain white surface — see the component-call comment above. */
+  .membership__cta-secondary {
+    background-color: transparent;
+    color: var(--action-secondary-text);
+    border-color: var(--action-secondary-border);
+  }
+
+  .membership__cta-secondary:hover {
+    background-color: var(--action-secondary-bg-hover);
+    color: var(--action-secondary-text);
+  }
+
+  @media (min-width: 30rem) {
+    .membership__ctas {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .membership__ctas :global(.btn) {
+      inline-size: auto;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .membership__cta-secondary {
+      background-color: var(--action-inverse-bg);
+      color: var(--action-inverse-text);
+      border-color: transparent;
+    }
+
+    .membership__cta-secondary:hover {
+      background-color: var(--action-inverse-bg-hover);
+      color: var(--action-inverse-text);
+    }
   }
 </style>

@@ -6,14 +6,14 @@ import { becomeAMember } from '../../lib/nav-config';
 import { site } from '../../lib/site-config';
 
 /**
- * SiteHeader — persistent identity and navigation. Carries the primary CTA.
+ * SiteHeader: persistent identity and navigation. Carries the primary CTA.
  *
  * SOLID BACKGROUND AT ALL SCROLL POSITIONS, ALWAYS. The prototype's
  * transparent dark-gradient header sat over bright photography and left nav
- * text unreadable (X17 in a different form) — docs/08 section 2 is explicit
+ * text unreadable (X17 in a different form): docs/08 section 2 is explicit
  * that this must never happen again.
  *
- * `position: sticky`, not `fixed` with a manually-sized spacer — sticky
+ * `position: sticky`, not `fixed` with a manually-sized spacer: sticky
  * inherently reserves its own height in document flow, which is what avoids
  * the reflow bug a fixed-position header needs a second element to prevent.
  * The compact-on-scroll transition (72px → 60px, logo scales down) is a
@@ -21,11 +21,11 @@ import { site } from '../../lib/site-config';
  * top by the time it fires, so it never displaces content the reader is
  * looking at.
  *
- * Mobile navigation is its own component (WUFPA-019, docs/08 section 4) —
+ * Mobile navigation is its own component (WUFPA-019, docs/08 section 4);
  * MobileNav renders both its trigger and its full-screen dialog panel;
  * SiteHeader just places it in the actions area.
  *
- * No SearchField trigger yet — /search/ is WUFPA-073 and does not exist.
+ * No SearchField trigger yet: /search/ is WUFPA-073 and does not exist.
  * Docs/08 section 2 lists it in the header's anatomy, but a search icon that
  * goes nowhere is exactly the kind of dead control this rebuild exists to
  * remove. Add it back when WUFPA-073 lands.
@@ -38,7 +38,7 @@ import { site } from '../../lib/site-config';
 
 <header class="site-header" data-site-header transition:persist="site-header">
   <div class="container site-header__bar">
-    <a class="site-header__logo" href="/" aria-label={`${site.shortName} — home`}>
+    <a class="site-header__logo" href="/" aria-label={`${site.shortName}, home`}>
       <img
         src="/wufpa_oficial_logo.jpeg"
         alt=""
@@ -76,21 +76,26 @@ import { site } from '../../lib/site-config';
     position: sticky;
     inset-block-start: 0;
     z-index: var(--z-sticky);
-    block-size: 72px;
+    /* Shorter than the desktop bar. At 72px on a 360px-wide screen the header
+       claims a disproportionate slice of the first viewport before any
+       content has been seen; 60px is still well clear of the 44px hit-area
+       floor and reads as a considered mobile bar rather than a shrunk
+       desktop one. */
+    block-size: 60px;
     background-color: var(--surface-page);
     border-block-end: 1px solid var(--line-subtle);
     transition: block-size var(--duration-base) var(--ease-out);
   }
 
   .site-header.is-compact {
-    block-size: 60px;
+    block-size: 52px;
   }
 
   .site-header__bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-3);
     block-size: 100%;
   }
 
@@ -101,13 +106,13 @@ import { site } from '../../lib/site-config';
   }
 
   .site-header__logo-img {
-    block-size: 48px;
+    block-size: 34px;
     inline-size: auto;
     transition: block-size var(--duration-base) var(--ease-out);
   }
 
   .is-compact .site-header__logo-img {
-    block-size: 38px;
+    block-size: 28px;
   }
 
   .site-header__actions {
@@ -118,6 +123,28 @@ import { site } from '../../lib/site-config';
 
   .site-header__cta {
     display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .site-header {
+      block-size: 72px;
+    }
+
+    .site-header.is-compact {
+      block-size: 60px;
+    }
+
+    .site-header__bar {
+      gap: var(--space-4);
+    }
+
+    .site-header__logo-img {
+      block-size: 48px;
+    }
+
+    .is-compact .site-header__logo-img {
+      block-size: 38px;
+    }
   }
 
   @media (min-width: 64rem) {

@@ -8,7 +8,7 @@
  */
 
 @media print {
-  /* Always black on white — dark bands waste toner and print illegibly. */
+  /* Always black on white: dark bands waste toner and print illegibly. */
   :root {
     --surface-page: #fff;
     --surface-subtle: #fff;
@@ -49,7 +49,7 @@
     display: none !important;
   }
 
-  /* Disclosures print expanded — a collapsed panel on paper is lost content. */
+  /* Disclosures print expanded: a collapsed panel on paper is lost content. */
   [hidden][data-disclosure-panel],
   details:not([open]) > *:not(summary) {
     display: revert !important;

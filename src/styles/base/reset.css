@@ -20,6 +20,32 @@ html {
   text-size-adjust: 100%;
   -moz-tab-size: 4;
   tab-size: 4;
+  /* Firefox's two-value form: thumb colour, then track. Chromium and Safari
+     read the ::-webkit-scrollbar rules below instead; both are declared so
+     the brand-red thumb is not a Firefox-only detail. */
+  scrollbar-color: var(--red-500) var(--surface-subtle);
+}
+
+::-webkit-scrollbar {
+  inline-size: 12px;
+  block-size: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--surface-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--red-500);
+  border-radius: var(--radius-full);
+  /* A track-coloured border insets the visible thumb inside the scrollbar's
+     own box (the WebKit equivalent of a padded thumb), which the standard
+     scrollbar-color property has no way to express on its own. */
+  border: 3px solid var(--surface-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--red-600);
 }
 
 body,
@@ -46,6 +72,19 @@ ol[role='list'] {
   list-style: none;
 }
 
+html {
+  /* The safety net for every full-bleed pattern on the site: FrameSequence's
+     `margin-inline: calc(var(--gutter) * -1)`, the hero and EstablishingShot's
+     edge-to-edge media, and any future one. A negative inline margin equal to
+     the gutter is meant to cancel exactly, but sub-pixel rounding at
+     fractional zoom levels or unusual viewport widths can leave a sliver past
+     the viewport edge, so this clips that sliver instead of adding a page-wide
+     horizontal scrollbar for the sake of one wrong pixel nobody was meant to
+     see. Set on html, not body, so it also catches anything a component
+     positions relative to the root. */
+  overflow-x: hidden;
+}
+
 body {
   min-block-size: 100vh;
   min-block-size: 100svh;
@@ -68,7 +107,7 @@ svg {
   fill: currentcolor;
 }
 
-/* Form controls do not inherit typography by default — a persistent browser
+/* Form controls do not inherit typography by default: a persistent browser
    inconsistency and a common cause of 13px inputs that trigger iOS zoom. */
 input,
 button,
@@ -107,7 +146,7 @@ hr {
   background-color: var(--line-subtle);
 }
 
-/* Long unbroken strings — URLs, some place names — must not force overflow. */
+/* Long unbroken strings (URLs, some place names) must not force overflow. */
 p,
 li,
 dd,

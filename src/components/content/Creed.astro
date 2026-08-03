@@ -1,6 +1,6 @@
 ---
 /**
- * Creed — a small label beside one sentence set at display scale, with the
+ * Creed: a small label beside one sentence set at display scale, with the
  * supporting prose beneath it.
  *
  * WHY THIS IS A COMPONENT. Three pages independently grew the same
@@ -10,7 +10,7 @@
  * display sizes after one edit. The pattern is now named once.
  *
  * WHAT IT IS FOR. Pages usually have one sentence that carries their whole
- * argument — "Film costs money before it earns money", "Uganda's film industry
+ * argument: "Film costs money before it earns money", "Uganda's film industry
  * has always been concentrated in Kampala". Set as the first line of a prose
  * block, that sentence is the least visible thing on the page. Set at display
  * scale with a quiet label beside it, it is the thing a reader leaves with.
@@ -22,7 +22,7 @@
  * with it.
  *
  * MEASURED IN ch, NOT rem. The statement stays a headline shape on a wide
- * display instead of stretching into one long line — the failure mode a
+ * display instead of stretching into one long line, the failure mode a
  * container-width cap produces once the layout runs to 1856px.
  */
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
   label: string;
   /** Must match the parent Section's `labelledBy`. */
   labelId: string;
-  /** The one sentence. Kept short — this is a statement, not a paragraph. */
+  /** The one sentence. Kept short: this is a statement, not a paragraph. */
   statement: string;
   /** Heading level, so this never breaks a page's outline. */
   headingLevel?: 2 | 3;

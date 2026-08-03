@@ -1,6 +1,6 @@
 ---
 /**
- * Section — the horizontal band every page is composed from.
+ * Section: the horizontal band every page is composed from.
  *
  * Handles background, vertical rhythm and container width in one place, so a
  * page never sets its own padding. The prototype used a flat 120px at every
@@ -11,22 +11,22 @@
  * render as a plain <div>.
  */
 interface Props {
-  /** `sacco` is WUFM SACCO only — docs/03 § 8.6 restricts that blue to
+  /** `sacco` is WUFM SACCO only: docs/03 § 8.6 restricts that blue to
    *  SACCO pages and sections. */
   variant?: 'default' | 'subtle' | 'muted' | 'inverse' | 'accent' | 'sacco' | 'bleed';
   /**
    * How wide the band's CONTENT BOX is.
    *
    * `prose` and `narrow` cap the entire band, heading included. That is right
-   * for an article or a form — a page whose whole job is to be read — and
+   * for an article or a form (a page whose whole job is to be read), and
    * wrong for a section of a wider page, where it strands the heading in the
    * middle of the screen with dead space either side. Once the layout
    * containers reached 96/116rem that stranding became the dominant visual
    * problem on the site: individual bands looked like a 960px template
    * dropped into a 1856px page.
    *
-   * `reading` is the fix. The band runs the full default width — headings,
-   * rules and backgrounds all reach the gutters — while the text inside is
+   * `reading` is the fix. The band runs the full default width: headings,
+   * rules and backgrounds all reach the gutters, while the text inside is
    * held to its own measure by Prose or by a `max-inline-size` on the
    * paragraph. Line length is protected without the section shrinking.
    *
@@ -42,7 +42,7 @@ interface Props {
    * Opt in to the scroll reveal (WUFPA-068).
    *
    * OFF BY DEFAULT, deliberately. Motion is a signal, and a signal every band
-   * emits is noise — docs/21 section 5 asks motion to communicate continuity
+   * emits is noise: docs/21 section 5 asks motion to communicate continuity
    * and hierarchy, and section 15 makes restraint the point. Reveal the bands
    * that introduce something; leave the hero and the first band alone, since
    * animating what is already on screen at load delays the LCP element for no
@@ -77,7 +77,7 @@ const Wrapper = labelledBy ? 'section' : 'div';
   data-spacing={spacing === 'default' ? undefined : spacing}
   aria-labelledby={labelledBy}
 >
-  {/* `reading` resolves to the default container width — the band is full
+  {/* `reading` resolves to the default container width: the band is full
       width and the measure is enforced on the text inside it, not on the
       band. It is a distinct prop value rather than an alias so that a future
       reader can see which bands were deliberately made full width. */}
@@ -93,12 +93,12 @@ const Wrapper = labelledBy ? 'section' : 'div';
   /* THE MEASURE SAFETY NET FOR `reading` BANDS.
    *
    * A `reading` band is full width, so its running text needs its own cap or
-   * lines stretch to 1856px and become unreadable — the failure the narrow
+   * lines stretch to 1856px and become unreadable, the failure the narrow
    * container was preventing before it also shrank the heading.
    *
    * Most content already caps itself: Prose sets --measure-prose, and the
    * page-level .lead / .statement / .opening classes set their own. This rule
-   * catches the rest — a bare <p>, <ul> or <ol> dropped straight into a band —
+   * catches the rest: a bare <p>, <ul> or <ol> dropped straight into a band,
    * so a page cannot silently ship 200-character lines.
    *
    * DIRECT CHILDREN ONLY. `>` is load-bearing: a paragraph inside a Grid cell,

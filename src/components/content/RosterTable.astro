@@ -59,7 +59,7 @@ const publishable = rows.filter((r) => r.nameConfirmed === true && r.consent ===
               <tr>
                 <th scope="row">{r.name}</th>
                 <td>{r.role}</td>
-                {showDistrict && <td>{r.district ?? '—'}</td>}
+                {showDistrict && <td>{r.district ?? 'Not recorded'}</td>}
               </tr>
             ))}
           </tbody>
@@ -67,7 +67,7 @@ const publishable = rows.filter((r) => r.nameConfirmed === true && r.consent ===
       </div>
     ) : (
       <p class="roster__empty">
-        <strong>{caption}</strong> — this roster is not yet published. Names appear once WUFPA
+        <strong>{caption}</strong>: this roster is not yet published. Names appear once WUFPA
         has confirmed their spelling and each person has consented.
       </p>
     )

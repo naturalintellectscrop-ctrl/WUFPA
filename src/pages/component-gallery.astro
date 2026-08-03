@@ -17,12 +17,12 @@ import Field from '../components/forms/Field.astro';
 import Form from '../components/forms/Form.astro';
 
 /**
- * COMPONENT GALLERY — internal, noindex, prefixed with `_` so the sitemap
+ * COMPONENT GALLERY: internal, noindex, prefixed with `_` so the sitemap
  * integration excludes it.
  *
  * Exercises every component so the build proves they compile and render. All
  * data below is either sourced from docs/02 or is obviously synthetic
- * scaffolding labelled as such — no unsourced claim about WUFPA appears here,
+ * scaffolding labelled as such, no unsourced claim about WUFPA appears here,
  * and nothing on this page is published copy.
  */
 
@@ -34,7 +34,7 @@ const stats = [
   { figure: '2017', label: 'registered with URSB as a non-profit', source: '[P1] [P4]' },
 ];
 
-// Sourced [P1] [P4]. Registration number is Q21 — deliberately pending.
+// Sourced [P1] [P4]. Registration number is Q21, deliberately pending.
 const legalFacts = [
   { label: 'Registered name', value: 'Western Uganda Film Producers Association Limited' },
   { label: 'Legal form', value: 'Company limited by guarantee' },
@@ -54,7 +54,7 @@ const timeline = [
 ];
 
 // Demonstrates the privacy and consent gates. Every row is withheld because
-// name confirmation (Q1) and consent (Q4) are outstanding — which is the
+// name confirmation (Q1) and consent (Q4) are outstanding, which is the
 // correct current state, and the component proves it.
 const roster = [
   { name: 'Withheld pending Q1', role: 'President', district: 'Mbarara', nameConfirmed: false, consent: 'pending' as const },
@@ -146,7 +146,7 @@ const errors = [
     <h2 id="h-people">PersonCard and RosterTable</h2>
     <p>
       Both gate on name confirmation (Q1) and consent (Q4). Because neither has been received,
-      the roster below correctly publishes nothing — and the component says so rather than
+      the roster below correctly publishes nothing, and the component says so rather than
       failing silently.
     </p>
     <div style="margin-block-start:var(--space-5);">
@@ -177,7 +177,7 @@ const errors = [
         <Prose>
           <p>
             The registration number is question Q21. The row renders with "Not recorded" rather
-            than being dropped, because the absence is itself informative — silently omitting it
+            than being dropped, because the absence is itself informative: silently omitting it
             would hide that we asked.
           </p>
         </Prose>
@@ -225,7 +225,7 @@ const errors = [
           label="Email address"
           type="email"
           autocomplete="email"
-          hint="Optional — many members do not use email."
+          hint="Optional: many members do not use email."
           error="Email address must be a valid email address"
         />
         <Field

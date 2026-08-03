@@ -10,10 +10,10 @@ import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
 
 /**
- * /programmes/training/ — docs/04 § 6.2, verbatim.
+ * /programmes/training/: docs/04 § 6.2, verbatim.
  *
  * ART DIRECTION. The argument here is that training in Western Uganda is a
- * thing that happens rather than a thing that is offered — six real sessions,
+ * thing that happens rather than a thing that is offered: six real sessions,
  * each with named partners and, for most, a photograph of the room. So the
  * delivered-training list is the page, not a footnote to it, and each entry
  * gets an editorial spread with its own photograph rather than a place in a
@@ -21,7 +21,7 @@ import { meta } from '../../lib/page-meta';
  *
  * The partner roll is typographic. Six institution names set at scale are
  * their own credential; putting them in boxes would add six containers to a
- * page whose argument is the names inside them (docs/21 § 10). No logos —
+ * page whose argument is the names inside them (docs/21 § 10). No logos:
  * ⟦Q10⟧, written permission has not been obtained, and several are government
  * bodies and diplomatic missions with strict identity rules.
  */
@@ -41,12 +41,12 @@ const partners = [
   'US Mission Uganda / Film Possible Uganda',
   'Alliance Française and the Goethe-Zentrum',
   'Uganda Film Network',
-  'UNATCOM — the Uganda National Commission for UNESCO',
+  'UNATCOM (the Uganda National Commission for UNESCO)',
   'National Producers Guild of Uganda (PGU)',
 ];
 
 /* Delivered training, docs/04 § 6.2. Each carries the photograph of that
-   specific session. `photo: null` where the archive holds none — the entry
+   specific session. `photo: null` where the archive holds none: the entry
    still stands, because the session still happened. */
 const delivered = [
   {
@@ -62,7 +62,7 @@ const delivered = [
   },
   {
     title: 'Monetising film content',
-    detail: 'With MTN YoTV, 2023 — how members earn from the YoTV channel.',
+    detail: 'With MTN YoTV, 2023: how members earn from the YoTV channel.',
     photo: 'programmes/training/mtn-yotv-monetisation-workshop-2023.jpeg',
   },
   {
@@ -86,7 +86,7 @@ const delivered = [
 <BaseLayout title={page.title} description={page.description} crumbs={crumbs}>
   <PageHeader
     title="Training and master classes"
-    standfirst="Skills in screenwriting, directing, acting, cinematography, editing and production — taught in the sub-regions, not only in Kampala."
+    standfirst="Skills in screenwriting, directing, acting, cinematography, editing and production, taught in the sub-regions, not only in Kampala."
     crumbs={crumbs}
   />
 
@@ -98,7 +98,7 @@ const delivered = [
     </p>
   </Section>
 
-  {/* The partner roll — names at scale, no boxes, no logos (⟦Q10⟧). */}
+  {/* The partner roll: names at scale, no boxes, no logos (⟦Q10⟧). */}
   <Section labelledBy="partners-heading" variant="subtle" reveal>
     <div class="roll">
       <div class="roll__intro">
@@ -114,13 +114,13 @@ const delivered = [
     </div>
   </Section>
 
-  {/* Delivered training as editorial spreads — the evidence, at a size where
+  {/* Delivered training as editorial spreads: the evidence, at a size where
       the rooms and the people in them are legible. */}
   <Section labelledBy="delivered-heading" spacing="loose" reveal>
     <h2 id="delivered-heading">Training we have delivered</h2>
     <p class="band-note">Each of these happened. The photographs are from the sessions.</p>
 
-    {/* No `href` on these rows — they are records of sessions that happened,
+    {/* No `href` on these rows: they are records of sessions that happened,
         not links to anywhere. Pointing them at the join form would be a false
         affordance: the reader clicks the Matatu Film Lab and gets a form. */}
     <div class="features">

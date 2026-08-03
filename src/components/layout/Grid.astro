@@ -1,6 +1,6 @@
 ---
 /**
- * Grid — intrinsic card grid. NO MEDIA QUERIES, EVER.
+ * Grid: intrinsic card grid. NO MEDIA QUERIES, EVER.
  *
  * `repeat(auto-fit, minmax(min(--grid-min, 100%), 1fr))` fits as many columns
  * as the AVAILABLE SPACE allows. That is the whole point, and it is the
@@ -8,7 +8,7 @@
  * grid is correct in a sidebar, in a full-width band and inside another grid,
  * without a single breakpoint being written.
  *
- * The `min(..., 100%)` is not decoration — without it, a --grid-min wider than
+ * The `min(..., 100%)` is not decoration: without it, a --grid-min wider than
  * the container overflows on narrow screens instead of collapsing to one
  * column. That is the classic auto-fit bug and it fails at exactly 320px, the
  * narrowest viewport this project supports.
@@ -25,7 +25,7 @@ import type { SpaceToken } from '../../lib/types';
 
 interface Props {
   /**
-   * Minimum column width before wrapping. This is the ONLY column control —
+   * Minimum column width before wrapping. This is the ONLY column control:
    * there is deliberately no `columns` prop, because a fixed column count is a
    * viewport assumption wearing a different hat.
    */
@@ -34,7 +34,7 @@ interface Props {
   /**
    * Caps how far auto-fit may run, for wide displays.
    *
-   * Without it, a 1856px band gives 14rem cards seven-plus columns — portraits
+   * Without it, a 1856px band gives 14rem cards seven-plus columns: portraits
    * become thumbnails and names wrap. Set this where a row has a natural
    * maximum (a committee, a set of regions); leave it unset otherwise and the
    * grid behaves exactly as before.

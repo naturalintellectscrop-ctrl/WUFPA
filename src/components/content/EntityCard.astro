@@ -2,15 +2,15 @@
 import Tag from '../primitives/Tag.astro';
 
 /**
- * EntityCard — ONE component, six variants.
+ * EntityCard: ONE component, six variants.
  *
  * The prototype had three unrelated card treatments (.exec-card, .member-card,
- * .gallery-item) with no shared abstraction — which is how design systems
+ * .gallery-item) with no shared abstraction, which is how design systems
  * fragment. One component with six configurations stays consistent; six
  * components drift apart.
  *
  * ACCESSIBILITY CONTRACT: the whole card is one link, OR the card contains
- * links — never both. Nested interactive elements break keyboard navigation and
+ * links, never both. Nested interactive elements break keyboard navigation and
  * screen-reader output. When `href` is given, a pseudo-element overlay on the
  * heading's anchor extends the hit area over the card, so the accessible name
  * is the heading and the target is the whole card.
@@ -20,7 +20,7 @@ interface Props {
   title: string;
   href?: string;
   description?: string;
-  /** Small label above the title — date, type, craft. */
+  /** Small label above the title: date, type, craft. */
   eyebrow?: string;
   /** Key/value pairs shown beneath, e.g. coordinator or district count. */
   meta?: { label: string; value: string }[];
@@ -101,7 +101,7 @@ const clickable = Boolean(href);
   .card {
     /* Establishes the query container the rule at the foot of this file needs.
        WUFPA-081: that @container rule shipped with WUFPA-025 and had NEVER
-       matched, because `container-type` was declared nowhere in the repository —
+       matched, because `container-type` was declared nowhere in the repository:
        a query with no container ancestor silently never applies. Named `card`
        rather than left anonymous so a card nested inside another card resolves
        to its own container and not its grandparent's. */
@@ -203,7 +203,7 @@ const clickable = Boolean(href);
      same component works in a sidebar and in a three-up grid.
 
      This is what docs/21 section 12 means by "recompose, don't resize" at
-     component scale — a media query here would ask the VIEWPORT how wide the
+     component scale: a media query here would ask the VIEWPORT how wide the
      card is, which is the wrong question the moment the card is placed in a
      narrow column on a wide screen. */
   @container card (min-width: 30rem) {

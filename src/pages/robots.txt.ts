@@ -28,7 +28,7 @@ export const GET: APIRoute = ({ site }) => {
 
   const body = isPreview
     ? [
-        '# Preview build — the production domain is not yet configured.',
+        '# Preview build: the production domain is not yet configured.',
         '# Crawling is blocked so this deployment cannot compete with the',
         '# live site for WUFPA\'s own brand terms. Set SITE_URL to the real',
         '# domain and this file becomes permissive automatically.',
@@ -38,7 +38,7 @@ export const GET: APIRoute = ({ site }) => {
       ].join('\n')
     : [
         '# Western Uganda Film Producers Association',
-        '# https://schema.org/NGO — see /sitemap-index.xml',
+        '# https://schema.org/NGO, see /sitemap-index.xml',
         '',
         'User-agent: *',
         'Allow: /',
@@ -47,7 +47,7 @@ export const GET: APIRoute = ({ site }) => {
         '# and is excluded from the sitemap, so the signals agree.',
         'Disallow: /component-gallery/',
         '',
-        '# Astro build output — no indexable content, and crawling it wastes',
+        '# Astro build output: no indexable content, and crawling it wastes',
         '# crawl budget on hashed asset filenames.',
         'Disallow: /_astro/',
         '',

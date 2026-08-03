@@ -12,7 +12,7 @@ import { site } from '../lib/site-config';
  * WHY A FEED AT ALL, for an association that cannot publish weekly (C4):
  * feeds are how aggregators, journalists and partner organisations follow a
  * body of work without checking a site. For a sector body seeking visibility
- * with funders and press, that is the audience that matters most — and it
+ * with funders and press, that is the audience that matters most, and it
  * costs one route.
  *
  * Discoverability is the other half: a feed nothing links to is a feed nobody
@@ -22,7 +22,7 @@ import { site } from '../lib/site-config';
  */
 
 /** Escape the five XML predefined entities. Applied to every interpolated
- *  value — an unescaped ampersand in a headline breaks the whole document. */
+ *  value: an unescaped ampersand in a headline breaks the whole document. */
 function xml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -46,7 +46,7 @@ export const GET: APIRoute = async ({ site: siteUrl }) => {
         '    <item>',
         `      <title>${xml(article.data.title)}</title>`,
         `      <link>${xml(url)}</link>`,
-        // isPermaLink="true" because the URL IS the identifier — these routes
+        // isPermaLink="true" because the URL IS the identifier: these routes
         // are stable by design (goal W4).
         `      <guid isPermaLink="true">${xml(url)}</guid>`,
         `      <description>${xml(article.data.standfirst)}</description>`,
@@ -60,9 +60,9 @@ export const GET: APIRoute = async ({ site: siteUrl }) => {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     '  <channel>',
-    `    <title>${xml(`${site.name} — News`)}</title>`,
+    `    <title>${xml(`${site.name}: News`)}</title>`,
     `    <link>${xml(new URL('/news/', base).href)}</link>`,
-    `    <description>${xml('Updates from WUFPA — programmes, partnerships, competitions and members.')}</description>`,
+    `    <description>${xml('Updates from WUFPA: programmes, partnerships, competitions and members.')}</description>`,
     `    <language>${site.lang}</language>`,
     `    <atom:link href="${xml(new URL('/feed.xml', base).href)}" rel="self" type="application/rss+xml" />`,
     // Only present when there is something to date. An empty feed with a

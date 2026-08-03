@@ -1,5 +1,5 @@
 /**
- * EVENT STATUS — derived from the date at build time, never typed by a human.
+ * EVENT STATUS: derived from the date at build time, never typed by a human.
  *
  * THE PROBLEM THIS SOLVES
  *
@@ -9,13 +9,13 @@
  * of the site is built to establish.
  *
  * So status is a FUNCTION of the date, not a field. There is no way to write
- * `status: upcoming` into frontmatter and have it stick after the date passes
- * — `content.config.ts` does not define such a field. The site rebuilds daily
+ * `status: upcoming` into frontmatter and have it stick after the date passes,
+ * since `content.config.ts` does not define such a field. The site rebuilds daily
  * (docs/18), so an event moves from upcoming to past with nobody doing
  * anything.
  *
  * `postponed` and `cancelled` ARE explicit, because they are not derivable
- * from a date. A cancelled event keeps its page — deleting it breaks inbound
+ * from a date. A cancelled event keeps its page: deleting it breaks inbound
  * links, and the record matters.
  *
  * ONE DERIVATION, TWO CONSUMERS: the visible page and the Event JSON-LD both
@@ -29,7 +29,7 @@
 /** What the reader sees. */
 export type EventPhase = 'upcoming' | 'past' | 'postponed' | 'cancelled' | 'undated';
 
-/** What schema.org is told. Narrower — schema has no "undated". */
+/** What schema.org is told. Narrower: schema has no "undated". */
 export type SchemaStatus = 'scheduled' | 'postponed' | 'cancelled';
 
 export interface EventDates {
@@ -53,7 +53,7 @@ export interface EventStatus {
  * Derive an event's status.
  *
  * `now` is injectable so the logic is testable and so a single build stamps
- * every event against one instant — deriving per-event from `new Date()` could
+ * every event against one instant: deriving per-event from `new Date()` could
  * straddle midnight in a long build and produce an internally inconsistent
  * page set.
  */
@@ -79,7 +79,7 @@ export function derive(event: EventDates, now: Date = new Date()): EventStatus {
     };
   }
 
-  // No usable date. Never guess one — `dateUncertain` is a legitimate state
+  // No usable date. Never guess one: `dateUncertain` is a legitimate state
   // for the historical record, where only a year or nothing is known.
   if (!event.startDate || event.dateUncertain) {
     return {
@@ -109,7 +109,7 @@ export function derive(event: EventDates, now: Date = new Date()): EventStatus {
 /**
  * Format an event's date range for display.
  *
- * Returns `dateNote` verbatim where there is no date — "Date not recorded" is
+ * Returns `dateNote` verbatim where there is no date: "Date not recorded" is
  * the honest output, and inventing precision is the failure mode this whole
  * module exists to prevent.
  *
@@ -154,7 +154,7 @@ export function machineDate(date: Date | undefined): string | null {
 /**
  * Sort events for display: upcoming soonest-first, past most-recent-first.
  *
- * Two different orderings because they answer two different questions —
+ * Two different orderings because they answer two different questions:
  * "what can I attend?" versus "what has WUFPA done?". Undated events sort
  * last; they are archive material, not a schedule.
  */

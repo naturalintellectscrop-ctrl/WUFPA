@@ -18,7 +18,7 @@
 
 /* ── LAYOUT PRIMITIVES ────────────────────────────────────────────────────
    Six primitives cover essentially every layout on this site. They are
-   intrinsic — they respond to available space rather than viewport width — so
+   intrinsic: they respond to available space rather than viewport width, so
    most media queries simply are not needed.
 
    Full specification: docs/07 section 5.3. Component implementations land in
@@ -45,14 +45,14 @@
     padding-inline: 0;
   }
 
-  /* Stack — vertical flow with one gap token. The default layout. */
+  /* Stack: vertical flow with one gap token. The default layout. */
   .stack {
     display: flex;
     flex-direction: column;
     gap: var(--stack-gap);
   }
 
-  /* Cluster — horizontal wrap. Tags, meta rows, button groups. */
+  /* Cluster: horizontal wrap. Tags, meta rows, button groups. */
   .cluster {
     display: flex;
     flex-wrap: wrap;
@@ -60,7 +60,7 @@
     gap: var(--space-3);
   }
 
-  /* Grid — column count follows available space, so it needs no breakpoints.
+  /* Grid: column count follows available space, so it needs no breakpoints.
    *
    * --grid-max-columns caps how far auto-fit may run. Once the layout
    * containers reached 96/116rem, an uncapped auto-fit gave a 1856px band
@@ -93,7 +93,7 @@
     );
   }
 
-  /* Switcher — equal columns above a threshold, stacked below, without a
+  /* Switcher: equal columns above a threshold, stacked below, without a
      media query. The negative margin trick is what makes it wrap as a unit. */
   .switcher {
     display: flex;
@@ -106,7 +106,7 @@
     flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
   }
 
-  /* Sidebar — aside drops below at a content-driven threshold, not a viewport
+  /* Sidebar: aside drops below at a content-driven threshold, not a viewport
      breakpoint. */
   .sidebar {
     display: flex;
@@ -128,8 +128,8 @@
   /* ── QUERY CONTAINERS (WUFPA-081) ─────────────────────────────────────
      THE CONVENTION: a component that recomposes by its own width declares
      `container: <name> / inline-size` on its OUTER element, and queries that
-     name from a DESCENDANT. A component can never query itself — @container
-     resolves against ancestors — which is why the container sits on the
+     name from a DESCENDANT. A component can never query itself: @container
+     resolves against ancestors, which is why the container sits on the
      wrapper and the rule targets something inside it.
 
      ALWAYS NAME THE CONTAINER. An anonymous container resolves to the nearest
@@ -138,7 +138,7 @@
 
      ALWAYS `inline-size`, never `size`. Plain `size` containment requires the
      block size to be independent of content too, which collapses any element
-     whose height comes from its text — that is nearly everything here.
+     whose height comes from its text, that is nearly everything here.
 
      Declared containers: `card` (EntityCard).
 
@@ -146,7 +146,7 @@
      container anywhere in the codebase, so it never matched and nothing
      failed. WUFPA-084 guard #2 now fails the build on that combination. */
 
-  /* Frame — fixed aspect ratio for media, reserved BEFORE load so there is no
+  /* Frame: fixed aspect ratio for media, reserved BEFORE load so there is no
      layout shift. object-position is tuned per image so faces survive
      responsive crops. */
   .frame {
@@ -164,20 +164,28 @@
     object-position: var(--frame-position, center);
   }
 
-  /* Section — background, rhythm and container width in one place. */
+  /* Section: background, rhythm and container width in one place. */
   .section {
     padding-block: var(--section-spacing);
     background-color: var(--surface-page);
   }
 
+  /* Flat tinted bands read as pasted-in panels rather than part of the same
+     page. A soft diagonal gradient toward a whisper of the brand red gives
+     each one a source of light without moving the base colour text contrast
+     was measured against; the gradient's far stop matches the flat colour
+     it replaces, so nothing at the edges of a band changes. */
   .section[data-variant='subtle'] {
     background-color: var(--surface-subtle);
+    background-image: linear-gradient(155deg, var(--red-tint) 0%, var(--surface-subtle) 45%);
   }
   .section[data-variant='muted'] {
     background-color: var(--surface-muted);
+    background-image: linear-gradient(155deg, var(--red-tint) 0%, var(--surface-muted) 45%);
   }
   .section[data-variant='accent'] {
     background-color: var(--surface-accent-subtle);
+    background-image: linear-gradient(155deg, var(--red-tint) 0%, var(--surface-accent-subtle) 60%);
   }
   /* WUFM SACCO only. The SACCO is a separate registered entity with its own
      palette; docs/03 section 8.6 restricts this blue to SACCO pages and
@@ -226,5 +234,22 @@
   .u-scroll-x {
     overflow-x: auto;
     overscroll-behavior-x: contain;
+  }
+
+  /* A single row of sprocket perforations, the same vocabulary FrameSequence
+     and FilmDivider draw at larger scale, sized down to sit quietly behind a
+     heading or an eyebrow rather than announce a whole section boundary.
+     Purely decorative; always paired with aria-hidden in markup. */
+  .u-sprockets {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--line-default) 0 6px,
+      transparent 6px 16px
+    );
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 100% 3px;
+    block-size: 3px;
+    inline-size: 100%;
   }
 }

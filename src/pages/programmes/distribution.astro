@@ -11,24 +11,24 @@ import { getPhoto } from '../../lib/photos';
 import { meta } from '../../lib/page-meta';
 
 /**
- * /programmes/distribution/ — docs/04 § 6.5, verbatim.
+ * /programmes/distribution/: docs/04 § 6.5, verbatim.
  *
  * ART DIRECTION. The strongest thing on this page is five channel names. A
  * filmmaker in Kabale reading "TV West" understands the offer instantly, in a
- * way no paragraph about market access achieves — those five names ARE the
+ * way no paragraph about market access achieves: those five names ARE the
  * outcome. An earlier pass set them as a wrapped row of small rules under a
  * "Broadcast" heading, which is how you treat metadata, not how you treat the
  * point of the page.
  *
  * So they now run at display scale, one per line, numbered, taking a band on
  * their own. The composition is deliberately the inverse of the training
- * page's partner roll — there the type is quiet because the evidence is the
+ * page's partner roll: there the type is quiet because the evidence is the
  * photographs; here the type IS the evidence and the photography supports.
  *
  * The MoU signing opens full-bleed, because a signature on a broadcast
  * agreement is the moment access was actually granted.
  *
- * ⟦Q10⟧ No broadcaster logos — written permission has not been obtained, and
+ * ⟦Q10⟧ No broadcaster logos: written permission has not been obtained, and
  * these are commercial marks.
  */
 
@@ -45,7 +45,7 @@ const distributors = getPhoto(
 );
 const mouGroup = getPhoto('programmes/distribution/sky-tv-mbarara-mou-2022-group.jpeg');
 
-/* docs/04 § 6.5 from [P2]. Five named platforms — a fact, not a claim. */
+/* docs/04 § 6.5 from [P2]. Five named platforms: a fact, not a claim. */
 const broadcasters = [
   'TV West',
   'Tayari West TV',
@@ -67,7 +67,7 @@ const broadcasters = [
     alt={signing.alt}
     headingId="mou-heading"
     heading="Signed with Sky TV, Mbarara City"
-    standfirst="In 2022, WUFPA signed a memorandum of understanding to work with Sky TV in Mbarara City — an agreement that put members’ films in front of a broadcast audience."
+    standfirst="In 2022, WUFPA signed a memorandum of understanding to work with Sky TV in Mbarara City, an agreement that put members’ films in front of a broadcast audience."
     objectPosition="center 40%"
   />
 
@@ -156,7 +156,7 @@ const broadcasters = [
         {
           href: '/programmes/kibanda/',
           label: 'The Kibanda Initiative',
-          reason: 'Community screenings — the other half of reaching an audience.',
+          reason: 'Community screenings: the other half of reaching an audience.',
         },
         {
           href: '/programmes/advocacy/',
@@ -197,7 +197,7 @@ const broadcasters = [
 
   /* Five names, one per line, at display scale. No boxes: five containers
      around five short strings would be the "oversized cards simply to occupy
-     space" docs/21 § 2.4 rules out — and would shrink the names, which are
+     space" docs/21 § 2.4 rules out, and would shrink the names, which are
      the whole point of the band. */
   .channels {
     display: grid;

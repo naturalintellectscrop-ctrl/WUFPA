@@ -13,5 +13,5 @@ source:
 ---
 
 WUFPA's sensitisation film workshop in Tooro was hosted at Obukama bwa Tooro, the Tooro
-Kingdom's own offices — a partnership with a cultural institution as well as a meeting of
+Kingdom's own offices, a partnership with a cultural institution as well as a meeting of
 filmmakers.

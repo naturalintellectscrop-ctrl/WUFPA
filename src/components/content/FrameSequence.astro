@@ -1,15 +1,16 @@
 ---
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import Icon from '../primitives/Icon.astro';
 
 /**
- * FrameSequence — WUFPA's activity record as a strip of dated frames.
+ * FrameSequence: WUFPA's activity record as a strip of dated frames.
  *
  * THE ONE COMPOSITION ON THIS SITE THAT COULD NOT BE LIFTED INTO ANOTHER
  * ORGANISATION'S PAGE. WUFPA's own mark is a film reel feeding a strip of
  * frames; its archive is a sequence of documentary stills, each belonging to
  * a dated event. Presenting that record as a horizontal strip with sprocket
- * perforations is not decoration applied to the content — it is the content's
+ * perforations is not decoration applied to the content; it is the content's
  * own form. A grid of six equal cards would have been the generic answer, and
  * it is what this replaces.
  *
@@ -19,16 +20,20 @@ import type { ImageMetadata } from 'astro';
  * sequence reads as a record of things that actually happened, at different
  * scales, on different days.
  *
- * SCROLL-SNAP, NOT A CAROUSEL. There is no autoplay, no timer, no arrows
- * that hide content from keyboard users. It is a native horizontally
- * scrollable region with `tabindex="0"` and a `role`/`aria-label`, matching
- * the `u-scroll-x` pattern the roster tables already use — so it is
- * scrollable by touch, trackpad, arrow key and screen reader alike, and it
- * works with JavaScript off. WCAG 2.2.2 is satisfied by there being nothing
- * that moves on its own.
+ * SCROLL-SNAP PLUS AUTOPLAY, WITH A REAL OFF SWITCH. The strip still is a
+ * native horizontally scrollable region with `tabindex="0"` and a
+ * `role`/`aria-label`, scrollable by touch, trackpad, arrow key and screen
+ * reader alike, and it works with JavaScript off. What changed: with
+ * JavaScript on, `src/scripts/frame-sequence.ts` advances the track on a
+ * timer and mirrors position with a row of dots. WCAG 2.2.2 requires a way to
+ * pause content that moves on its own, met three ways here, not one: the
+ * pause/play button is always focusable and always visible (not a hover
+ * reveal a touch user could never trigger), autoplay also pauses on hover
+ * and on focus-within, and `prefers-reduced-motion: reduce` disables it
+ * before it ever starts.
  *
  * DATES ARE SET LIKE SLATES. Year first, in the display face, tracked and
- * small-capped above the caption — the way a clapperboard or an archive
+ * small-capped above the caption, the way a clapperboard or an archive
  * label is set. Where a date is genuinely unknown the caller passes the
  * honest string ("Date not recorded"); it is never guessed.
  */
@@ -50,38 +55,62 @@ interface Props {
 const { frames, label, class: className } = Astro.props;
 ---
 
-<div
-  class:list={['strip', className]}
-  role="region"
-  aria-label={label}
-  tabindex="0"
->
-  <ol class="strip__track" role="list">
-    {
-      frames.map((frame, index) => (
-        <li class:list={['frame-cell', index % 2 === 1 && 'frame-cell--wide']}>
-          <div class="frame-cell__media">
-            <Picture
-              src={frame.image}
-              alt={frame.alt}
-              formats={['avif', 'webp']}
-              widths={[400, 640, 900].filter((w) => w <= frame.image.width)}
-              sizes="(min-width: 64rem) 34rem, 78vw"
-              loading="lazy"
-              decoding="async"
+<div class:list={['strip-wrap', className]} data-frame-sequence>
+  <div class="strip" role="region" aria-label={label} tabindex="0" data-strip-track>
+    <ol class="strip__track" role="list">
+      {
+        frames.map((frame, index) => (
+          <li class:list={['frame-cell', index % 2 === 1 && 'frame-cell--wide']} data-frame-cell>
+            <div class="frame-cell__media">
+              <Picture
+                src={frame.image}
+                alt={frame.alt}
+                formats={['avif', 'webp']}
+                widths={[400, 640, 900].filter((w) => w <= frame.image.width)}
+                sizes="(min-width: 64rem) 34rem, 78vw"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <p class="frame-cell__date">{frame.date}</p>
+            <p class="frame-cell__copy">{frame.copy}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <div class="strip__controls">
+    <button type="button" class="strip__playpause" data-strip-playpause hidden aria-pressed="false">
+      <span data-strip-icon-pause><Icon name="pause" /></span>
+      <span data-strip-icon-play hidden><Icon name="play" /></span>
+      <span class="u-visually-hidden" data-strip-playpause-label>Pause auto-scroll</span>
+    </button>
+
+    <ol class="strip__dots" role="list" data-strip-dots hidden>
+      {
+        frames.map((_, index) => (
+          <li>
+            <button
+              type="button"
+              class="strip__dot"
+              data-strip-dot={index}
+              aria-label={`Go to frame ${index + 1} of ${frames.length}`}
             />
-          </div>
-          <p class="frame-cell__date">{frame.date}</p>
-          <p class="frame-cell__copy">{frame.copy}</p>
-        </li>
-      ))
-    }
-  </ol>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
 </div>
+
+<script>
+  import '../../scripts/frame-sequence';
+</script>
 
 <style>
   /* The perforated edges. Two repeating-linear-gradients pinned to the top and
-     bottom of the track draw the sprocket holes — the film strip in WUFPA's
+     bottom of the track draw the sprocket holes: the film strip in WUFPA's
      logo, at the scale of a page section. Drawn in CSS rather than shipped as
      an image: it costs nothing on a metered connection and scales cleanly. */
   .strip {
@@ -94,6 +123,10 @@ const { frames, label, class: className } = Astro.props;
     margin-inline: calc(var(--gutter) * -1);
     padding-inline: var(--gutter);
     padding-block: var(--space-6);
+    /* The strip itself no longer shows a native scrollbar; see
+       .strip-wrap below for why, and .strip__dots for the replacement
+       position cue that works whether or not JS ever runs. */
+    scrollbar-width: none;
     background-image:
       repeating-linear-gradient(
         to right,
@@ -110,8 +143,12 @@ const { frames, label, class: className } = Astro.props;
     background-repeat: no-repeat;
   }
 
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
   /* The focus ring must be visible on a scroll container a keyboard user has
-     tabbed into — this is how they discover it is scrollable. */
+     tabbed into: this is how they discover it is scrollable. */
   .strip:focus-visible {
     outline: var(--focus-ring-width, 3px) solid var(--focus-ring);
     outline-offset: 4px;
@@ -132,8 +169,8 @@ const { frames, label, class: className } = Astro.props;
   }
 
   /* The uneven rhythm. Wider frames at every second position break the
-     tile-grid reading and let the group photographs — which are the widest
-     images in the archive — run at something closer to their true shape. */
+     tile-grid reading and let the group photographs (which are the widest
+     images in the archive) run at something closer to their true shape. */
   .frame-cell--wide {
     inline-size: min(88vw, 34rem);
   }
@@ -171,14 +208,14 @@ const { frames, label, class: className } = Astro.props;
   }
 
   /* THE FRAME YOU ARE ON. A strip of six frames gives no cue about position
-     within it — the reader can see three and has no idea whether two remain or
+     within it: the reader can see three and has no idea whether two remain or
      twenty. Rather than add a scrollbar, a counter or arrows (all of which put
      interface on top of the content), the frames themselves carry it: the ones
      at the edges of the scroll port sit back slightly, and the one the reader
      has scrolled to is at full presence. The strip reads as film passing a
      gate, which is the thing it is a picture of.
 
-     `animation-timeline: view()` — scroll-driven, no script, no scroll listener,
+     `animation-timeline: view()`, scroll-driven, no script, no scroll listener,
      and it runs off the compositor. Where it is unsupported (`@supports`
      absent) nothing is ever dimmed: the animation simply does not apply and
      every frame stays at its finished state, which is the same
@@ -192,7 +229,7 @@ const { frames, label, class: className } = Astro.props;
     }
   }
 
-  /* Opacity and scale only — both compositor properties, neither reflows.
+  /* Opacity and scale only: both compositor properties, neither reflows.
      The range is deliberately narrow: 0.55 reads as depth at the edge of the
      port, and the frame spends the middle of its pass (35%–65%) at full
      presence rather than continuously changing, so this settles rather than
@@ -220,5 +257,100 @@ const { frames, label, class: className } = Astro.props;
       scroll-snap-type: none;
       scroll-behavior: auto;
     }
+  }
+
+  /* ── Controls: pause/play + dots ──────────────────────────────────────
+     Both start `hidden` in the markup and are revealed only once
+     frame-sequence.ts confirms autoplay actually attached, the same
+     visible-by-default contract src/scripts/reveal.ts and MobileNav hold to.
+     With JavaScript off or blocked, the strip is exactly what it was before:
+     a plain scrollable region, no dead controls sitting on top of it. */
+  .strip__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-4);
+  }
+
+  .strip__playpause {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    flex: none;
+    background: none;
+    border: 1.5px solid var(--line-default);
+    border-radius: var(--radius-full);
+    color: var(--text-body);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .strip__playpause:hover {
+    border-color: var(--line-accent);
+    color: var(--text-accent);
+  }
+
+  .strip__playpause[hidden] {
+    display: none !important;
+  }
+
+  .strip__playpause :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .strip__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .strip__dots[hidden] {
+    display: none !important;
+  }
+
+  .strip__dot {
+    inline-size: 8px;
+    block-size: 8px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background-color: var(--line-default);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      scale var(--duration-fast) var(--ease-out);
+  }
+
+  /* A larger invisible hit area than the visible dot: 8px alone fails the
+     44px target everywhere else on this site holds to. */
+  .strip__dot {
+    position: relative;
+  }
+
+  .strip__dot::before {
+    content: '';
+    position: absolute;
+    inset: 50%;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    translate: -50% -50%;
+  }
+
+  .strip__dot:hover {
+    background-color: var(--text-muted);
+  }
+
+  .strip__dot[aria-current='true'] {
+    background-color: var(--line-accent);
+    scale: 1.25;
   }
 </style>

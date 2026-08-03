@@ -9,7 +9,7 @@
  */
 
 /* ── FOCUS ────────────────────────────────────────────────────────────────
-   :focus-visible, not :focus — mouse users do not see rings on click, keyboard
+   :focus-visible, not :focus (mouse users do not see rings on click, keyboard
    users always do. 3px #ED1B24 on white is 4.39:1, above the 3:1 required for
    non-text contrast (WCAG 1.4.11).
 
@@ -20,7 +20,7 @@
   border-radius: var(--radius-sm);
 }
 
-/* On dark surfaces the ring switches to white — red on ink-900 is only 3.71:1. */
+/* On dark surfaces the ring switches to white: red on ink-900 is only 3.71:1. */
 .surface-inverse :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline-color: var(--focus-ring-inverse);
 }
@@ -109,7 +109,7 @@ main:focus {
    reveal script has actually attached its IntersectionObserver.
 
    This is the inverse of the prototype, which set opacity:0 on 21 elements and
-   revealed them via IntersectionObserver — leaving the page blank below the
+   revealed them via IntersectionObserver, leaving the page blank below the
    hero whenever JavaScript failed, was blocked, or had not yet run on a slow
    connection. For this audience, that is most of the time.
 
@@ -130,7 +130,7 @@ main:focus {
 
 /* ── EDITORIAL MOTION VARIANTS ────────────────────────────────────────────
    Three additions to the one reveal above, because a single fade-and-rise
-   applied to every band IS a template — the motion says the same thing about
+   applied to every band IS a template: the motion says the same thing about
    a headline, a photograph and a list, which is to say it says nothing.
 
    Each variant below opts in per element and inherits the same safety
@@ -138,14 +138,14 @@ main:focus {
    attached successfully, and everything collapses to "already visible" under
    prefers-reduced-motion.
 
-   `reveal--letter` — display type rises from its own baseline with a slight
+   `reveal--letter`: display type rises from its own baseline with a slight
    clip, the way a title card settles. For headlines only.
 
-   `reveal--frame` — a photograph scales back from a small over-crop as it
+   `reveal--frame`: a photograph scales back from a small over-crop as it
    fades in. Reads as a camera settling rather than an element appearing.
    Never applied to type: scaling text mid-transition reflows it.
 
-   `reveal--rule` — a hairline draws itself across. Used where a rule marks a
+   `reveal--rule`: a hairline draws itself across. Used where a rule marks a
    section start; it is the quietest motion here and the only one that runs on
    a decorative element.                                                      */
 .js-reveal .reveal--letter {
@@ -192,7 +192,7 @@ main:focus {
    An element arrives from the side it belongs to. On an alternating editorial
    spread the photograph sits left and the text right, so moving each in from
    its own edge makes the composition assemble itself as the reader arrives at
-   it — the page reads as laid out rather than as stacked.
+   it, the page reads as laid out rather than as stacked.
 
    TRAVEL IS SMALL AND HORIZONTAL ONLY. --reveal-shift is 32px, twice the
    vertical reveal's 16px because horizontal movement at the same distance is
@@ -229,7 +229,7 @@ main:focus {
 }
 
 /* One reset, covering every variant. A user who asks for reduced motion gets
-   the finished state immediately — not a faster animation. */
+   the finished state immediately, not a faster animation. */
 @media (prefers-reduced-motion: reduce) {
   .js-reveal .reveal,
   .js-reveal .reveal--letter > *,

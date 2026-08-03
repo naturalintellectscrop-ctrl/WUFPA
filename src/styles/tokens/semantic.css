@@ -1,5 +1,5 @@
 /**
- * LAYER 2 — SEMANTIC
+ * LAYER 2: SEMANTIC
  *
  * Decisions about meaning. Components reference ONLY these tokens, never the
  * primitives. When a decision changes ("links need more contrast"), one value
@@ -38,7 +38,7 @@
   --text-accent-on-inverse: var(--red-300);
   --text-sacco: var(--sacco-blue); /* 10.66:1 on white; 8.94:1 on --surface-sacco */
 
-  /* Decorative glyphs that are NOT read and carry no information — the "/" in
+  /* Decorative glyphs that are NOT read and carry no information: the "/" in
      Breadcrumb is the only current use. Deliberately separate from --text-*:
      naming it this way is what stops a real text colour ever being set this
      pale. At 2.50:1 on white it sits below the 1.4.3 text threshold, which is
@@ -51,7 +51,7 @@
   /* ── LINE & BORDER ──────────────────────────────────────────────────── */
   --line-subtle: var(--ink-200);
   --line-default: var(--ink-300);
-  --line-strong: var(--ink-500); /* 3.82:1 — meets 1.4.11 for stateful borders */
+  --line-strong: var(--ink-500); /* 3.82:1, meets 1.4.11 for stateful borders */
   --line-accent: var(--red-500);
   --line-inverse: rgb(255 255 255 / 18%);
 
@@ -71,13 +71,13 @@
 
   /* On --surface-inverse. This vocabulary is why WUFPA-082 exists: without it
      a component rendering on a dark ground has nowhere legitimate to look, so
-     it reaches into the primitives — and every future inverse band repeats the
+     it reaches into the primitives, and every future inverse band repeats the
      mistake. White on --surface-inverse is 15.99:1. */
   --action-inverse-bg: var(--white);
   --action-inverse-bg-hover: var(--ink-100);
   --action-inverse-text: var(--ink-900);
 
-  /* A component's own light ground when it sits on an inverse surface — e.g.
+  /* A component's own light ground when it sits on an inverse surface, e.g.
      the footer's logo card, where the supplied JPEG has white baked in and
      docs/03 section 5.2 makes white the brand's ground. */
   --surface-on-inverse: var(--white);
@@ -122,12 +122,12 @@
 }
 
 /**
- * THE TABLET BAND — --bp-md, 768px.
+ * THE TABLET BAND: --bp-md, 768px.
  *
  * docs/07 section 5.2 has always specified the inline padding as three steps:
  * "--space-4 at base, --space-6 from --bp-md, --space-8 from --bp-lg". The
  * middle step was never implemented, so --gutter stepped ONCE, at 64rem, from
- * 16px straight to 64px — a 4x jump — and every viewport from 768 to 1023px
+ * 16px straight to 64px (a 4x jump), and every viewport from 768 to 1023px
  * inherited a phone's 16px gutter on a tablet-width screen. That was the
  * weakest point in the site's rhythm and the one place the spacing scale
  * contradicted docs/21 section 11.
@@ -151,7 +151,7 @@
 }
 
 /**
- * THE WIDE BAND — --bp-2xl, 1536px.
+ * THE WIDE BAND: --bp-2xl, 1536px.
  *
  * A fourth step, added when the layout containers were raised to 96/116rem.
  * Without it a 1856px composition would have carried the same 64px gutter as
@@ -169,14 +169,14 @@
 }
 
 /**
- * DARK THEME — scaffolded, not shipped.
+ * DARK THEME: scaffolded, not shipped.
  *
  * Deliberately NOT activated via prefers-color-scheme. Enabling it would need:
  * the reverse logo (WUFPA-013), per-image checking of ~72 daylight photographs
  * against a dark ground, and a QA pass over every contrast pair. Reasoning in
  * docs/07 section 11.
  *
- * The block below exists to prove the architecture supports it — a theme is a
+ * The block below exists to prove the architecture supports it: a theme is a
  * value swap, not a new stylesheet.
  */
 [data-theme='dark'] {
@@ -194,7 +194,7 @@
   --text-accent: var(--red-300);
   --text-on-inverse: var(--ink-900);
   --text-muted-on-inverse: var(--ink-700);
-  --text-sacco: var(--sacco-blue-tint); /* #2e3192 on a dark ground is ~1.6:1 — unusable */
+  --text-sacco: var(--sacco-blue-tint); /* #2e3192 on a dark ground is ~1.6:1, unusable */
   --text-decorative: var(--ink-500);
 
   /* --surface-inverse is white here, so an inverse action inverts with it. */

@@ -1,5 +1,5 @@
 /**
- * LAYER 1 — PRIMITIVES
+ * LAYER 1: PRIMITIVES
  *
  * Raw facts about the palette and scales. These are never referenced by a
  * component. Components consume the semantic layer (semantic.css) so that
@@ -37,14 +37,14 @@
   /* ── INK RAMP ───────────────────────────────────────────────────────────
      Warm neutrals derived from #231F20. A cold grey ramp beside a warm black
      reads as two unrelated colour systems, and the warmth sits better under
-     the supplied photography — daylight, red soil, grass and skin tones.
+     the supplied photography: daylight, red soil, grass and skin tones.
      Contrast against white is stated for each.                                */
   --ink-900: #231f20; /* 16.30:1 */
   --ink-800: #3a3436; /* 11.40:1 */
   --ink-700: #524a4c; /*  8.00:1 */
-  --ink-600: #6b6163; /*  5.98:1 — lightest permitted text on white */
-  --ink-500: #8a8083; /*  3.82:1 — large text, icons, strong borders only */
-  --ink-400: #a9a1a3; /*  2.50:1 — borders and dividers, never text */
+  --ink-600: #6b6163; /*  5.98:1, lightest permitted text on white */
+  --ink-500: #8a8083; /*  3.82:1, large text, icons, strong borders only */
+  --ink-400: #a9a1a3; /*  2.50:1, borders and dividers, never text */
   --ink-300: #c9c3c4;
   --ink-200: #e3dfdf;
   --ink-100: #f2efef;
@@ -53,17 +53,17 @@
 
   /* ── SUPPORT ────────────────────────────────────────────────────────────
      WUFM SACCO is a SEPARATE REGISTERED ENTITY. Its blue appears only on
-     SACCO pages — never elsewhere on the site.                                */
+     SACCO pages, never elsewhere on the site.                                */
   --sacco-blue: #2e3192; /* 10.66:1 on white */
   --sacco-blue-tint: #eeeff8;
 
-  --green-600: #1f6b3f; /* 5.90:1 — success */
+  --green-600: #1f6b3f; /* 5.90:1, success */
   --green-050: #eaf4ee;
-  --amber-700: #8a5a00; /* 5.40:1 — warning */
+  --amber-700: #8a5a00; /* 5.40:1, warning */
   --amber-050: #fcf3e3;
   --red-tint: #fdeced; /* red-500 at ~8% */
 
-  /* ── SPACING — 4px base, expressed in rem so it honours user font size ── */
+  /* ── SPACING: 4px base, expressed in rem so it honours user font size ── */
   --space-0: 0;
   --space-1: 0.25rem; /*  4px */
   --space-2: 0.5rem; /*  8px */
@@ -75,10 +75,10 @@
   --space-8: 4rem; /* 64px */
   --space-9: 6rem; /* 96px */
   --space-10: 8rem; /* 128px */
-  --space-11: 10rem; /* 160px — the widest band rhythm, --bp-2xl and above */
+  --space-11: 10rem; /* 160px, the widest band rhythm, --bp-2xl and above */
 
   /* ── TYPE SCALE ─────────────────────────────────────────────────────────
-     Fluid between 360px and 1280px. Mobile ratio 1.25, desktop 1.333 — the
+     Fluid between 360px and 1280px. Mobile ratio 1.25, desktop 1.333: the
      wider desktop ratio gives display type presence without headlines
      swallowing a small screen.
      Body is 17px minimum, not 16px: the audience includes older office-holders
@@ -86,14 +86,14 @@
 
      BODY STOPS GROWING AT 1280px; DISPLAY DOES NOT. When the layout containers
      were raised to 96/116rem, headlines that stopped scaling at 1280px started
-     to look undersized against a 1856px band — the composition got wider but
+     to look undersized against a 1856px band; the composition got wider but
      its voice did not get louder. The display steps (2xl and up) therefore run
      their clamps out to 1920px. Body, lead and caption sizes deliberately keep
      their original ceilings: line length is capped by the measure containers,
      and growing body text on a wide screen makes reading worse, not better.   */
-  --text-2xs: 0.75rem; /* 12px — micro labels only, never body */
-  --text-xs: 0.8125rem; /* 13px — captions, credits */
-  --text-sm: 0.875rem; /* 14px — metadata, form hints */
+  --text-2xs: 0.75rem; /* 12px, micro labels only, never body */
+  --text-xs: 0.8125rem; /* 13px, captions, credits */
+  --text-sm: 0.875rem; /* 14px, metadata, form hints */
   --text-base: clamp(1.0625rem, 1rem + 0.28vw, 1.125rem); /* 17 → 18 */
   --text-lg: clamp(1.1875rem, 1.09rem + 0.42vw, 1.3125rem); /* 19 → 21 */
   --text-xl: clamp(1.375rem, 1.2rem + 0.78vw, 1.75rem); /* 22 → 28 */
@@ -126,7 +126,7 @@
      A serif signals *record* rather than *marketing*, which is the register
      WUFPA's advocacy and activity reporting needs.
 
-     Self-hosted variable WOFF2 as of WUFPA-014 — see base/typography.css for the
+     Self-hosted variable WOFF2 as of WUFPA-014; see base/typography.css for the
      @font-face block, the measured metrics and the licence position.
 
      SECOND ENTRY IN EACH STACK IS THE METRIC-MATCHED FALLBACK, not a plain
@@ -149,11 +149,11 @@
      while Timeline, PrimaryNav and Button each cited --bp-md / --bp-lg / --bp-sm
      in their own comments as though they existed. The spec and the code
      disagreed, which is how four thresholds ended up in use against five
-     documented — including 40rem, which is in neither list.
+     documented, including 40rem, which is in neither list.
 
      THE CAVEAT IS REAL BUT NARROW: a custom property cannot appear in a media
      query PRELUDE, so `@media (min-width: var(--bp-md))` will never work and the
-     literal must be repeated there. That does not make the tokens useless — they
+     literal must be repeated there. That does not make the tokens useless: they
      are the source of truth for container queries, calc() thresholds (see
      --switcher-threshold in global.css) and anything reading layout state in JS.
 
@@ -161,17 +161,17 @@
      guard #3) reads breakpoints.json in this directory and fails the build on
      any media query using a threshold outside the ladder. Keep all three in
      step: this block, breakpoints.json, and docs/07 section 5.1.                */
-  --bp-sm: 30rem; /*  480px — two-up small cards */
-  --bp-md: 48rem; /*  768px — two-column layouts; footer 2x2 */
-  --bp-lg: 64rem; /* 1024px — desktop nav; three-up grids; sidebars */
-  --bp-xl: 80rem; /* 1280px — max content width reached */
-  --bp-2xl: 96rem; /* 1536px — wider gutters only */
+  --bp-sm: 30rem; /*  480px, two-up small cards */
+  --bp-md: 48rem; /*  768px, two-column layouts; footer 2x2 */
+  --bp-lg: 64rem; /* 1024px, desktop nav; three-up grids; sidebars */
+  --bp-xl: 80rem; /* 1280px, max content width reached */
+  --bp-2xl: 96rem; /* 1536px, wider gutters only */
 
   /* ── CONTAINERS ───────────────────────────────────────────────────────
      Two families, and the distinction matters.
 
      PROSE and NARROW are measure caps. They exist because a line of text
-     longer than roughly 75 characters is measurably harder to read — the eye
+     longer than roughly 75 characters is measurably harder to read: the eye
      loses its place on the return sweep. These are NOT layout widths and must
      never be widened to fill a screen; doing so damages the reading.
 
@@ -182,10 +182,10 @@
      an establishing shot is an establishing shot at 1600px and a postcard at
      1200px. Raised so that large displays are used, while the measure caps
      above continue to protect running text.                                  */
-  --container-prose: 45rem; /*  720px — measure cap, do not widen */
-  --container-narrow: 60rem; /*  960px — measure cap, do not widen */
-  --container-default: 96rem; /* 1536px — layout width */
-  --container-wide: 116rem; /* 1856px — layout width */
+  --container-prose: 45rem; /*  720px, measure cap, do not widen */
+  --container-narrow: 60rem; /*  960px, measure cap, do not widen */
+  --container-default: 96rem; /* 1536px, layout width */
+  --container-wide: 116rem; /* 1856px, layout width */
 
   /* ── RADIUS ─────────────────────────────────────────────────────────────
      Deliberately restrained. Heavily rounded interfaces read as consumer app,
@@ -197,7 +197,7 @@
   --radius-full: 9999px;
 
   /* ── SHADOW ─────────────────────────────────────────────────────────────
-     Tinted with the brand black, never pure black — a pure-black shadow over a
+     Tinted with the brand black, never pure black: a pure-black shadow over a
      warm neutral ground reads as grey dirt. Prefer a 1px border to a shadow:
      borders are cheaper, crisper, and hold up better against photography.      */
   --shadow-none: none;
@@ -218,14 +218,14 @@
 
   /* ── MOTION ─────────────────────────────────────────────────────────────
      Quiet and functional. Motion is the visual grammar of promotion;
-     stillness is the grammar of record. Animate transform and opacity ONLY —
+     stillness is the grammar of record. Animate transform and opacity ONLY:
      animating height or max-height forces layout on every frame.
      ZERO infinite animations anywhere on this site.                           */
   --duration-instant: 100ms;
   --duration-fast: 160ms;
   --duration-base: 240ms;
   --duration-slow: 360ms;
-  /* Photographic settle only — a frame easing back from an over-crop needs to
+  /* Photographic settle only: a frame easing back from an over-crop needs to
      outlast the fade or the scale reads as a jolt. Never used on controls: at
      this length a button would feel unresponsive. */
   --duration-slower: 700ms;
@@ -236,7 +236,7 @@
 
   --reveal-distance: 16px;
   /* Horizontal travel for the directional entrances. Twice the vertical
-     distance because sideways movement at the same distance is less legible —
+     distance because sideways movement at the same distance is less legible,
      and still short enough that nothing reads as having flown in from
      off-screen, which is the clearest marker of a template. */
   --reveal-shift: 32px;
@@ -244,7 +244,7 @@
 
   /* ── ASPECT RATIOS ──────────────────────────────────────────────────────
      The archive is dominated by 20–100 person group photographs. Never crop
-     those square — it decapitates them, and the scale IS the message.         */
+     those square: it decapitates them, and the scale IS the message.         */
   --ratio-wide: 16 / 9;
   --ratio-landscape: 3 / 2;
   --ratio-portrait: 3 / 4;

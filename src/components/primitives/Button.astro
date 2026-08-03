@@ -77,9 +77,38 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, block ? 'btn--block' 
       background-color var(--duration-fast) var(--ease-out),
       border-color var(--duration-fast) var(--ease-out),
       color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out),
+      translate var(--duration-fast) var(--ease-out),
       scale var(--duration-instant) var(--ease-out);
     /* Guarantees a 44px hit area even where the visual height is smaller. */
     min-block-size: var(--target-min);
+  }
+
+  /* A hairline lift on hover, filled and bordered variants only — the
+     tertiary link stays flat since it is inline text, not a raised control,
+     and lifting it would misrepresent what it is. 1px is deliberately
+     small: enough to register as "this responds to you" without the
+     button drifting away from a cursor that has already arrived. */
+  .btn--primary:hover,
+  .btn--secondary:hover,
+  .btn--inverse:hover {
+    translate: 0 -1px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn--primary:active,
+  .btn--secondary:active,
+  .btn--inverse:active {
+    translate: 0 0;
+    box-shadow: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn--primary:hover,
+    .btn--secondary:hover,
+    .btn--inverse:hover {
+      translate: 0 0;
+    }
   }
 
   /* PRESS, NOT HOVER. The scale is on :active only — a button that grows under

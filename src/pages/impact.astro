@@ -11,7 +11,7 @@ import { getPhoto } from '../lib/photos';
 import { meta } from '../lib/page-meta';
 
 /**
- * /impact/ — docs/04 § 12. Eight albums, one per activity strand.
+ * /impact/: docs/04 § 12. Eight albums, one per activity strand.
  *
  * THE CLAIM THIS PAGE MAKES IS THE ONE MOST ORGANISATIONS CANNOT: every
  * photograph was taken at a WUFPA activity. Where the date, place and people
@@ -21,14 +21,14 @@ import { meta } from '../lib/page-meta';
  *
  * CAPTIONS ARE VISIBLE IN THE GRID, NOT HIDDEN BEHIND HOVER. The prototype
  * hid captions with `translateY(100%)`, making them unreachable by touch and
- * keyboard. Captions are content, not a hover reward — every Figure below
+ * keyboard. Captions are content, not a hover reward: every Figure below
  * renders its caption inline.
  *
  * GROUP PHOTOGRAPHS ARE NOT CROPPED SQUARE. `ratio="auto"` lets each image
  * keep its own shape: this archive is dominated by 20–100 person group shots
  * and the scale IS the message (docs/07 § 10.3).
  *
- * No lightbox yet — the grid works completely without one, and a lightbox
+ * No lightbox yet: the grid works completely without one, and a lightbox
  * that traps focus badly is worse than none. Full-size images are reachable
  * because each Figure serves a responsive srcset at the source's own width.
  */
@@ -188,7 +188,7 @@ const albums = [
         {/* The first frame of each album leads at full width; the rest follow
             as a grid. Eight albums set as eight identical grids made the page
             one long uniform texture in which no album was distinguishable
-            from the next — the lead frame gives each one an opening image and
+            from the next: the lead frame gives each one an opening image and
             re-establishes the rhythm every time a new album begins. */}
         {album.images[0] && (
           <div class="album-lead reveal reveal--frame">

@@ -7,7 +7,7 @@ import { glob } from 'astro/loaders';
  * This file is the most consequential piece of code in the project.
  *
  * The earlier prototype hand-wrote member companies directly into markup.
- * Adding a fifth meant editing HTML — which made inventing four more trivially
+ * Adding a fifth meant editing HTML, which made inventing four more trivially
  * easy, and four fictional production companies duly shipped. Modelling
  * entities instead means the 300th member is one file, and removing a person
  * who withdraws consent is one deletion.
@@ -62,11 +62,11 @@ const guildKey = z.enum([
 
 /**
  * Provenance. REQUIRED on every fact-bearing entity.
- * `ref` uses the citation convention in docs/README section 6 — e.g. "[P5]"
+ * `ref` uses the citation convention in docs/README section 6: e.g. "[P5]"
  * for page 5 of the association profile, "[LOGO-A]", "[PH-3]".
  */
 const source = z.object({
-  ref: z.string().min(2, 'Every fact must cite a source — see docs/README section 6'),
+  ref: z.string().min(2, 'Every fact must cite a source, see docs/README section 6'),
   note: z.string().optional(),
 });
 
@@ -74,16 +74,16 @@ const source = z.object({
  * An image reference.
  *
  * `alt` must be meaningful. Where an image is genuinely decorative the author
- * sets `decorative: true` deliberately — a different and visible act from
+ * sets `decorative: true` deliberately, a different and visible act from
  * forgetting.
  *
  * `caption` adds context; `alt` describes the picture. They are never the same
- * string — the prototype's alt="Workshop" beside a caption reading "UCC Film
+ * string: the prototype's alt="Workshop" beside a caption reading "UCC Film
  * Training Masterclass" is exactly backwards.
  */
 const imageBase = z.object({
   src: z.string(),
-  alt: z.string().min(10, 'alt text must describe the image — see docs/12 section 6'),
+  alt: z.string().min(10, 'alt text must describe the image, see docs/12 section 6'),
   caption: z.string().optional(),
   /** Absent date is a legitimate state. Never invent precision. */
   date: z.coerce.date().optional(),
@@ -112,7 +112,7 @@ const md = (dir: string) => glob({ pattern: '**/*.md', base: `./src/content/${di
    ───────────────────────────────────────────────────────────────────────── */
 
 /**
- * PEOPLE — office-holders, guild heads, coordinators.
+ * PEOPLE: office-holders, guild heads, coordinators.
  *
  * A person may hold MANY roles: nine documented individuals sit on both the
  * governance and craft axes (docs/02 section 12.1, C-7 and C-8).
@@ -123,7 +123,7 @@ const people = defineCollection({
   loader: md('people'),
   schema: z.object({
     name: z.string(),
-    /** Honorific as WUFPA styles it — "Rev.", "Mr". Pending Q1 confirmation. */
+    /** Honorific as WUFPA styles it: "Rev.", "Mr". Pending Q1 confirmation. */
     honorific: z.string().optional(),
     roles: z
       .array(
@@ -157,12 +157,12 @@ const people = defineCollection({
   }),
 });
 
-/** MEMBERS — production companies. Only four are documented [P4] [P5]. */
+/** MEMBERS: production companies. Only four are documented [P4] [P5]. */
 const members = defineCollection({
   loader: md('members'),
   schema: z.object({
     name: z.string(),
-    /** Omitted where unconfirmed — see docs/02 conflicts C-2 and C-3. */
+    /** Omitted where unconfirmed, see docs/02 conflicts C-2 and C-3. */
     district: z.string().optional(),
     subRegion: subRegion.optional(),
     focus: z.string().optional(),
@@ -171,7 +171,7 @@ const members = defineCollection({
   }),
 });
 
-/** PROGRAMMES — the six areas WUFPA's work divides into. */
+/** PROGRAMMES: the six areas WUFPA's work divides into. */
 const programmes = defineCollection({
   loader: md('programmes'),
   schema: z.object({
@@ -195,7 +195,7 @@ const programmes = defineCollection({
   }),
 });
 
-/** REGIONS — the six sub-regions and their coordination teams. */
+/** REGIONS: the six sub-regions and their coordination teams. */
 const regions = defineCollection({
   loader: md('regions'),
   schema: z.object({
@@ -209,7 +209,7 @@ const regions = defineCollection({
   }),
 });
 
-/** GUILDS — the ten craft guilds. */
+/** GUILDS: the ten craft guilds. */
 const guilds = defineCollection({
   loader: md('guilds'),
   schema: z.object({
@@ -223,7 +223,7 @@ const guilds = defineCollection({
   }),
 });
 
-/** PARTNERS — never rendered as a logo without recorded written permission. */
+/** PARTNERS: never rendered as a logo without recorded written permission. */
 const partners = defineCollection({
   loader: md('partners'),
   schema: z.object({
@@ -237,14 +237,14 @@ const partners = defineCollection({
 });
 
 /**
- * EVENTS — status is DERIVED FROM DATE AT BUILD, never hand-set.
+ * EVENTS: status is DERIVED FROM DATE AT BUILD, never hand-set.
  *
  * This single decision prevents the site's most likely decay mode. The Awards
  * Gala scheduled for 13 December 2025 is the live example: a page describing a
  * past date as upcoming tells every visitor that nobody maintains the site.
  *
  * `postponed` and `cancelled` are explicit because they are not derivable.
- * A cancelled event KEEPS its page — deleting it breaks inbound links.
+ * A cancelled event KEEPS its page: deleting it breaks inbound links.
  */
 const eventBase = z.object({
   title: z.string(),
@@ -275,7 +275,7 @@ const events = defineCollection({
   ),
 });
 
-/** NEWS — articles. */
+/** NEWS: articles. */
 const news = defineCollection({
   loader: md('news'),
   schema: z.object({
@@ -290,7 +290,7 @@ const news = defineCollection({
   }),
 });
 
-/** ALBUMS — gallery groupings on /impact/. */
+/** ALBUMS: gallery groupings on /impact/. */
 const albums = defineCollection({
   loader: md('albums'),
   schema: z.object({
@@ -303,7 +303,7 @@ const albums = defineCollection({
   }),
 });
 
-/** PAGES — standalone editorial content (About, Legal, Privacy, Terms). */
+/** PAGES: standalone editorial content (About, Legal, Privacy, Terms). */
 const pages = defineCollection({
   loader: md('pages'),
   schema: z.object({

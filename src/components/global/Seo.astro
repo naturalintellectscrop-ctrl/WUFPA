@@ -1,6 +1,6 @@
 ---
 /**
- * Seo — every tag that belongs in <head> for discovery and sharing.
+ * Seo: every tag that belongs in <head> for discovery and sharing.
  *
  * Rendered by BaseLayout, so no page assembles its own metadata. Pages supply
  * frontmatter values; this component decides the tag shape. That split is the
@@ -11,11 +11,11 @@
  *
  * WUFPA's stated channels are Facebook and WhatsApp [P3], so Open Graph is the
  * first impression for most of the audience (docs/04 section 2.1). But both
- * platforms aggressively cache what they scrape — including failures. Emitting
+ * platforms aggressively cache what they scrape, including failures. Emitting
  * `og:image` before the 1200×630 asset exists (WUFPA-065) teaches WhatsApp
  * that this site has a broken image, and that cache outlives the fix. So
  * asset-dependent tags are gated on `site.hasIcons` / `site.hasOgImage`
- * rather than emitted hopefully — two separate flags because the icon set
+ * rather than emitted hopefully: two separate flags because the icon set
  * and the sharing image are supplied by different tasks on different
  * schedules, and shipping one should not silently ship the other.
  *
@@ -49,7 +49,7 @@ interface Props {
   ogType?: 'website' | 'article' | 'profile' | undefined;
   publishedTime?: Date | string | undefined;
   modifiedTime?: Date | string | undefined;
-  /** Breadcrumb trail WITHOUT Home — prepended here so every trail is
+  /** Breadcrumb trail WITHOUT Home, prepended here so every trail is
    *  rooted identically in the markup and the JSON-LD. */
   crumbs?: CrumbInput[] | undefined;
   /** Page-type JSON-LD (Event, Person, Service…) merged into the @graph. */
@@ -78,7 +78,7 @@ const base = Astro.site ?? new URL('https://wufpa.example.org');
 
 const canonical = absoluteUrl(Astro.url.pathname, base);
 
-// `title` is rendered VERBATIM — the " — WUFPA" suffix is applied in
+// `title` is rendered VERBATIM. The em-dash "WUFPA" suffix is applied in
 // src/lib/page-meta.ts, alongside the copy it belongs to.
 //
 // No rule applied here could be right in every case: docs/04 section 2 gives
@@ -89,7 +89,7 @@ const canonical = absoluteUrl(Astro.url.pathname, base);
 const fullTitle = title;
 
 // A page-supplied image (e.g. a news article's hero) is always used when
-// present — it is not gated on `site.hasOgImage`, which only covers the
+// present: it is not gated on `site.hasOgImage`, which only covers the
 // fallback to the site-wide default sharing image.
 const shareImage = image
   ? absoluteUrl(image, base)
@@ -167,7 +167,7 @@ const robots = noindex
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={`${site.name} — News`}
+  title={`${site.name}: News`}
   href={absoluteUrl('/feed.xml', base)}
 />
 

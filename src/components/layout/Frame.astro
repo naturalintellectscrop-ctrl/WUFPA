@@ -1,6 +1,6 @@
 ---
 /**
- * Frame — reserves an aspect ratio before anything loads.
+ * Frame: reserves an aspect ratio before anything loads.
  *
  * The point is layout stability: the box's height is known from the ratio
  * alone, so an image arriving later cannot push the page down. Zero CLS is a
@@ -9,8 +9,8 @@
  * reader loses their place.
  *
  * `ratio="auto"` OPTS OUT OF CROPPING, and is the right choice more often than
- * it looks. Most of the 76 supplied photographs are group shots — workshop
- * cohorts, roster line-ups, a brass band on a street — and a square or 16:9
+ * it looks. Most of the 76 supplied photographs are group shots: workshop
+ * cohorts, roster line-ups, a brass band on a street, and a square or 16:9
  * crop cuts people out of their own photograph. When in doubt on a group photo,
  * use auto (docs/07 section 10.3).
  *
@@ -34,7 +34,7 @@ interface Props {
 
 const { ratio = 'landscape', position, class: className } = Astro.props;
 
-/* `auto` maps to the CSS keyword, which disables the reservation deliberately —
+/* `auto` maps to the CSS keyword, which disables the reservation deliberately:
    an uncropped image sizes itself and there is no ratio to hold. */
 const ratioValue = ratio === 'auto' ? 'auto' : `var(--ratio-${ratio})`;
 
