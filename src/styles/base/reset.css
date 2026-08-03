@@ -89,6 +89,12 @@ body {
   min-block-size: 100vh;
   min-block-size: 100svh;
   text-rendering: optimizeSpeed;
+  /* Belt and braces alongside html's own overflow-x: hidden above. Setting
+     the clip on html alone left real overflow visible in testing: at least
+     one browser's box-overflow interaction only reliably suppresses the
+     horizontal scrollbar and the visible spill once BOTH the root and the
+     body clip the same axis. */
+  overflow-x: hidden;
 }
 
 /* Media defaults. `max-inline-size: 100%` prevents the single most common
