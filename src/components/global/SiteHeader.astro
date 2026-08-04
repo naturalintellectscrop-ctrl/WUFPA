@@ -22,6 +22,21 @@ import { site } from '../../lib/site-config';
  * half-implemented one, never a transparency with nothing behind it to
  * soften.
  *
+ * THE BLUR LIVES ON A ::before, NOT ON .site-header ITSELF — this is
+ * load-bearing, not a style preference. `backdrop-filter` (like `filter`,
+ * `transform` and `perspective`) makes the element carrying it a containing
+ * block for any `position: fixed` DESCENDANT. MobileNav's full-screen panel
+ * is rendered as a DOM child of this component (`<MobileNav />` below), and
+ * once opened it is `position: fixed; inset: 0` — meant to fill the
+ * viewport. Putting `backdrop-filter` directly on `.site-header` briefly
+ * shipped exactly that bug: the instant the header scrolled into its
+ * compact, blurred state, the panel's `inset: 0` started resolving against
+ * the ~60px header box instead of the viewport, and the "full-screen" menu
+ * rendered as a sliver cramped at the top with the page showing through
+ * beneath it (WUFPA-098). The header element's own computed style must never
+ * carry backdrop-filter, filter, transform or perspective while it still
+ * contains the mobile nav panel in the DOM.
+ *
  * `position: sticky`, not `fixed` with a manually-sized spacer: sticky
  * inherently reserves its own height in document flow, which is what avoids
  * the reflow bug a fixed-position header needs a second element to prevent.
@@ -92,30 +107,49 @@ import { site } from '../../lib/site-config';
        desktop one. Raised from 60px to keep real margin around the larger
        52px logo rather than the two nearly touching the header's edges. */
     block-size: 64px;
-    background-color: var(--surface-page);
     border-block-end: 1px solid var(--line-subtle);
     transition:
       block-size var(--duration-base) var(--ease-out),
-      background-color var(--duration-base) var(--ease-out),
       box-shadow var(--duration-base) var(--ease-out);
   }
 
   .site-header.is-compact {
     block-size: 56px;
+    box-shadow: var(--shadow-sm);
   }
 
-  /* The frosted state. `.is-compact` is already the exact "scrolled past the
-     sentinel" signal nav.ts computes for the height change above — reused
-     here rather than adding a second class for what is the same moment. Gated
-     on backdrop-filter support: a browser that cannot blur what is behind the
+  /* The frosted background lives here, one layer behind the header's own
+     content, rather than as a background-color/backdrop-filter on
+     .site-header itself — see the component comment for why that distinction
+     is load-bearing and not stylistic. `position: absolute; inset: 0`
+     resolves against .site-header because sticky already makes it a
+     positioned ancestor; z-index: -1 keeps this pseudo-element behind the
+     logo/nav/CTA within the header's own stacking context (the header sets
+     its own z-index above, so -1 here cannot escape below the page content a
+     sticky header is meant to stay above). */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--surface-page);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  /* `.is-compact` is already the exact "scrolled past the sentinel" signal
+     nav.ts computes for the height change above — reused here rather than
+     adding a second class for what is the same moment. Gated on
+     backdrop-filter support: a browser that cannot blur what is behind the
      header does not get a thinner background colour with nothing softening
      what shows through it. */
   @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .site-header.is-compact {
+    .site-header.is-compact::before {
       background-color: color-mix(in srgb, var(--surface-page) 90%, transparent);
       backdrop-filter: blur(14px) saturate(160%);
       -webkit-backdrop-filter: blur(14px) saturate(160%);
-      box-shadow: var(--shadow-sm);
+      transition:
+        background-color var(--duration-base) var(--ease-out),
+        backdrop-filter var(--duration-base) var(--ease-out);
     }
   }
 
