@@ -122,8 +122,19 @@ import { site } from '../../lib/site-config';
     gap: var(--space-3);
   }
 
+  /* !important is load-bearing here, not a shortcut. This selector and
+     Button.astro's own `.btn { display: inline-flex }` base rule have equal
+     specificity (one class, one attribute selector each), so which one wins
+     depends on which compiled CSS chunk Vite/Rollup happens to load later,
+     production build to production build, without ever changing a line of
+     source. That is exactly the silent, order-dependent breakage this
+     property exists to rule out (WUFPA-097: the button reappeared in the
+     mobile header on a live deploy while local dev, whose chunking differs,
+     showed it correctly hidden). Every other `display: none` in this
+     codebase that gates a component's own default visibility already uses
+     `!important` for the same reason (see MobileNav's `[hidden]` rules). */
   .site-header__cta {
-    display: none;
+    display: none !important;
   }
 
   @media (min-width: 48rem) {
@@ -150,7 +161,7 @@ import { site } from '../../lib/site-config';
 
   @media (min-width: 64rem) {
     .site-header__cta {
-      display: inline-flex;
+      display: inline-flex !important;
     }
   }
 </style>
