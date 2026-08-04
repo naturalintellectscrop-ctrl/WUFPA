@@ -75,6 +75,21 @@ function initFrameSequences(): void {
     // wants paused.
     let holds = 0;
     let currentDot = 0;
+    // True for the duration of a dot-triggered smooth scroll. Kept separate
+    // from `playing`: scroll-snap must stay off for that whole animation, not
+    // just for the marquee, or re-enabling it the instant the click handler
+    // returns fights the still-in-flight scrollTo (see updateSnapState below).
+    let dotScrolling = false;
+
+    // Scroll-snap fights ANY programmatic scroll that is still moving: the
+    // browser recomputes the nearest snap point against a scroll position
+    // that has not settled yet, which can add a second, unrequested snap
+    // right after the one the reader asked for. Snap is therefore off for as
+    // long as either the marquee is advancing scrollLeft every frame OR a
+    // dot's smooth scroll is in flight, and restored only once both are done.
+    function updateSnapState(): void {
+      track?.classList.toggle('is-marquee', playing || dotScrolling);
+    }
 
     function nearestCellIndex(): number {
       const trackLeft = track!.getBoundingClientRect().left;
@@ -131,12 +146,7 @@ function initFrameSequences(): void {
 
     function setPlaying(next: boolean): void {
       playing = next;
-      // Scroll-snap fights continuous programmatic scrolling (see the CSS
-      // comment on .strip.is-marquee), so it is only switched off while the
-      // marquee is actually moving, and restored the moment it pauses so a
-      // reader who takes over with touch or trackpad gets the normal
-      // snap-to-frame behaviour back.
-      track?.classList.toggle('is-marquee', playing);
+      updateSnapState();
       iconPause?.toggleAttribute('hidden', !playing);
       iconPlay?.toggleAttribute('hidden', playing);
       playPause?.setAttribute('aria-pressed', String(!playing));
@@ -155,6 +165,18 @@ function initFrameSequences(): void {
 
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
+        // Selecting a dot is an explicit request to look at that frame —
+        // resuming the marquee immediately would move it again before the
+        // reader has had a chance to. Treated as a manual pause, same as the
+        // button. Set BEFORE the scroll starts, not after: doing it after
+        // left a window where the marquee's own rAF tick could still fire
+        // between reading the target position and pausing, nudging
+        // scrollLeft mid-calculation.
+        setPlaying(false);
+
+        dotScrolling = true;
+        updateSnapState();
+
         const cell = cells[i];
         if (cell && track) {
           const trackRect = track.getBoundingClientRect();
@@ -165,11 +187,20 @@ function initFrameSequences(): void {
           });
         }
         setActiveDot(i);
-        // Selecting a dot is an explicit request to look at that frame —
-        // resuming the marquee immediately would move it again before the
-        // reader has had a chance to. Treated as a manual pause, same as the
-        // button.
-        setPlaying(false);
+
+        const onSettled = () => {
+          dotScrolling = false;
+          updateSnapState();
+        };
+        // `scrollend` fires once the smooth scroll has actually come to rest —
+        // exactly the moment scroll-snap can safely come back without
+        // fighting an animation still in progress. Falls back to a fixed
+        // delay in browsers that do not yet support the event.
+        if (track && 'onscrollend' in window) {
+          track.addEventListener('scrollend', onSettled, { once: true });
+        } else {
+          setTimeout(onSettled, 500);
+        }
       });
     });
 

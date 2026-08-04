@@ -8,10 +8,19 @@ import { site } from '../../lib/site-config';
 /**
  * SiteHeader: persistent identity and navigation. Carries the primary CTA.
  *
- * SOLID BACKGROUND AT ALL SCROLL POSITIONS, ALWAYS. The prototype's
- * transparent dark-gradient header sat over bright photography and left nav
- * text unreadable (X17 in a different form): docs/08 section 2 is explicit
- * that this must never happen again.
+ * NEVER TRULY TRANSPARENT. The prototype's transparent dark-gradient header
+ * sat over bright photography and left nav text unreadable (X17 in a
+ * different form): docs/08 section 2 is explicit that a header with no
+ * guaranteed contrast floor must never ship again. The scrolled state below
+ * is translucent, not transparent — a frosted-glass panel that stays at 90%
+ * of --surface-page's own opacity with a blur behind it, so whatever photo or
+ * colour is under the header is softened into a wash rather than showing
+ * through legibly. That 90% floor is deliberate: it is where the header
+ * still reads as "the same solid bar, lightened" rather than as glass a
+ * background pattern can defeat. `@supports` gates the effect entirely — a
+ * browser without backdrop-filter gets the plain solid header instead of a
+ * half-implemented one, never a transparency with nothing behind it to
+ * soften.
  *
  * `position: sticky`, not `fixed` with a manually-sized spacer: sticky
  * inherently reserves its own height in document flow, which is what avoids
@@ -85,11 +94,29 @@ import { site } from '../../lib/site-config';
     block-size: 64px;
     background-color: var(--surface-page);
     border-block-end: 1px solid var(--line-subtle);
-    transition: block-size var(--duration-base) var(--ease-out);
+    transition:
+      block-size var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
   }
 
   .site-header.is-compact {
     block-size: 56px;
+  }
+
+  /* The frosted state. `.is-compact` is already the exact "scrolled past the
+     sentinel" signal nav.ts computes for the height change above — reused
+     here rather than adding a second class for what is the same moment. Gated
+     on backdrop-filter support: a browser that cannot blur what is behind the
+     header does not get a thinner background colour with nothing softening
+     what shows through it. */
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .site-header.is-compact {
+      background-color: color-mix(in srgb, var(--surface-page) 90%, transparent);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      box-shadow: var(--shadow-sm);
+    }
   }
 
   .site-header__bar {

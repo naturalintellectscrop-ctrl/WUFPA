@@ -72,28 +72,22 @@ ol[role='list'] {
   list-style: none;
 }
 
-html {
-  /* The safety net for every full-bleed pattern on the site: FrameSequence's
-     `margin-inline: calc(var(--gutter) * -1)`, the hero and EstablishingShot's
-     edge-to-edge media, and any future one. A negative inline margin equal to
-     the gutter is meant to cancel exactly, but sub-pixel rounding at
-     fractional zoom levels or unusual viewport widths can leave a sliver past
-     the viewport edge, so this clips that sliver instead of adding a page-wide
-     horizontal scrollbar for the sake of one wrong pixel nobody was meant to
-     see. Set on html, not body, so it also catches anything a component
-     positions relative to the root. */
-  overflow-x: hidden;
-}
-
 body {
   min-block-size: 100vh;
   min-block-size: 100svh;
   text-rendering: optimizeSpeed;
-  /* Belt and braces alongside html's own overflow-x: hidden above. Setting
-     the clip on html alone left real overflow visible in testing: at least
-     one browser's box-overflow interaction only reliably suppresses the
-     horizontal scrollbar and the visible spill once BOTH the root and the
-     body clip the same axis. */
+}
+
+/* The safety net for full-bleed patterns (FrameSequence's negative-margin
+   strip, the hero and EstablishingShot's edge-to-edge media) lives on <main>,
+   not html or body. Both of those broke position: sticky for the header:
+   setting overflow to anything but visible on an ancestor of a sticky element
+   changes what its containing block resolves to, and in most engines that is
+   enough to stop it sticking at all. <main> is a SIBLING of the header and
+   footer, never their ancestor, so clipping overflow there catches a
+   full-bleed component's own sub-pixel spill without touching the chrome
+   around it. */
+main {
   overflow-x: hidden;
 }
 

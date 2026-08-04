@@ -224,17 +224,37 @@ const { frames, label, class: className } = Astro.props;
     margin-inline-start: var(--space-5);
   }
 
+  /* Mobile: exactly one frame per screen, full width, nothing else in view.
+     `.strip` cancels the page's own gutter with a negative margin and then
+     re-adds it as padding (see above), so its content box is EXACTLY
+     `100vw - 2 * gutter` wide — the same width every frame gets here, so one
+     frame fills the whole scrollport with no sliver of the next one showing
+     and nothing to overflow. The uneven, peeking-neighbour rhythm described
+     below is a `--bp-md` and up composition; a narrow screen does not have
+     the width to spare for it. */
   .frame-cell {
     flex: none;
-    inline-size: min(78vw, 26rem);
+    inline-size: calc(100vw - (var(--gutter) * 2));
     scroll-snap-align: start;
   }
 
-  /* The uneven rhythm. Wider frames at every second position break the
-     tile-grid reading and let the group photographs (which are the widest
-     images in the archive) run at something closer to their true shape. */
   .frame-cell--wide {
-    inline-size: min(88vw, 34rem);
+    inline-size: calc(100vw - (var(--gutter) * 2));
+  }
+
+  /* From here up, the uneven rhythm returns: every second frame runs wider
+     than the scrollport on purpose, so the next frame's edge is visible as an
+     invitation to keep scrolling, the way a real contact sheet or filmstrip
+     reads. The group photographs (the widest images in the archive) get the
+     wide slot, closer to their true shape. */
+  @media (min-width: 48rem) {
+    .frame-cell {
+      inline-size: min(78vw, 26rem);
+    }
+
+    .frame-cell--wide {
+      inline-size: min(88vw, 34rem);
+    }
   }
 
   .frame-cell__media {
